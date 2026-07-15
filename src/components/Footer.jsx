@@ -1,0 +1,91 @@
+import Logo from './Logo.jsx'
+import { ArrowUpRight } from 'lucide-react'
+
+const columns = [
+  {
+    title: 'Leistungen',
+    links: [
+      { label: 'Website-Entwicklung', href: '#leistungen' },
+      { label: 'Hosting & Bereitstellung', href: '#leistungen' },
+      { label: 'Wartung & Pflege', href: '#leistungen' },
+      { label: 'Support & Beratung', href: '#leistungen' },
+    ],
+  },
+  {
+    title: 'Unternehmen',
+    links: [
+      { label: 'Über uns', href: '#ueber-uns' },
+      { label: 'Ablauf', href: '#ablauf' },
+      { label: 'Referenzen', href: '#referenzen' },
+      { label: 'Kontakt', href: '#kontakt' },
+    ],
+  },
+  {
+    title: 'Kontakt',
+    links: [
+      { label: 'hallo@avan-agency.de', href: 'mailto:hallo@avan-agency.de' },
+      { label: 'Login / Kundenbereich', href: '#login' },
+    ],
+  },
+  {
+    title: 'Rechtliches',
+    links: [
+      { label: 'Impressum', href: '#impressum' },
+      { label: 'Datenschutz', href: '#datenschutz' },
+    ],
+  },
+]
+
+export default function Footer() {
+  return (
+    <footer className="border-t border-navy/10 bg-white">
+      <div className="container-px py-14">
+        <div className="grid gap-10 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1fr]">
+          <div>
+            <Logo />
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-ink/60">
+              Ihre Website. Unsere Verantwortung. Von der Idee bis zum Server — alles aus
+              einer Hand.
+            </p>
+            <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-3 py-1.5">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full animate-pulseDot rounded-full bg-green-500" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
+              </span>
+              <span className="text-xs font-semibold text-green-700">
+                Alle betreuten Websites online
+              </span>
+            </div>
+          </div>
+
+          {columns.map((col) => (
+            <div key={col.title}>
+              <p className="text-xs font-semibold uppercase tracking-widest text-silver">
+                {col.title}
+              </p>
+              <ul className="mt-4 space-y-2.5">
+                {col.links.map((l) => (
+                  <li key={l.label}>
+                    <a
+                      href={l.href}
+                      className="inline-flex items-center gap-1 text-sm text-ink/70 transition-colors hover:text-accent"
+                    >
+                      {l.label}
+                      {l.href.startsWith('#') === false && l.href.startsWith('mailto') === false && (
+                        <ArrowUpRight size={13} className="opacity-0" />
+                      )}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-12 border-t border-navy/10 pt-6 text-center text-xs text-silver">
+          © 2026 AVAN Web Agency. Alle Rechte vorbehalten.
+        </div>
+      </div>
+    </footer>
+  )
+}

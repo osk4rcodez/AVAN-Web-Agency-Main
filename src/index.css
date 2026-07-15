@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-white text-ink font-sans antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tightest text-navy;
+  }
+  ::selection {
+    @apply bg-accent/20 text-navy;
+  }
+}
+
+@layer components {
+  .container-px {
+    @apply mx-auto w-full max-w-container px-5 sm:px-6 lg:px-8;
+  }
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-widest text-accent;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 ease-out;
+  }
+  .btn-primary {
+    @apply btn bg-navy text-white hover:bg-accent hover:shadow-card;
+  }
+  .btn-accent {
+    @apply btn bg-accent text-white hover:bg-navy hover:shadow-card;
+  }
+  .btn-ghost {
+    @apply btn bg-transparent text-navy hover:bg-navy/5;
+  }
+  .btn-white {
+    @apply btn bg-white text-navy hover:scale-[1.03] hover:shadow-card;
+  }
+  .btn-neon {
+    @apply btn bg-accent text-white border border-accent/60;
+    animation: neon-pulse 2.4s ease-in-out infinite;
+  }
+  .btn-neon:hover {
+    @apply bg-white text-accent;
+    animation: neon-pulse 1.6s ease-in-out infinite;
+  }
+  .section {
+    @apply py-20 sm:py-24 lg:py-28;
+  }
+}
+
+@keyframes neon-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0px rgba(139, 92, 246, 0), 0 0 18px rgba(139, 92, 246, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.5), 0 0 32px rgba(139, 92, 246, 0.7);
+  }
+}
+
+.menu-item {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  overflow: hidden;
+  border-radius: 999px;
+  padding: 0 0 0 14px;
+  cursor: pointer;
+  color: #1e1b2e;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  transition:
+    width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s ease,
+    box-shadow 0.3s ease,
+    color 0.3s ease;
+}
+
+.menu-item:hover {
+  width: 168px;
+  color: #ffffff;
+  background: rgba(139, 92, 246, 0.95);
+  box-shadow: 0 0 28px rgba(139, 92, 246, 0.35);
+}
+
+.menu-item svg {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+}
+
+.menu-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  max-width: 0;
+  transform: translateX(-8px);
+  transition:
+    opacity 0.25s ease,
+    max-width 0.45s ease,
+    transform 0.35s ease;
+}
+
+.menu-item:hover .menu-label {
+  opacity: 1;
+  max-width: 120px;
+  transform: translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
