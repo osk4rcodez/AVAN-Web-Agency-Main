@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { LiquidMetalButton } from "./liquid-metal-button.jsx";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -229,9 +230,9 @@ export function CinematicHero({
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=7000",
+          end: "+=4500",
           pin: true,
-          scrub: 1,
+          scrub: 0.5,
           anticipatePin: 1,
         },
       });
@@ -298,12 +299,12 @@ export function CinematicHero({
         <p className="text-[#6B6385] text-lg md:text-xl mb-12 max-w-xl mx-auto font-light leading-relaxed">
           {ctaDescription}
         </p>
-        <div className="flex flex-col sm:flex-row gap-6">
-          <a href="#kontakt" className="btn-modern-light flex items-center justify-center gap-3 px-8 py-4 rounded-[1.25rem] group focus:outline-none focus:ring-2 focus:ring-[#8B5CF6]">
-            <span className="text-xl font-bold leading-none tracking-tight">Kostenloses Erstgespräch</span>
+        <div className="flex flex-col sm:flex-row gap-6 items-center justify-center">
+          <a href="#kontakt" className="inline-block">
+            <LiquidMetalButton label="Erstgespräch" />
           </a>
-          <a href="#leistungen" className="btn-modern-dark flex items-center justify-center gap-3 px-8 py-4 rounded-[1.25rem] group focus:outline-none focus:ring-2 focus:ring-[#8B5CF6]">
-            <span className="text-xl font-bold leading-none tracking-tight">Leistungen ansehen</span>
+          <a href="#leistungen" className="inline-block">
+            <LiquidMetalButton label="Leistungen" viewMode="icon" />
           </a>
         </div>
       </div>
