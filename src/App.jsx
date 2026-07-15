@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar.jsx'
 import Hero from './components/Hero.jsx'
+import CinematicHeroDemo from './components/CinematicHeroDemo.jsx'
 import TrustBar from './components/TrustBar.jsx'
 import Services from './components/Services.jsx'
 import Process from './components/Process.jsx'
@@ -16,6 +17,7 @@ export default function App() {
       <Navbar />
       <main>
         <Hero />
+        <CinematicHeroDemo />
         <TrustBar />
         <Services />
         <Process />
