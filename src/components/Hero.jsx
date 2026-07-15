@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import { EASE, fadeUp, fadeDown, stagger } from './SectionReveal.jsx'
 import ProjectScreenshot from './ProjectScreenshot.jsx'
+import { LiquidMetalButton } from './ui/liquid-metal-button.jsx'
 
 const SHOTS = [0, 1, 2]
 
@@ -111,8 +112,8 @@ export default function Hero() {
             Pflege und Support — damit Sie sich auf Ihr Geschäft konzentrieren können.
           </motion.p>
           <motion.div variants={fadeUp} className="mt-8 flex flex-wrap items-center gap-5">
-            <a href="#kontakt" className="btn-neon text-base">
-              Kostenloses Erstgespräch <ArrowUpRight size={18} />
+            <a href="#kontakt" className="inline-flex">
+              <LiquidMetalButton label="Erstgespräch" width={180} />
             </a>
             <a
               href="#leistungen"

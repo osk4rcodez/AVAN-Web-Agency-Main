@@ -1,5 +1,5 @@
 import SectionReveal from './SectionReveal.jsx'
-import { ArrowUpRight } from 'lucide-react'
+import { LiquidMetalButton } from './ui/liquid-metal-button.jsx'
 
 export default function FinalCTA() {
   return (
@@ -21,8 +21,8 @@ export default function FinalCTA() {
               Lassen Sie uns in einem kurzen, unverbindlichen Gespräch besprechen, wie wir
               Ihnen helfen können.
             </p>
-            <a href="mailto:hallo@avan-agency.de" className="btn-white mt-8 text-base">
-              Termin vereinbaren <ArrowUpRight size={18} />
+            <a href="mailto:hallo@avan-agency.de" className="mt-8 inline-flex">
+              <LiquidMetalButton label="Termin vereinbaren" width={200} />
             </a>
           </div>
         </SectionReveal>

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ArrowUpRight, LayoutGrid, Workflow, Users, Mail } from 'lucide-react'
+import { Menu, X, LayoutGrid, Workflow, Users, Mail } from 'lucide-react'
 import Logo from './Logo.jsx'
 import { EASE, fadeDown } from './SectionReveal.jsx'
+import { LiquidMetalButton } from './ui/liquid-metal-button.jsx'
 
 const links = [
   { label: 'Leistungen', href: '#leistungen', icon: LayoutGrid },
@@ -45,16 +46,18 @@ export default function Navbar() {
           <Logo />
         </a>
 
-        <div className="hidden items-center gap-8 md:flex">
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="text-sm font-medium tracking-wide text-navy/80 transition-colors hover:text-accent"
-            >
-              {l.label}
-            </a>
-          ))}
+        <div className="hidden items-center md:flex">
+          <nav className="menu-bar">
+            {links.map((l) => {
+              const Icon = l.icon
+              return (
+                <a key={l.href} href={l.href} className="menu-item group" aria-label={l.label}>
+                  <Icon size={22} strokeWidth={2} />
+                  <span className="menu-label">{l.label}</span>
+                </a>
+              )
+            })}
+          </nav>
         </div>
 
         <div className="hidden items-center gap-5 md:flex">
@@ -64,8 +67,8 @@ export default function Navbar() {
           >
             Login / Kundenbereich
           </a>
-          <a href="#kontakt" className="btn-neon">
-            Projekt starten
+          <a href="#kontakt" className="inline-flex">
+            <LiquidMetalButton label="Projekt starten" width={170} />
           </a>
         </div>
 
