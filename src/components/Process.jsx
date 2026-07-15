@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { motion, useScroll, useSpring } from 'framer-motion'
 import { fadeUp, stagger } from './SectionReveal.jsx'
+import ProgressIndicator from './ui/progress-indicator.jsx'
 
 const steps = [
   {
@@ -74,6 +75,10 @@ export default function Process() {
               </motion.li>
             ))}
           </motion.ol>
+
+          <div className="mt-16 flex justify-center">
+            <ProgressIndicator />
+          </div>
         </div>
       </div>
     </section>

@@ -80,7 +80,7 @@ function HeroMockup() {
 
 export default function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden pt-28 pb-16 lg:pt-36 lg:pb-24">
+    <section id="top" className="relative overflow-hidden pt-20 pb-16 lg:pt-28 lg:pb-24">
       <div
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
