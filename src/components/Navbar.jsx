@@ -7,7 +7,9 @@ import { LiquidMetalButton } from './ui/liquid-metal-button.jsx'
 
 const links = [
   { label: 'Leistungen', href: '#leistungen', icon: LayoutGrid },
+  { label: 'Showcase', href: '#showcase', icon: LayoutGrid },
   { label: 'Ablauf', href: '#ablauf', icon: Workflow },
+  { label: 'FAQ', href: '#faq', icon: Workflow },
   { label: 'Über uns', href: '#ueber-uns', icon: Users },
   { label: 'Kontakt', href: '#kontakt', icon: Mail },
 ]

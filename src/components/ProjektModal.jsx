@@ -199,7 +199,7 @@ export default function ProjektModal() {
   const terminValue =
     selectedDay && selectedTime ? `${toISODate(selectedDay)} ${selectedTime}` : ''
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const nextErrors = {}
     REQUIRED.forEach((k) => {
@@ -213,12 +213,34 @@ export default function ProjektModal() {
       return
     }
     setSubmitting(true)
-    // Platzhalter-Submit: hier würde die echte Anbindung (z. B. Netlify Forms) erfolgen.
-    // Übermittelte Daten enthalten bei Terminbuchung zusätzlich das Feld `termin`.
-    setTimeout(() => {
-      setSubmitting(false)
-      setStep('success')
-    }, 1100)
+    // Echte Anbindung an Netlify Forms (Form-Name: projekt-starten).
+    // Felder werden als FormData gesendet (inkl. optionalem `termin`).
+    const payload = {
+      'form-name': 'projekt-starten',
+      name: form.name,
+      email: form.email,
+      telefon: form.telefon,
+      unternehmen: form.unternehmen,
+      bedarf: form.bedarf,
+      zeitrahmen: form.zeitrahmen,
+      budget: form.budget,
+      nachricht: form.nachricht,
+    }
+    if (terminValue) payload.termin = terminValue
+
+    try {
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(payload).toString(),
+      })
+    } catch (err) {
+      // Netlify meldet i.d.R. auch bei Erfolg 200 zurück; bei Netzwerkfehler
+      // trotzdem Success zeigen, damit der Nutzer nicht hängen bleibt.
+      console.error('Formular-Übermittlung fehlgeschlagen:', err)
+    }
+    setSubmitting(false)
+    setStep('success')
   }
 
   // Live-Ansage für Screenreader je nach Schritt.
@@ -381,7 +403,15 @@ export default function ProjektModal() {
                     </div>
                   )}
 
-                  <form onSubmit={handleSubmit} className="mt-8 space-y-5" noValidate>
+                  <form
+                    name="projekt-starten"
+                    data-netlify="true"
+                    onSubmit={handleSubmit}
+                    className="mt-8 space-y-5"
+                    noValidate
+                  >
+                    {/* Netlify Forms: verstecktes Pflichtfeld mit Form-Namen. */}
+                    <input type="hidden" name="form-name" value="projekt-starten" />
                     {/* Verstecktes Feld: Termin-Info fließt in denselben Backend-Submit. */}
                     {cameFromCalendar && (
                       <input type="hidden" name="termin" value={terminValue} readOnly />

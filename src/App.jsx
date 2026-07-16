@@ -4,6 +4,8 @@ import Hero from './components/Hero.jsx'
 import CinematicHeroDemo from './components/CinematicHeroDemo.jsx'
 import TrustBar from './components/TrustBar.jsx'
 import Services from './components/Services.jsx'
+import Showcase from './components/Showcase.jsx'
+import Faq from './components/Faq.jsx'
 import Process from './components/Process.jsx'
 import About from './components/About.jsx'
 import Stats from './components/Stats.jsx'
@@ -23,6 +25,8 @@ function Landing() {
         <CinematicHeroDemo />
         <TrustBar />
         <Services />
+        <Showcase />
+        <Faq />
         <Process />
         <About />
         <Stats />
@@ -49,24 +53,47 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
 
-  const LegalPage = LEGAL[hash]
+  // Statisches, unsichtbares Markup damit Netlify das Formular "projekt-starten"
+  // beim Build erkennt (das echte Formular im Modal ist zur Build-Zeit nicht im DOM).
+  const NetlifyFormProxy = (
+    <form
+      name="projekt-starten"
+      data-netlify="true"
+      hidden
+      aria-hidden="true"
+    >
+      <input type="hidden" name="form-name" value="projekt-starten" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="telefon" />
+      <input type="text" name="unternehmen" />
+      <input type="text" name="bedarf" />
+      <input type="text" name="zeitrahmen" />
+      <input type="text" name="budget" />
+      <textarea name="nachricht" />
+      <input type="text" name="termin" />
+    </form>
+  )
 
-  if (LegalPage) {
-    return (
-      <>
-        <Navbar />
-        <LegalPage />
-        <Footer />
-        <ProjektModal />
-      </>
-    )
-  }
+  const LegalPage = LEGAL[hash]
 
   return (
     <>
-      <Navbar />
-      <Landing />
-      <ProjektModal />
+      {NetlifyFormProxy}
+      {LegalPage ? (
+        <>
+          <Navbar />
+          <LegalPage />
+          <Footer />
+          <ProjektModal />
+        </>
+      ) : (
+        <>
+          <Navbar />
+          <Landing />
+          <ProjektModal />
+        </>
+      )}
     </>
   )
 }

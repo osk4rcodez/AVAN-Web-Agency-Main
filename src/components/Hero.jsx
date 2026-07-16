@@ -115,16 +115,16 @@ export default function Hero() {
             <a href="#kontakt" className="inline-flex" data-open-project-modal>
               <LiquidMetalButton label="Erstgespräch" width={180} />
             </a>
-            <a
-              href="#leistungen"
-              className="group inline-flex items-center gap-1.5 text-base font-semibold text-navy transition-colors hover:text-accent"
-            >
-              Projekte ansehen
-              <ArrowUpRight
-                size={18}
-                className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              />
-            </a>
+              <a
+                href="#showcase"
+                className="group inline-flex items-center gap-1.5 text-base font-semibold text-navy transition-colors hover:text-accent"
+              >
+                Projekte ansehen
+                <ArrowUpRight
+                  size={18}
+                  className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
+              </a>
           </motion.div>
 
           {/* Feature-Zeile: dezente Vertrauenssignale */}

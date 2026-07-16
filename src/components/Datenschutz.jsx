@@ -1,10 +1,13 @@
 import { motion } from 'framer-motion'
 import { EASE } from './SectionReveal.jsx'
 
-function AddressPlaceholder() {
+function AddressField() {
   return (
-    <span className="rounded bg-yellow-200 px-1.5 py-0.5 font-medium italic text-yellow-900">
-      [ANSCHRIFT EINFÜGEN]
+    <span>
+      86830 Schwabmünchen
+      <span className="ml-1 rounded bg-yellow-200 px-1.5 py-0.5 font-medium italic text-yellow-900">
+        [Straße &amp; Hausnr. ergänzen]
+      </span>
     </span>
   )
 }
@@ -34,7 +37,7 @@ export default function Datenschutz() {
 
       <Section n={1} title="Verantwortlicher">
         <p>
-          Kasum Caka &amp; Oskar Kielek, avanwebagency@gmail.com (<AddressPlaceholder />)
+          Kasum Caka &amp; Oskar Kielek, avanwebagency@gmail.com (<AddressField />)
         </p>
       </Section>
 

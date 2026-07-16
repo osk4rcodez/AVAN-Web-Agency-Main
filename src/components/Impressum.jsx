@@ -1,10 +1,13 @@
 import { motion } from 'framer-motion'
 import { EASE } from './SectionReveal.jsx'
 
-function AddressPlaceholder() {
+function AddressField() {
   return (
-    <span className="rounded bg-yellow-200 px-1.5 py-0.5 font-medium italic text-yellow-900">
-      [ANSCHRIFT EINFÜGEN]
+    <span>
+      86830 Schwabmünchen
+      <span className="ml-1 rounded bg-yellow-200 px-1.5 py-0.5 font-medium italic text-yellow-900">
+        [Straße &amp; Hausnr. ergänzen]
+      </span>
     </span>
   )
 }
@@ -32,7 +35,7 @@ export default function Impressum() {
         </p>
 
         <p>
-          <AddressPlaceholder />
+          <AddressField />
         </p>
 
         <p>
@@ -56,8 +59,8 @@ export default function Impressum() {
         </p>
 
         <p className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-900">
-          Hinweis: Die Anschrift (gelb markiert) muss vor dem Go-Live durch die echte,
-          ladungsfähige Adresse ersetzt werden.
+          Hinweis: Es fehlt noch die Straße &amp; Hausnummer (gelb markiert), damit die
+          Anschrift vor dem Go-Live ladungsfähig nach § 5 TMG ist.
         </p>
       </div>
 
