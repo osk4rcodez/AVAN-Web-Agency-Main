@@ -23,8 +23,8 @@ const columns = [
   {
     title: 'Kontakt',
     links: [
-      { label: 'hallo@avan-agency.de', href: 'mailto:hallo@avan-agency.de' },
-      { label: 'Login / Kundenbereich', href: '#login' },
+      { label: 'avanwebagency@gmail.com', href: 'mailto:avanwebagency@gmail.com' },
+      { label: 'Login / Kundenbereich', href: '#login', soon: true },
     ],
   },
   {
@@ -66,15 +66,24 @@ export default function Footer() {
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((l) => (
                   <li key={l.label}>
-                    <a
-                      href={l.href}
-                      className="inline-flex items-center gap-1 text-sm text-ink/70 transition-colors hover:text-accent"
-                    >
-                      {l.label}
-                      {l.href.startsWith('#') === false && l.href.startsWith('mailto') === false && (
-                        <ArrowUpRight size={13} className="opacity-0" />
-                      )}
-                    </a>
+                    {l.soon ? (
+                      <span className="inline-flex items-center gap-2 text-sm text-ink/50">
+                        {l.label}
+                        <span className="rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wider text-accent">
+                          Bald
+                        </span>
+                      </span>
+                    ) : (
+                      <a
+                        href={l.href}
+                        className="inline-flex items-center gap-1 text-sm text-ink/70 transition-colors hover:text-accent"
+                      >
+                        {l.label}
+                        {l.href.startsWith('#') === false && l.href.startsWith('mailto') === false && (
+                          <ArrowUpRight size={13} className="opacity-0" />
+                        )}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>

@@ -10,6 +10,9 @@
     @apply bg-white text-ink font-sans antialiased;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
+  body.modal-scroll-lock {
+    overflow: hidden;
+  }
   h1,
   h2,
   h3 {
@@ -52,6 +55,33 @@
   }
   .section {
     @apply py-20 sm:py-24 lg:py-28;
+  }
+  /* Liquid-Glass-Oberfläche für größere Panels (z. B. Modal). */
+  .glass-panel {
+    position: relative;
+    isolation: isolate;
+    background: rgba(247, 245, 252, 0.82); /* mist token, translucent */
+    border: 1px solid rgba(139, 92, 246, 0.18); /* accent, low opacity */
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.6) inset,
+      0 24px 60px rgba(46, 26, 71, 0.22),
+      0 8px 24px rgba(46, 26, 71, 0.12);
+  }
+  .glass-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.35) 0%,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(139, 92, 246, 0.06) 100%
+    );
   }
 }
 

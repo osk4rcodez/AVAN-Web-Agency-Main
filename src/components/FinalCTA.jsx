@@ -21,9 +21,14 @@ export default function FinalCTA() {
               Lassen Sie uns in einem kurzen, unverbindlichen Gespräch besprechen, wie wir
               Ihnen helfen können.
             </p>
-            <a href="mailto:hallo@avan-agency.de" className="mt-8 inline-flex">
-              <LiquidMetalButton label="Termin vereinbaren" width={200} />
-            </a>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+              <a href="#kontakt" className="inline-flex" data-open-project-modal>
+                <LiquidMetalButton label="Projekt starten" width={190} />
+              </a>
+              <a href="#kontakt" className="inline-flex" data-open-appointment-modal>
+                <LiquidMetalButton label="Termin vereinbaren" width={210} />
+              </a>
+            </div>
           </div>
         </SectionReveal>
       </div>

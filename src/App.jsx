@@ -13,6 +13,7 @@ import Footer from './components/Footer.jsx'
 import StickyCTA from './components/StickyCTA.jsx'
 import Impressum from './components/Impressum.jsx'
 import Datenschutz from './components/Datenschutz.jsx'
+import ProjektModal from './components/ProjektModal.jsx'
 
 function Landing() {
   return (
@@ -56,6 +57,7 @@ export default function App() {
         <Navbar />
         <LegalPage />
         <Footer />
+        <ProjektModal />
       </>
     )
   }
@@ -64,6 +66,7 @@ export default function App() {
     <>
       <Navbar />
       <Landing />
+      <ProjektModal />
     </>
   )
 }

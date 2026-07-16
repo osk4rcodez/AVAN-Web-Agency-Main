@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowUpRight, ChevronLeft, ChevronRight, Check } from 'lucide-react'
 import { EASE, fadeUp, fadeDown, stagger } from './SectionReveal.jsx'
 import ProjectScreenshot from './ProjectScreenshot.jsx'
 import { LiquidMetalButton } from './ui/liquid-metal-button.jsx'
@@ -112,7 +112,7 @@ export default function Hero() {
             Pflege und Support — damit Sie sich auf Ihr Geschäft konzentrieren können.
           </motion.p>
           <motion.div variants={fadeUp} className="mt-8 flex flex-wrap items-center gap-5">
-            <a href="#kontakt" className="inline-flex">
+            <a href="#kontakt" className="inline-flex" data-open-project-modal>
               <LiquidMetalButton label="Erstgespräch" width={180} />
             </a>
             <a
@@ -125,6 +125,44 @@ export default function Hero() {
                 className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
               />
             </a>
+          </motion.div>
+
+          {/* Feature-Zeile: dezente Vertrauenssignale */}
+          <motion.ul
+            variants={fadeUp}
+            className="mt-7 flex flex-wrap gap-x-6 gap-y-2.5"
+          >
+            {['Festpreis, keine Überraschungen', 'Hosting & Wartung inklusive', 'Persönlich betreut'].map(
+              (item) => (
+                <li key={item} className="flex items-center gap-2 text-sm text-ink/70">
+                  <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent/12 text-accent">
+                    <Check size={13} strokeWidth={3} />
+                  </span>
+                  {item}
+                </li>
+              ),
+            )}
+          </motion.ul>
+
+          {/* Vertrauens-Karte: Gründer + Reaktionszeit */}
+          <motion.div
+            variants={fadeUp}
+            className="mt-8 flex items-center gap-4 rounded-2xl border border-navy/10 bg-white/60 p-3 pr-5 backdrop-blur-sm sm:inline-flex"
+          >
+            <div className="flex -space-x-2.5">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-accent to-navy text-sm font-bold text-white">
+                A
+              </span>
+              <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-navy to-accent text-sm font-bold text-white">
+                V
+              </span>
+            </div>
+            <div className="leading-tight">
+              <p className="text-sm font-semibold text-navy">Direkt von den Gründern</p>
+              <p className="text-xs text-ink/60">
+                Antwort in der Regel innerhalb eines Tages
+              </p>
+            </div>
           </motion.div>
         </motion.div>
 

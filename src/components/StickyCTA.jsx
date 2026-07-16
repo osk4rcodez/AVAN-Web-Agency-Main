@@ -23,7 +23,7 @@ export default function StickyCTA() {
           transition={{ duration: 0.35, ease: EASE }}
           className="fixed inset-x-0 bottom-4 z-40 flex justify-center px-4 md:hidden"
         >
-          <a href="#kontakt" className="inline-flex">
+          <a href="#kontakt" className="inline-flex" data-open-project-modal>
             <LiquidMetalButton label="Erstgespräch" width={200} />
           </a>
         </motion.div>

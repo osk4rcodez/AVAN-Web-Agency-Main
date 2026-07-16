@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, LayoutGrid, Workflow, Users, Mail } from 'lucide-react'
+import { Menu, X, ArrowUpRight, LayoutGrid, Workflow, Users, Mail } from 'lucide-react'
 import Logo from './Logo.jsx'
 import { EASE, fadeDown } from './SectionReveal.jsx'
 import { LiquidMetalButton } from './ui/liquid-metal-button.jsx'
@@ -24,9 +24,10 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : ''
+    if (!open) return
+    document.body.classList.add('modal-scroll-lock')
     return () => {
-      document.body.style.overflow = ''
+      document.body.classList.remove('modal-scroll-lock')
     }
   }, [open])
 
@@ -61,13 +62,16 @@ export default function Navbar() {
         </div>
 
         <div className="hidden items-center gap-5 md:flex">
-          <a
-            href="#login"
-            className="text-xs font-medium tracking-wide text-silver transition-colors hover:text-navy"
+          <span
+            className="inline-flex cursor-default items-center gap-2 text-xs font-medium tracking-wide text-silver"
+            title="Der Kundenbereich ist bald verfügbar."
           >
             Login / Kundenbereich
-          </a>
-          <a href="#kontakt" className="inline-flex">
+            <span className="rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wider text-accent">
+              Bald
+            </span>
+          </span>
+          <a href="#kontakt" className="inline-flex" data-open-project-modal>
             <LiquidMetalButton label="Projekt starten" width={170} />
           </a>
         </div>
@@ -111,15 +115,15 @@ export default function Navbar() {
                 )
               })}
             </div>
-            <a
-              href="#login"
-              onClick={() => setOpen(false)}
-              className="text-sm font-medium text-silver"
-            >
+            <span className="inline-flex items-center gap-2 text-sm font-medium text-silver">
               Login / Kundenbereich
-            </a>
+              <span className="rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wider text-accent">
+                Bald
+              </span>
+            </span>
             <a
               href="#kontakt"
+              data-open-project-modal
               onClick={() => setOpen(false)}
               className="btn-neon mt-2 text-base"
             >
