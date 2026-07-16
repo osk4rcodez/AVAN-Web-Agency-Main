@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import Navbar from './components/Navbar.jsx'
 import Hero from './components/Hero.jsx'
 import CinematicHeroDemo from './components/CinematicHeroDemo.jsx'
@@ -10,11 +11,12 @@ import Testimonials from './components/Testimonials.jsx'
 import FinalCTA from './components/FinalCTA.jsx'
 import Footer from './components/Footer.jsx'
 import StickyCTA from './components/StickyCTA.jsx'
+import Impressum from './components/Impressum.jsx'
+import Datenschutz from './components/Datenschutz.jsx'
 
-export default function App() {
+function Landing() {
   return (
     <>
-      <Navbar />
       <main>
         <Hero />
         <CinematicHeroDemo />
@@ -28,6 +30,40 @@ export default function App() {
       </main>
       <Footer />
       <StickyCTA />
+    </>
+  )
+}
+
+const LEGAL = {
+  '#impressum': Impressum,
+  '#datenschutz': Datenschutz,
+}
+
+export default function App() {
+  const [hash, setHash] = useState(() => window.location.hash)
+
+  useEffect(() => {
+    const onHash = () => setHash(window.location.hash)
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
+
+  const LegalPage = LEGAL[hash]
+
+  if (LegalPage) {
+    return (
+      <>
+        <Navbar />
+        <LegalPage />
+        <Footer />
+      </>
+    )
+  }
+
+  return (
+    <>
+      <Navbar />
+      <Landing />
     </>
   )
 }
