@@ -5,6 +5,7 @@ import CinematicHeroDemo from './components/CinematicHeroDemo.jsx'
 import TrustBar from './components/TrustBar.jsx'
 import Services from './components/Services.jsx'
 import Showcase from './components/Showcase.jsx'
+import { SplineSceneBasic } from './components/ui/demo.jsx'
 import Faq from './components/Faq.jsx'
 import Process from './components/Process.jsx'
 import About from './components/About.jsx'
@@ -30,6 +31,9 @@ function Landing() {
         <TrustBar />
         <Services />
         <Showcase />
+        <section className="container-px py-16 lg:py-24">
+          <SplineSceneBasic />
+        </section>
         <Faq />
         <Process />
         <About />
