@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ArrowUpRight, LayoutGrid, Workflow, Users, Mail } from 'lucide-react'
+import { Menu, X, ArrowUpRight, LayoutGrid, GalleryHorizontalEnd, Workflow, ListChecks, Users, Mail } from 'lucide-react'
 import Logo from './Logo.jsx'
 import { EASE, fadeDown } from './SectionReveal.jsx'
 import { LiquidMetalButton } from './ui/liquid-metal-button.jsx'
 
 const links = [
   { label: 'Leistungen', href: '#leistungen', icon: LayoutGrid },
-  { label: 'Showcase', href: '#showcase', icon: LayoutGrid },
+  { label: 'Showcase', href: '#showcase', icon: GalleryHorizontalEnd },
   { label: 'Ablauf', href: '#ablauf', icon: Workflow },
-  { label: 'FAQ', href: '#faq', icon: Workflow },
+  { label: 'FAQ', href: '#faq', icon: ListChecks },
   { label: 'Über uns', href: '#ueber-uns', icon: Users },
   { label: 'Kontakt', href: '#kontakt', icon: Mail },
 ]

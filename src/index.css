@@ -164,3 +164,25 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Druckoptimierung: nur rechtlich relevante Inhalte (z. B. AGB / Barrierefreiheit)
+   drucken, Navbar/Footer/Cookie-Banner ausblenden — für speicher-/druckbares PDF. */
+@media print {
+  header,
+  footer,
+  [role='dialog'],
+  .fixed {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .container-px {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+  a[href]::after {
+    content: '';
+  }
+}

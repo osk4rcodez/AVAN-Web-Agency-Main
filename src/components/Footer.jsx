@@ -16,7 +16,7 @@ const columns = [
     links: [
       { label: 'Über uns', href: '#ueber-uns' },
       { label: 'Ablauf', href: '#ablauf' },
-      { label: 'Referenzen', href: '#referenzen' },
+      { label: 'Showcase', href: '#showcase' },
       { label: 'Kontakt', href: '#kontakt' },
     ],
   },
@@ -24,7 +24,7 @@ const columns = [
     title: 'Kontakt',
     links: [
       { label: 'avanwebagency@gmail.com', href: 'mailto:avanwebagency@gmail.com' },
-      { label: 'Login / Kundenbereich', href: '#login', soon: true },
+      { label: 'Login / Kundenbereich', href: '#kontakt', soon: true },
     ],
   },
   {
@@ -32,6 +32,9 @@ const columns = [
     links: [
       { label: 'Impressum', href: '#impressum' },
       { label: 'Datenschutz', href: '#datenschutz' },
+      { label: 'AGB', href: '#agb' },
+      { label: 'Barrierefreiheit', href: '#barrierefreiheit' },
+      { label: 'Cookie-Einstellungen', href: '#', onClick: 'cookies' },
     ],
   },
 ]
@@ -76,6 +79,14 @@ export default function Footer() {
                     ) : (
                       <a
                         href={l.href}
+                        onClick={
+                          l.onClick === 'cookies'
+                            ? (e) => {
+                                e.preventDefault()
+                                if (window.openCookieSettings) window.openCookieSettings()
+                              }
+                            : undefined
+                        }
                         className="inline-flex items-center gap-1 text-sm text-ink/70 transition-colors hover:text-accent"
                       >
                         {l.label}

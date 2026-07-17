@@ -100,6 +100,7 @@ export default function ProjektModal() {
   const [form, setForm] = useState(INITIAL_FORM)
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
+  const [agbAccepted, setAgbAccepted] = useState(false)
 
   const [selectedDay, setSelectedDay] = useState(null)
   const [selectedTime, setSelectedTime] = useState(null)
@@ -117,6 +118,7 @@ export default function ProjektModal() {
       setForm(INITIAL_FORM)
       setErrors({})
       setSubmitting(false)
+      setAgbAccepted(false)
       setSelectedDay(null)
       setSelectedTime(null)
       setMode(nextMode)
@@ -194,7 +196,7 @@ export default function ProjektModal() {
     }
   }
 
-  const isValid = REQUIRED.every((k) => form[k].trim())
+  const isValid = REQUIRED.every((k) => form[k].trim()) && agbAccepted
   const cameFromCalendar = mode === 'appointment'
   const terminValue =
     selectedDay && selectedTime ? `${toISODate(selectedDay)} ${selectedTime}` : ''
@@ -557,6 +559,37 @@ export default function ProjektModal() {
                         onBlur={() => validateField('nachricht')}
                       />
                     </Field>
+
+                    {/* AGB-Bestätigung (Bestellprozess): aktive, nicht vorangekreuzte Checkbox.
+                        Erst bei Bestätigung ist der Submit-Button aktivierbar. */}
+                    <div className="rounded-xl border border-navy/10 bg-white/50 p-4 backdrop-blur-sm">
+                      <label className="flex cursor-pointer items-start gap-3">
+                        <input
+                          id="pm-agb"
+                          type="checkbox"
+                          checked={agbAccepted}
+                          onChange={(e) => setAgbAccepted(e.target.checked)}
+                          className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-navy/30 text-accent accent-accent focus:ring-2 focus:ring-accent/40"
+                        />
+                        <span className="text-sm leading-relaxed text-ink/70">
+                          Ich habe die{' '}
+                          <a
+                            href="#agb"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-semibold text-accent underline underline-offset-2 hover:text-navy"
+                          >
+                            Allgemeinen Geschäftsbedingungen
+                          </a>{' '}
+                          gelesen und akzeptiere sie.
+                        </span>
+                      </label>
+                      {!agbAccepted && (
+                        <p className="mt-2 pl-7 text-xs text-red-500/90" role="alert">
+                          Bitte bestätigen Sie die AGB, um Ihre Anfrage abzusenden.
+                        </p>
+                      )}
+                    </div>
 
                     <button
                       type="submit"

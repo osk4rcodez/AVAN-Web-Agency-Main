@@ -15,6 +15,9 @@ import Footer from './components/Footer.jsx'
 import StickyCTA from './components/StickyCTA.jsx'
 import Impressum from './components/Impressum.jsx'
 import Datenschutz from './components/Datenschutz.jsx'
+import AGB from './components/AGB.jsx'
+import Barrierefreiheit from './components/Barrierefreiheit.jsx'
+import CookieConsent from './components/CookieConsent.jsx'
 import ProjektModal from './components/ProjektModal.jsx'
 
 function Landing() {
@@ -42,6 +45,8 @@ function Landing() {
 const LEGAL = {
   '#impressum': Impressum,
   '#datenschutz': Datenschutz,
+  '#agb': AGB,
+  '#barrierefreiheit': Barrierefreiheit,
 }
 
 export default function App() {
@@ -86,12 +91,14 @@ export default function App() {
           <LegalPage />
           <Footer />
           <ProjektModal />
+          <CookieConsent />
         </>
       ) : (
         <>
           <Navbar />
           <Landing />
           <ProjektModal />
+          <CookieConsent />
         </>
       )}
     </>
