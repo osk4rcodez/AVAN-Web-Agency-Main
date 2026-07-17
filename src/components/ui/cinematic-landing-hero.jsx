@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LiquidMetalButton } from "./liquid-metal-button.jsx";
@@ -69,6 +69,7 @@ const INJECTED_STYLES = `
           inset 0 -2px 4px rgba(0, 0, 0, 0.8);
       border: 1px solid rgba(255, 255, 255, 0.06);
       position: relative;
+      will-change: transform, opacity;
   }
 
   .card-sheen {
@@ -182,6 +183,32 @@ export function CinematicHero({
   const mainCardRef = useRef(null);
   const mockupRef = useRef(null);
   const requestRef = useRef(0);
+  const countdownRef = useRef(null);
+  const scrollTlRef = useRef(null);
+  const playedOnceRef = useRef(false);
+  const [showReplay, setShowReplay] = useState(false);
+  const [secondsLeft, setSecondsLeft] = useState(0);
+
+  const startCountdown = (duration) => {
+    clearInterval(countdownRef.current);
+    setShowReplay(false);
+    const total = Math.max(1, Math.ceil(duration));
+    setSecondsLeft(total);
+    countdownRef.current = setInterval(() => {
+      setSecondsLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(countdownRef.current);
+          setShowReplay(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  useEffect(() => {
+    return () => clearInterval(countdownRef.current);
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -215,64 +242,77 @@ export function CinematicHero({
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
     const ctx = gsap.context(() => {
-      gsap.set(".text-track", { autoAlpha: 0, y: 60, scale: 0.85, filter: "blur(20px)", rotationX: -20 });
+      gsap.set(".text-track", { autoAlpha: 0, y: 60, scale: 0.85, rotationX: -20 });
       gsap.set(".text-days", { autoAlpha: 1, clipPath: "inset(0 100% 0 0)" });
       gsap.set(".main-card", { y: window.innerHeight + 200, autoAlpha: 1 });
       gsap.set([".card-left-text", ".card-right-text", ".mockup-scroll-wrapper", ".floating-badge", ".phone-widget"], { autoAlpha: 0 });
-      gsap.set(".cta-wrapper", { autoAlpha: 0, scale: 0.8, filter: "blur(30px)" });
+      gsap.set(".cta-wrapper", { autoAlpha: 0, scale: 0.8 });
 
-      const introTl = gsap.timeline({ delay: 0.3 });
+      const introTl = gsap.timeline({ delay: 0.15 });
       introTl
-        .to(".text-track", { duration: 1.8, autoAlpha: 1, y: 0, scale: 1, filter: "blur(0px)", rotationX: 0, ease: "expo.out" })
-        .to(".text-days", { duration: 1.4, clipPath: "inset(0 0% 0 0)", ease: "power4.inOut" }, "-=1.0");
+        .to(".text-track", { duration: 0.9, autoAlpha: 1, y: 0, scale: 1, rotationX: 0, ease: "expo.out" })
+        .to(".text-days", { duration: 0.7, clipPath: "inset(0 0% 0 0)", ease: "power4.inOut" }, "-=0.5");
 
-      const scrollTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "center center",
-          end: "+=700",
-          pin: true,
-          scrub: false,
-          anticipatePin: 1,
-          // Sobald der Pin-Bereich erreicht wird, läuft die Animation automatisch
-          // durch. restart() spult auf 0 und spielt neu — funktioniert sowohl beim
-          // ersten Eintreten als auch beim erneuten Runterscrollen nach oben.
-          onEnter: () => scrollTl.restart(),
-          onEnterBack: () => scrollTl.restart(),
+  const scrollTl = gsap.timeline({ paused: true });
+
+      scrollTlRef.current = scrollTl;
+
+      // Eigener, leichtgewichtiger ScrollTrigger nur fürs Pinning + einmaligen
+      // Start. `once: true` verhindert, dass die Animation mehrfach oder beim
+      // Hochscrollen neu getriggert wird.
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: "center center",
+        end: "+=450",
+        pin: true,
+        pinType: "transform",
+        fastScrollEnd: true,
+        once: true,
+        onEnter: () => {
+          playedOnceRef.current = true;
+          scrollTl.restart();
+          startCountdown(scrollTl.duration());
+        },
+        onLeaveBack: () => {
+          clearInterval(countdownRef.current);
+          setSecondsLeft(0);
+          // Beim ZurückScrollen den Ausgangszustand sauber wiederherstellen,
+          // damit der Tagline-Text nicht "hängen" bleibt.
+          gsap.set(".hero-text-wrapper", { autoAlpha: 1, scale: 1, clearProps: "transform" });
+          gsap.set(".main-card", { autoAlpha: 1, y: window.innerHeight + 200, clearProps: "scale,borderRadius" });
+          gsap.set(".cta-wrapper", { autoAlpha: 0, scale: 0.8 });
         },
       });
-      scrollTl.pause(0);
 
       scrollTl
-        .to([".hero-text-wrapper", ".bg-grid-theme"], { scale: 1.15, filter: "blur(20px)", opacity: 0.2, ease: "power2.inOut", duration: 1 }, 0)
-        .to(".main-card", { y: 0, ease: "power3.inOut", duration: 1 }, 0)
-        .to(".main-card", { width: "100%", height: "100%", borderRadius: "0px", ease: "power3.inOut", duration: 0.75 })
+        .to([".hero-text-wrapper", ".bg-grid-theme"], { scale: 1.15, autoAlpha: 0.2, ease: "power2.inOut", duration: 0.5 }, 0)
+        .to(".main-card", { y: 0, scale: 1.04, ease: "power3.inOut", duration: 0.5 }, 0)
+        .to(".main-card", { scale: 1, borderRadius: "0px", ease: "power3.inOut", duration: 0.4 })
         .fromTo(".mockup-scroll-wrapper",
           { y: 300, z: -500, rotationX: 50, rotationY: -30, autoAlpha: 0, scale: 0.6 },
-          { y: 0, z: 0, rotationX: 0, rotationY: 0, autoAlpha: 1, scale: 1, ease: "expo.out", duration: 1.25 }, "-=0.4"
+          { y: 0, z: 0, rotationX: 0, rotationY: 0, autoAlpha: 1, scale: 1, ease: "expo.out", duration: 0.6 }, "-=0.2"
         )
-        .fromTo(".phone-widget", { y: 40, autoAlpha: 0, scale: 0.95 }, { y: 0, autoAlpha: 1, scale: 1, stagger: 0.075, ease: "back.out(1.2)", duration: 0.75 }, "-=0.75")
-        .to(".progress-ring", { strokeDashoffset: 60, duration: 1, ease: "power3.inOut" }, "-=0.6")
-        .to(".counter-val", { innerHTML: metricValue, snap: { innerHTML: 1 }, duration: 1, ease: "expo.out" }, "-=1.0")
-        .fromTo(".floating-badge", { y: 100, autoAlpha: 0, scale: 0.7, rotationZ: -10 }, { y: 0, autoAlpha: 1, scale: 1, rotationZ: 0, ease: "back.out(1.5)", duration: 0.75, stagger: 0.1 }, "-=1.0")
-        .fromTo(".card-left-text", { x: -50, autoAlpha: 0 }, { x: 0, autoAlpha: 1, ease: "power4.out", duration: 0.75 }, "-=0.75")
-        .fromTo(".card-right-text", { x: 50, autoAlpha: 0, scale: 0.8 }, { x: 0, autoAlpha: 1, scale: 1, ease: "expo.out", duration: 0.75 }, "<")
-        .to({}, { duration: 1 })
+        .fromTo(".phone-widget", { y: 40, autoAlpha: 0, scale: 0.95 }, { y: 0, autoAlpha: 1, scale: 1, stagger: 0.04, ease: "back.out(1.2)", duration: 0.4 }, "-=0.4")
+        .to(".progress-ring", { strokeDashoffset: 60, duration: 0.5, ease: "power3.inOut" }, "-=0.3")
+        .to(".counter-val", { innerHTML: metricValue, snap: { innerHTML: 1 }, duration: 0.5, ease: "expo.out" }, "-=0.5")
+        .fromTo(".floating-badge", { y: 100, autoAlpha: 0, scale: 0.7, rotationZ: -10 }, { y: 0, autoAlpha: 1, scale: 1, rotationZ: 0, ease: "back.out(1.5)", duration: 0.4, stagger: 0.05 }, "-=0.5")
+        .fromTo(".card-left-text", { x: -50, autoAlpha: 0 }, { x: 0, autoAlpha: 1, ease: "power4.out", duration: 0.4 }, "-=0.4")
+        .fromTo(".card-right-text", { x: 50, autoAlpha: 0, scale: 0.8 }, { x: 0, autoAlpha: 1, scale: 1, ease: "expo.out", duration: 0.4 }, "<")
+        .to({}, { duration: 0.4 })
         .set(".hero-text-wrapper", { autoAlpha: 0 })
         .set(".cta-wrapper", { autoAlpha: 1 })
-        .to({}, { duration: 0.3 })
+        .to({}, { duration: 0.15 })
         .to([".mockup-scroll-wrapper", ".floating-badge", ".card-left-text", ".card-right-text"], {
-          scale: 0.9, y: -40, z: -200, autoAlpha: 0, ease: "power3.in", duration: 0.6, stagger: 0.025,
+          scale: 0.9, y: -40, z: -200, autoAlpha: 0, ease: "power3.in", duration: 0.35, stagger: 0.015,
         })
         .to(".main-card", {
-          width: isMobile ? "92vw" : "85vw",
-          height: isMobile ? "92vh" : "85vh",
+          scale: 0.92,
           borderRadius: isMobile ? "32px" : "40px",
           ease: "expo.inOut",
-          duration: 0.9,
+          duration: 0.5,
         }, "pullback")
-        .to(".cta-wrapper", { scale: 1, filter: "blur(0px)", ease: "expo.inOut", duration: 0.9 }, "pullback")
-        .to(".main-card", { y: -window.innerHeight - 300, ease: "power3.in", duration: 0.75 });
+        .to(".cta-wrapper", { scale: 1, ease: "expo.inOut", duration: 0.5 }, "pullback")
+        .to(".main-card", { autoAlpha: 0, ease: "power2.in", duration: 0.35 });
     }, containerRef);
 
     return () => ctx.revert();
@@ -299,18 +339,18 @@ export function CinematicHero({
       </div>
 
       <div className="cta-wrapper absolute z-10 flex flex-col items-center justify-center text-center w-screen px-4 gsap-reveal pointer-events-auto will-change-transform">
-        <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight text-silver-matte">
+        <h2 className="text-5xl md:text-7xl lg:text-[5.5rem] font-bold mb-8 tracking-tight text-silver-matte">
           {ctaHeading}
         </h2>
-        <p className="text-[#6B6385] text-lg md:text-xl mb-12 max-w-xl mx-auto font-light leading-relaxed">
+        <p className="text-[#6B6385] text-2xl md:text-3xl mb-14 max-w-3xl mx-auto font-light leading-relaxed">
           {ctaDescription}
         </p>
-        <div className="flex flex-col sm:flex-row gap-6 items-center justify-center">
+        <div className="flex flex-col sm:flex-row gap-8 items-center justify-center">
           <a href="#kontakt" className="inline-block">
-            <LiquidMetalButton label="Erstgespräch" />
+            <LiquidMetalButton label="Erstgespräch" width={210} />
           </a>
           <a href="#leistungen" className="inline-block">
-            <LiquidMetalButton label="Leistungen" viewMode="icon" />
+            <LiquidMetalButton label="Leistungen" viewMode="icon" width={210} />
           </a>
         </div>
       </div>
@@ -428,6 +468,29 @@ export function CinematicHero({
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="absolute bottom-6 left-0 right-0 z-40 flex flex-col items-center justify-center gap-3 px-4 pointer-events-none">
+        {secondsLeft > 0 && !showReplay && (
+          <p className="text-[#6B6385] text-sm md:text-base font-medium bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
+            Schließt sich automatisch in {secondsLeft} {secondsLeft === 1 ? "Sekunde" : "Sekunden"}
+          </p>
+        )}
+        {showReplay && (
+          <button
+            type="button"
+            onClick={() => {
+              scrollTlRef.current?.restart();
+              startCountdown(scrollTlRef.current?.duration() ?? 4);
+            }}
+            className="pointer-events-auto inline-flex items-center gap-2 rounded-full bg-[#8B5CF6] px-5 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:bg-[#6D28D9] hover:scale-105"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h5M20 20v-5h-5M4 9a8 8 0 0114-3M20 15a8 8 0 01-14 3" />
+            </svg>
+            Siehe die Animation nochmal
+          </button>
+        )}
       </div>
     </div>
   );
