@@ -83,7 +83,7 @@ export default function ProgressIndicator() {
               onClick={handleBack}
               className="px-4 py-3 text-[#2E1A47] flex items-center justify-center bg-gray-100 font-semibold rounded-full hover:bg-gray-50 hover:border transition-colors flex-1 w-16 text-sm"
             >
-              Back
+              Zurück
             </motion.button>
           )}
           <motion.button

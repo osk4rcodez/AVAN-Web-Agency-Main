@@ -35,7 +35,7 @@ export default function Barrierefreiheit() {
           <li>Kontraste von Fließtext und Hintergrund entsprechen mindestens 4.5:1.</li>
           <li>Alle Funktionen sind vollständig mit der Tastatur bedienbar.</li>
           <li>Bilder erhalten Alternativtexte (Alt-Attribute); Überschriften sind hierarchisch (h1–h6) strukturiert.</li>
-          <li>Formulare verwenden zugeordnete Labels und von Screenreadern erkannt Fehlermeldungen.</li>
+          <li>Formulare verwenden zugeordnete Labels und von Screenreadern erkannte Fehlermeldungen.</li>
           <li>Die Seite ist responsiv und bis 200% Zoom ohne Verlust der Funktion nutzbar.</li>
         </ul>
       </Section>

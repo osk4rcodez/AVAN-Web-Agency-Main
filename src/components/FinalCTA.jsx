@@ -5,7 +5,7 @@ export default function FinalCTA() {
   return (
     <section id="kontakt" className="section">
       <div className="container-px">
-        <SectionReveal className="overflow-hidden rounded-3xl bg-gradient-to-br from-[#2E1A47] to-[#4C2E7A] px-6 py-16 text-center sm:px-12 lg:py-20">
+        <SectionReveal className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#2E1A47] to-[#4C2E7A] px-6 py-16 text-center sm:px-12 lg:py-20">
           <div
             className="pointer-events-none absolute inset-0"
             style={{

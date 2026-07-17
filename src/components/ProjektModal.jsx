@@ -20,7 +20,7 @@ import AppointmentCalendar, { MONTHS } from './AppointmentCalendar.jsx'
 
 const BEDARF_OPTIONEN = [
   'Neue Website',
-  'Überarbeitung / Reupdate',
+  'Überarbeitung / Relaunch',
   'Laufende Wartung',
   'Sonstiges',
 ]

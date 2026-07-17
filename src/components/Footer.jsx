@@ -1,5 +1,4 @@
 import Logo from './Logo.jsx'
-import { ArrowUpRight } from 'lucide-react'
 
 const columns = [
   {
@@ -90,9 +89,6 @@ export default function Footer() {
                         className="inline-flex items-center gap-1 text-sm text-ink/70 transition-colors hover:text-accent"
                       >
                         {l.label}
-                        {l.href.startsWith('#') === false && l.href.startsWith('mailto') === false && (
-                          <ArrowUpRight size={13} className="opacity-0" />
-                        )}
                       </a>
                     )}
                   </li>
