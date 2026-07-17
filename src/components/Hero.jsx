@@ -16,9 +16,9 @@ function HeroMockup() {
       initial="hidden"
       animate="show"
       variants={fadeUp}
-      className="relative mx-auto w-full max-w-[520px]"
+      className="relative mx-auto w-full max-w-[520px] xl:max-w-[600px] 2xl:max-w-[680px]"
     >
-      <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-tr from-navy/10 via-accent/10 to-silver/20 blur-2xl" />
+      <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-tr from-accent/15 via-navy/10 to-silver/20 blur-2xl" />
       <div className="animate-float rounded-2xl border border-navy/10 bg-white p-3 shadow-cardHover">
         <div className="overflow-hidden rounded-xl border border-navy/5 bg-mist">
           <div className="flex items-center gap-1.5 border-b border-navy/5 bg-white px-4 py-2.5">
@@ -80,15 +80,16 @@ function HeroMockup() {
 
 export default function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden pt-20 pb-16 lg:pt-28 lg:pb-24">
+    <section id="top" className="relative overflow-hidden pt-16 pb-14 sm:pt-20 sm:pb-16 lg:pt-28 lg:pb-24 xl:pt-32 xl:pb-28 2xl:pt-40 2xl:pb-36">
       <div
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background:
-            'radial-gradient(60% 50% at 85% 0%, rgba(139,92,246,0.12), transparent 60%), radial-gradient(50% 50% at 10% 10%, rgba(46,26,71,0.06), transparent 60%)',
+            'radial-gradient(55% 45% at 88% 5%, rgba(139,92,246,0.12), transparent 60%), radial-gradient(45% 45% at 6% 12%, rgba(46,26,71,0.06), transparent 60%)',
         }}
       />
-      <div className="container-px grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <div className="container-px grid items-center gap-12 lg:grid-cols-2 lg:gap-16 xl:gap-20 2xl:max-w-[1600px] 2xl:gap-28">
+        <div className="pointer-events-none absolute -top-[8%] right-[2%] -z-10 h-[34vmin] max-h-[560px] min-h-[220px] w-[34vmin] min-w-[220px] max-w-[560px] rounded-full bg-accent/10 blur-3xl" />
         <motion.div initial="hidden" animate="show" variants={stagger(0.1)}>
           <motion.p variants={fadeDown} className="eyebrow mb-5">
             Websites · Entwicklung · Betreuung
@@ -96,13 +97,19 @@ export default function Hero() {
           <motion.h1
             variants={fadeUp}
             className="font-display font-extrabold leading-[1.02] text-navy"
-            style={{ fontSize: 'clamp(2.5rem, 7vw, 5.5rem)' }}
+            style={{ fontSize: 'clamp(2rem, 8vw, 5.5rem)' }}
           >
-            Ihre Website.
-            <br />
-            Online.
-            <br />
-            <span className="text-accent">Betreut.</span>
+            Ihre Website.{' '}
+            <span className="hidden sm:inline">
+              <br />
+            </span>
+            Online.{' '}
+            <span className="hidden sm:inline">
+              <br />
+            </span>
+            <span className="bg-gradient-to-r from-accent to-navy bg-clip-text text-transparent">
+              Betreut.
+            </span>
           </motion.h1>
           <motion.p
             variants={fadeUp}

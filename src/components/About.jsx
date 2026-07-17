@@ -1,25 +1,35 @@
 import { motion } from 'framer-motion'
 import { fadeUp, stagger } from './SectionReveal.jsx'
+import { Plus } from 'lucide-react'
 
-function FounderCard({ photo, name, role, delay = 0 }) {
+function FounderCard({ photo, name, role, slug, delay = 0, imgClass = '' }) {
   return (
-    <motion.div
+    <motion.button
+      type="button"
+      data-open-founder={slug}
       variants={fadeUp}
       transition={{ delay }}
-      className="group rounded-2xl border border-navy/10 bg-white p-6 shadow-card transition-shadow duration-300 hover:shadow-cardHover"
+      aria-label={`Mehr über ${name} erfahren`}
+      className="group relative w-full rounded-2xl border border-navy/10 bg-white p-6 text-left shadow-card transition-shadow duration-300 hover:shadow-cardHover focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/25"
     >
       <div className="relative mb-5 aspect-square w-full overflow-hidden rounded-2xl">
         <img
           src={photo}
           alt={name}
           loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          className={`h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 ${imgClass}`}
         />
         <div className="pointer-events-none absolute inset-0 bg-navy/0 transition-colors duration-300 group-hover:bg-navy/25" />
+        <span className="absolute bottom-3 right-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-navy opacity-0 shadow-card transition-all duration-300 group-hover:opacity-100">
+          <Plus size={18} />
+        </span>
       </div>
       <p className="font-bold text-navy">{name}</p>
       <p className="text-sm text-ink/60">{role}</p>
-    </motion.div>
+      <p className="mt-2 text-xs font-medium text-accent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        Mehr erfahren →
+      </p>
+    </motion.button>
   )
 }
 
@@ -56,13 +66,16 @@ export default function About() {
             photo="/oskar-kielek.jpg"
             name="Oskar Kielek"
             role="Entwicklung, Technik & Design"
+            slug="oskar"
             delay={0}
           />
           <FounderCard
             photo="/kasum-caka.jpg"
             name="Kasum Caka"
             role="Entwicklung, Design & Kundenbetreuung"
+            slug="kasum"
             delay={0.1}
+            imgClass="object-[75%_25%] [filter:saturate(0.95)_hue-rotate(-8deg)]"
           />
         </motion.div>
       </motion.div>

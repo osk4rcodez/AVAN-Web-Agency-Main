@@ -19,6 +19,7 @@ import AGB from './components/AGB.jsx'
 import Barrierefreiheit from './components/Barrierefreiheit.jsx'
 import CookieConsent from './components/CookieConsent.jsx'
 import ProjektModal from './components/ProjektModal.jsx'
+import FounderModal from './components/FounderModal.jsx'
 
 function Landing() {
   return (
@@ -92,6 +93,7 @@ export default function App() {
           <Footer />
           <ProjektModal />
           <CookieConsent />
+          <FounderModal />
         </>
       ) : (
         <>
@@ -99,6 +101,7 @@ export default function App() {
           <Landing />
           <ProjektModal />
           <CookieConsent />
+          <FounderModal />
         </>
       )}
     </>
