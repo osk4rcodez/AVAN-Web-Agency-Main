@@ -263,7 +263,7 @@ export function CinematicHero({
       ScrollTrigger.create({
         trigger: containerRef.current,
         start: "center center",
-        end: "+=450",
+        end: "+=120",
         pin: true,
         pinType: "transform",
         fastScrollEnd: true,
@@ -338,7 +338,7 @@ export function CinematicHero({
         </h1>
       </div>
 
-      <div className="cta-wrapper absolute z-10 flex flex-col items-center justify-center text-center w-screen px-4 gsap-reveal pointer-events-auto will-change-transform">
+      <div className="cta-wrapper absolute top-[28vh] left-0 right-0 z-10 flex flex-col items-center text-center px-4 gsap-reveal pointer-events-auto will-change-transform">
         <h2 className="text-5xl md:text-7xl lg:text-[5.5rem] font-bold mb-8 tracking-tight text-silver-matte">
           {ctaHeading}
         </h2>
