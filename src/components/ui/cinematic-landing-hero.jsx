@@ -397,7 +397,13 @@ export function CinematicHero({
                           <span className="text-[10px] text-neutral-400 uppercase tracking-widest font-bold mb-1">Heute</span>
                           <span className="text-xl font-bold tracking-tight text-white drop-shadow-md">Projekt</span>
                         </div>
-                        <div className="w-9 h-9 rounded-full bg-white/5 text-neutral-200 flex items-center justify-center font-bold text-sm border border-white/10 shadow-lg shadow-black/50">AV</div>
+                        <div className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center border border-white/10 shadow-lg shadow-black/50">
+                          <img
+                            src="/avan-logo-mark.png"
+                            alt="AVAN"
+                            className="h-5 w-5 object-contain brightness-0 invert"
+                          />
+                        </div>
                       </div>
 
                       <div className="phone-widget relative w-44 h-44 mx-auto flex items-center justify-center mb-8 drop-shadow-[0_15px_25px_rgba(0,0,0,0.8)]">

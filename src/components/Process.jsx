@@ -1,7 +1,10 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { LiquidMetalButton } from './ui/liquid-metal-button.jsx'
 import { ChevronRight, ChevronLeft } from 'lucide-react'
+import { TiltCard } from './ui/tilt-card.jsx'
+import { revealScale } from './SectionReveal.jsx'
+import { DetailsModal } from './ui/details-modal.jsx'
 
 const steps = [
   {
@@ -9,30 +12,74 @@ const steps = [
     title: 'Erstgespräch',
     description:
       'Ziele und Anforderungen klären — wir hören zu, bevor wir bauen.',
+    duration: 'ca. 30–45 Minuten',
+    details: [
+      'Kennenlernen: Ihr Unternehmen, Ihre Zielgruppe und was die Website leisten soll.',
+      'Wir sichten vorhandene Materialien — Logo, Texte, Bilder, ggf. Ihre bestehende Seite.',
+      'Grober Rahmen: Umfang, Zeitplan und Budget werden gemeinsam abgesteckt.',
+    ],
+    youProvide: ['Vorhandene Materialien (Logo, Texte, Bilder)', 'Referenzen oder Wunsch-Websites', 'Zugang zur bestehenden Seite, falls vorhanden'],
+    outcome: 'Ein klares, unverbindliches Angebot mit Umfang, Zeitplan und Preis.',
   },
   {
     number: '02',
     title: 'Konzept & Design',
     description:
       'Struktur, Look & Feel, Freigabe. Sie sehen, was kommt, bevor wir entwickeln.',
+    duration: 'ca. 1–2 Wochen',
+    details: [
+      'Seitenstruktur (Sitemap) und Wireframes auf Basis des Erstgesprächs.',
+      'Visuelles Design: Farben, Typografie, Layout — abgestimmt auf Ihre Marke.',
+      'Ein bis zwei Freigabeschleifen, bevor es in die Entwicklung geht.',
+    ],
+    youProvide: ['Feedback zu den Entwürfen', 'Finale Texte und Bilder, falls vorhanden'],
+    outcome: 'Ein von Ihnen freigegebener Design-Entwurf — nichts wird gebaut, das Sie nicht vorher gesehen haben.',
   },
   {
     number: '03',
     title: 'Entwicklung & Launch',
     description:
       'Umsetzung, Test, Veröffentlichung — sauber und termingerecht.',
+    duration: 'ca. 2–4 Wochen',
+    details: [
+      'Technische Umsetzung des freigegebenen Designs, responsiv für alle Geräte.',
+      'Performance- und SEO-Grundlagen, Tests in verschiedenen Browsern.',
+      'Einrichtung von Domain und Hosting, dann geht die Seite live.',
+    ],
+    youProvide: ['Finale Freigabe des Designs', 'Zugangsdaten zu Domain/Hosting, falls bereits vorhanden'],
+    outcome: 'Ihre Website ist live und erreichbar.',
   },
   {
     number: '04',
     title: 'Laufende Betreuung',
     description:
       'Hosting, Updates, Support. Wir bleiben an Bord, wenn die Seite live ist.',
+    duration: 'fortlaufend, kein Enddatum',
+    details: [
+      'Hosting, Sicherheits-Updates und regelmäßige Checks im Hintergrund.',
+      'Kleinere Inhaltsänderungen übernehmen wir für Sie.',
+      'Direkter Draht zu den Gründern bei Fragen oder Problemen — keine Ticket-Warteschlange.',
+    ],
+    youProvide: ['Bescheid geben, wenn sich etwas ändern soll'],
+    outcome: 'Ihre Seite bleibt sicher, aktuell und erreichbar.',
   },
 ]
 
 export default function Process() {
   const [activeStep, setActiveStep] = useState(0)
   const [direction, setDirection] = useState(1)
+  const [detailsOpen, setDetailsOpen] = useState(false)
+
+  useEffect(() => {
+    if (!detailsOpen) return
+    const onKey = (e) => e.key === 'Escape' && setDetailsOpen(false)
+    document.addEventListener('keydown', onKey)
+    document.body.classList.add('modal-scroll-lock')
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.classList.remove('modal-scroll-lock')
+    }
+  }, [detailsOpen])
 
   const goTo = useCallback(
     (next) => {
@@ -60,6 +107,19 @@ export default function Process() {
 
   const step = steps[activeStep]
   const isLast = activeStep === steps.length - 1
+
+  const modalItem = detailsOpen
+    ? {
+        key: step.number,
+        eyebrow: `Schritt ${step.number}`,
+        title: step.title,
+        subtitle: step.duration,
+        details: step.details,
+        noteLabel: 'Was wir von Ihnen brauchen',
+        noteItems: step.youProvide,
+        outcome: step.outcome,
+      }
+    : null
 
   return (
     <section id="ablauf" className="section">
@@ -92,9 +152,23 @@ export default function Process() {
           </div>
 
           {/* Step panel (one at a time) */}
-          <div
-            className="glass-panel relative min-h-[16rem] overflow-hidden rounded-3xl px-8 py-10 flex flex-col justify-center"
+          <TiltCard
+            variants={revealScale}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: '-80px' }}
+            className="glass-panel min-h-[16rem] cursor-pointer overflow-hidden rounded-3xl px-8 py-10 flex flex-col justify-center"
             aria-live="polite"
+            role="button"
+            tabIndex={0}
+            aria-label={`Mehr Infos zu Schritt ${step.number}: ${step.title}`}
+            onClick={() => setDetailsOpen(true)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                setDetailsOpen(true)
+              }
+            }}
           >
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
@@ -112,13 +186,16 @@ export default function Process() {
                 <p className="relative z-10 mt-4 max-w-md text-base leading-relaxed text-ink/65">
                   {step.description}
                 </p>
+                <p className="relative z-10 mt-4 text-xs font-medium text-accent">
+                  Mehr erfahren →
+                </p>
               </motion.div>
             </AnimatePresence>
 
             <span className="sr-only">
               Schritt {activeStep + 1} von {steps.length}: {step.title}
             </span>
-          </div>
+          </TiltCard>
 
           {/* Navigation */}
           <div className="mt-8 flex items-center justify-between gap-4">
@@ -141,6 +218,24 @@ export default function Process() {
           </div>
         </div>
       </div>
+
+      <DetailsModal
+        item={modalItem}
+        onClose={() => setDetailsOpen(false)}
+        onPrev={handleBack}
+        onNext={() => {
+          if (activeStep < steps.length - 1) {
+            setDirection(1)
+            setActiveStep((s) => s + 1)
+          }
+        }}
+        onFinish={() => {
+          setDetailsOpen(false)
+          window.dispatchEvent(new CustomEvent('open-project-modal'))
+        }}
+        isFirst={activeStep === 0}
+        isLast={isLast}
+      />
     </section>
   )
 }

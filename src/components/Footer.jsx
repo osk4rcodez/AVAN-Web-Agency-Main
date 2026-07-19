@@ -99,7 +99,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 border-t border-navy/10 pt-6 text-center text-xs text-silver">
-          © 2026 AVAN Web Agency. Alle Rechte vorbehalten.
+          © 2026 AVAN Web Agency &nbsp;·&nbsp; Augsburg &nbsp;·&nbsp; Alle Rechte vorbehalten.
         </div>
       </div>
     </footer>

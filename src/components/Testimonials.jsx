@@ -31,7 +31,7 @@ export default function Testimonials() {
             >
               <Quote size={28} className="text-silver" />
               <p className="mt-4 flex-1 text-base italic leading-relaxed text-ink/45">
-                Platzhalter für ein echtes Kunden-Zitat.
+                Hier kommt dein Zitat.
               </p>
               <div className="mt-6 flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-navy/10 font-bold text-navy">

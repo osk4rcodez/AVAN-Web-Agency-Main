@@ -63,6 +63,23 @@ const tech = [
     ),
   },
   {
+    name: 'Claude Code',
+    Logo: ({ className }) => (
+      <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
+        <g>
+          <rect x="11" y="1" width="2" height="7" rx="1" />
+          <rect x="11" y="1" width="2" height="7" rx="1" transform="rotate(45 12 12)" />
+          <rect x="11" y="1" width="2" height="7" rx="1" transform="rotate(90 12 12)" />
+          <rect x="11" y="1" width="2" height="7" rx="1" transform="rotate(135 12 12)" />
+          <rect x="11" y="1" width="2" height="7" rx="1" transform="rotate(180 12 12)" />
+          <rect x="11" y="1" width="2" height="7" rx="1" transform="rotate(225 12 12)" />
+          <rect x="11" y="1" width="2" height="7" rx="1" transform="rotate(270 12 12)" />
+          <rect x="11" y="1" width="2" height="7" rx="1" transform="rotate(315 12 12)" />
+        </g>
+      </svg>
+    ),
+  },
+  {
     name: 'PostgreSQL',
     Logo: ({ className }) => (
       <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
