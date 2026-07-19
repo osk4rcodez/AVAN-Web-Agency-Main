@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import LoadingScreen from './components/LoadingScreen.jsx'
 import Navbar from './components/Navbar.jsx'
 import Hero from './components/Hero.jsx'
 import CinematicHeroDemo from './components/CinematicHeroDemo.jsx'
@@ -90,24 +91,26 @@ export default function App() {
   return (
     <>
       {NetlifyFormProxy}
-      {LegalPage ? (
-        <>
-          <Navbar />
-          <LegalPage />
-          <Footer />
-          <ProjektModal />
-          <CookieConsent />
-          <FounderModal />
-        </>
-      ) : (
-        <>
-          <Navbar />
-          <Landing />
-          <ProjektModal />
-          <CookieConsent />
-          <FounderModal />
-        </>
-      )}
+      <LoadingScreen>
+        {LegalPage ? (
+          <>
+            <Navbar />
+            <LegalPage />
+            <Footer />
+            <ProjektModal />
+            <CookieConsent />
+            <FounderModal />
+          </>
+        ) : (
+          <>
+            <Navbar />
+            <Landing />
+            <ProjektModal />
+            <CookieConsent />
+            <FounderModal />
+          </>
+        )}
+      </LoadingScreen>
     </>
   )
 }

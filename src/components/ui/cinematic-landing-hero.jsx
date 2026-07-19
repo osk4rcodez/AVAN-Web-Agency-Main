@@ -60,6 +60,11 @@ const INJECTED_STYLES = `
           drop-shadow(0px 4px 8px rgba(0,0,0,0.6));
   }
 
+  .text-days {
+      line-height: 1.2 !important;
+      padding-bottom: 0.15em;
+  }
+
   .premium-depth-card {
       background: linear-gradient(145deg, #4C2E7A 0%, #2E1A47 100%);
       box-shadow:
