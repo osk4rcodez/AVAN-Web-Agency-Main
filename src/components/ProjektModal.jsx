@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Check, Loader2, ArrowLeft } from 'lucide-react'
 import { EASE } from './SectionReveal.jsx'
 import AppointmentCalendar, { MONTHS } from './AppointmentCalendar.jsx'
+import { lockBodyScroll, unlockBodyScroll } from '../lib/scroll-lock.js'
 
 /**
  * Globales Modal für "Projekt starten" und "Termin vereinbaren".
@@ -155,12 +156,10 @@ export default function ProjektModal() {
       if (e.key === 'Escape') handleClose()
     }
     document.addEventListener('keydown', onKey)
-    // Eigene Klasse statt body.style, damit es nicht mit anderen
-    // Scroll-Sperren (z. B. Navbar-Menü) kollidiert.
-    document.body.classList.add('modal-scroll-lock')
+    lockBodyScroll()
     return () => {
       document.removeEventListener('keydown', onKey)
-      document.body.classList.remove('modal-scroll-lock')
+      unlockBodyScroll()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])

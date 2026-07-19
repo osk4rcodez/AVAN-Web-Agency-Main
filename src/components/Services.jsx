@@ -4,6 +4,7 @@ import { Globe, Server, ShieldCheck, Headset } from 'lucide-react'
 import { revealScale, stagger } from './SectionReveal.jsx'
 import { TiltCard } from './ui/tilt-card.jsx'
 import { DetailsModal } from './ui/details-modal.jsx'
+import { lockBodyScroll, unlockBodyScroll } from '../lib/scroll-lock.js'
 
 const services = [
   {
@@ -74,10 +75,10 @@ export default function Services() {
     if (!open) return
     const onKey = (e) => e.key === 'Escape' && setActiveIndex(null)
     document.addEventListener('keydown', onKey)
-    document.body.classList.add('modal-scroll-lock')
+    lockBodyScroll()
     return () => {
       document.removeEventListener('keydown', onKey)
-      document.body.classList.remove('modal-scroll-lock')
+      unlockBodyScroll()
     }
   }, [open])
 

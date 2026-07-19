@@ -5,6 +5,7 @@ import { ChevronRight, ChevronLeft } from 'lucide-react'
 import { TiltCard } from './ui/tilt-card.jsx'
 import { revealScale } from './SectionReveal.jsx'
 import { DetailsModal } from './ui/details-modal.jsx'
+import { lockBodyScroll, unlockBodyScroll } from '../lib/scroll-lock.js'
 
 const steps = [
   {
@@ -74,10 +75,10 @@ export default function Process() {
     if (!detailsOpen) return
     const onKey = (e) => e.key === 'Escape' && setDetailsOpen(false)
     document.addEventListener('keydown', onKey)
-    document.body.classList.add('modal-scroll-lock')
+    lockBodyScroll()
     return () => {
       document.removeEventListener('keydown', onKey)
-      document.body.classList.remove('modal-scroll-lock')
+      unlockBodyScroll()
     }
   }, [detailsOpen])
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ArrowUpRight } from 'lucide-react'
 import { EASE } from './SectionReveal.jsx'
+import { lockBodyScroll, unlockBodyScroll } from '../lib/scroll-lock.js'
 
 const FOUNDERS = {
   oskar: {
@@ -52,10 +53,10 @@ export default function FounderModal() {
     if (!open) return
     const onKey = (e) => e.key === 'Escape' && setFounderKey(null)
     document.addEventListener('keydown', onKey)
-    document.body.classList.add('modal-scroll-lock')
+    lockBodyScroll()
     return () => {
       document.removeEventListener('keydown', onKey)
-      document.body.classList.remove('modal-scroll-lock')
+      unlockBodyScroll()
     }
   }, [open])
 

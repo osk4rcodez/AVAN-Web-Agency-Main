@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import Logo from './Logo.jsx'
+import { lockBodyScroll, unlockBodyScroll } from '../lib/scroll-lock.js'
 
 const ZOOM_EASE = [0.76, 0, 0.24, 1]
 
@@ -19,13 +20,13 @@ export default function LoadingScreen({ children }) {
 
     Promise.all([minTime, pageLoaded]).then(() => setIsLoading(false))
 
-    document.body.classList.add('modal-scroll-lock')
-    return () => document.body.classList.remove('modal-scroll-lock')
+    lockBodyScroll()
+    return () => unlockBodyScroll()
   }, [])
 
   return (
     <>
-      <AnimatePresence onExitComplete={() => document.body.classList.remove('modal-scroll-lock')}>
+      <AnimatePresence onExitComplete={() => unlockBodyScroll()}>
         {isLoading && (
           <motion.div
             key="loader"

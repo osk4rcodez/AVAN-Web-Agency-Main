@@ -4,6 +4,7 @@ import { Menu, X, ArrowUpRight, LayoutGrid, GalleryHorizontalEnd, Workflow, List
 import Logo from './Logo.jsx'
 import { EASE, fadeDown } from './SectionReveal.jsx'
 import { LiquidMetalButton } from './ui/liquid-metal-button.jsx'
+import { lockBodyScroll, unlockBodyScroll } from '../lib/scroll-lock.js'
 
 const links = [
   { label: 'Leistungen', href: '#leistungen', icon: LayoutGrid },
@@ -27,10 +28,8 @@ export default function Navbar() {
 
   useEffect(() => {
     if (!open) return
-    document.body.classList.add('modal-scroll-lock')
-    return () => {
-      document.body.classList.remove('modal-scroll-lock')
-    }
+    lockBodyScroll()
+    return () => unlockBodyScroll()
   }, [open])
 
   return (

@@ -1,8 +1,16 @@
+import { useState } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 
 // 3D-Tilt-Karte im 21st.dev-Bento-Stil: reagiert auf Mausposition mit
 // leichter Rotation + Glanzlicht, entspannt sich per Spring zurück.
+// Auf Touch-Geraeten komplett deaktiviert (kein Tilt, kein Glanzlicht) —
+// pointermove feuert dort auch beim Scrollen ueber die Karte und liess sie
+// sonst sichtbar wackeln.
 export function TiltCard({ children, className = '', variants, style, ...props }) {
+  const [hoverCapable] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(hover: hover) and (pointer: fine)').matches
+  )
+
   const mx = useMotionValue(0.5)
   const my = useMotionValue(0.5)
 
@@ -11,22 +19,28 @@ export function TiltCard({ children, className = '', variants, style, ...props }
   const rotateY = useSpring(useTransform(mx, [0, 1], [-7, 7]), springConfig)
   const glareX = useTransform(mx, [0, 1], ['0%', '100%'])
   const glareY = useTransform(my, [0, 1], ['0%', '100%'])
+  const glareBg = useTransform(
+    [glareX, glareY],
+    ([gx, gy]) => `radial-gradient(320px circle at ${gx} ${gy}, rgba(139,92,246,0.16), transparent 60%)`
+  )
 
   function onPointerMove(e) {
-    // Nur echte Maus tilten: bei Touch feuert pointermove auch beim
-    // Scrollen ueber die Karte (der Finger "bewegt" sich ueber ihr), was
-    // sonst staendig rotateX/rotateY nachjagt und die Karte sichtbar
-    // hoch/runter wackeln laesst.
-    if (e.pointerType !== 'mouse') return
     const rect = e.currentTarget.getBoundingClientRect()
     mx.set((e.clientX - rect.left) / rect.width)
     my.set((e.clientY - rect.top) / rect.height)
   }
 
-  function onPointerLeave(e) {
-    if (e.pointerType !== 'mouse') return
+  function onPointerLeave() {
     mx.set(0.5)
     my.set(0.5)
+  }
+
+  if (!hoverCapable) {
+    return (
+      <motion.div variants={variants} className={`relative ${className}`} {...props}>
+        {children}
+      </motion.div>
+    )
   }
 
   return (
@@ -41,12 +55,7 @@ export function TiltCard({ children, className = '', variants, style, ...props }
       <motion.span
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-10 rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{
-          background: useTransform(
-            [glareX, glareY],
-            ([gx, gy]) => `radial-gradient(320px circle at ${gx} ${gy}, rgba(139,92,246,0.16), transparent 60%)`
-          ),
-        }}
+        style={{ background: glareBg }}
       />
       {children}
     </motion.div>

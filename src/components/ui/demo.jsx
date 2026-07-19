@@ -38,14 +38,17 @@ export function SplineSceneBasic() {
         </div>
 
         {/* Right content - Robot with scroll animation */}
-        <div className="flex-1 relative min-h-[560px] md:min-h-[450px]">
+        <div
+          className="flex-1 relative min-h-[380px] md:min-h-[450px]"
+          style={{ touchAction: 'none' }}
+        >
           <motion.div
             ref={robotRef}
             initial={{ opacity: 0, scale: 0.8, y: 30 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="relative w-full h-full min-h-[560px] md:min-h-[450px]"
+            className="relative w-full h-full min-h-[380px] md:min-h-[450px]"
           >
             <SplineScene
               scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"

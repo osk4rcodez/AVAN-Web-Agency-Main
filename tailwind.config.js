@@ -1,6 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,jsx}'],
+  // hover:-Klassen greifen dadurch nur auf Geraeten, die echtes Hovern
+  // unterstuetzen (Maus). Ohne das bleibt der Hover-Zustand auf Touch nach
+  // dem Antippen haengen, weil es dort kein "Mouse Leave"-Event gibt.
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   theme: {
     extend: {
       colors: {
