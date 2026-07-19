@@ -12,7 +12,7 @@ export function SplineSceneBasic() {
   const isInView = useInView(robotRef, { once: true, margin: '-100px' })
 
   return (
-    <Card className="w-full h-[650px] bg-gradient-to-br from-navy/80 via-navy/70 to-purple-900/50 rounded-[2rem] shadow-cardHover relative overflow-hidden border-white/10">
+    <Card className="w-full h-auto md:h-[650px] bg-gradient-to-br from-navy/80 via-navy/70 to-purple-900/50 rounded-[2rem] shadow-cardHover relative overflow-hidden border-white/10">
       <Spotlight
         className="-top-40 left-0 md:left-60 md:-top-20"
         fill="#8b5cf6"
@@ -38,14 +38,14 @@ export function SplineSceneBasic() {
         </div>
 
         {/* Right content - Robot with scroll animation */}
-        <div className="flex-1 relative min-h-[400px] md:min-h-[450px]">
+        <div className="flex-1 relative min-h-[560px] md:min-h-[450px]">
           <motion.div
             ref={robotRef}
             initial={{ opacity: 0, scale: 0.8, y: 30 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="relative w-full h-full min-h-[400px] md:min-h-[450px]"
+            className="relative w-full h-full min-h-[560px] md:min-h-[450px]"
           >
             <SplineScene
               scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"

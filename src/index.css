@@ -71,6 +71,11 @@
     border: 1px solid rgba(139, 92, 246, 0.18); /* accent, low opacity */
     -webkit-backdrop-filter: blur(24px);
     backdrop-filter: blur(24px);
+    /* Eigene Compositing-Ebene vorab anlegen: sonst blitzt der Blur beim
+       ersten Erscheinen (z. B. Modal-Oeffnen) auf manchen Mobile-Browsern
+       kurz weiss auf, bevor der Blur-Layer fertig berechnet ist. */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
     box-shadow:
       0 1px 0 rgba(255, 255, 255, 0.6) inset,
       0 24px 60px rgba(46, 26, 71, 0.22),
@@ -180,6 +185,18 @@
   filter: grayscale(0) drop-shadow(0 0 14px #8b5cf6);
   opacity: 1;
   transform: scale(1.08) translateY(-2px);
+}
+
+/* Touch-Geraete haben kein zuverlaessiges :hover/:focus-visible beim Tippen —
+   Logos direkt in Farbe zeigen statt dauerhaft ausgegraut zu bleiben. */
+@media (hover: none) {
+  .logo-img {
+    filter: grayscale(0);
+    opacity: 0.85;
+  }
+  .logo-name {
+    opacity: 0.85;
+  }
 }
 
 /* Tooltip (Name) – kleine Liquid-Glass-Pille über dem Logo */

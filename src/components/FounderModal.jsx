@@ -71,6 +71,7 @@ export default function FounderModal() {
         >
           <div
             className="absolute inset-0 bg-navy/40 backdrop-blur-sm"
+            style={{ transform: 'translateZ(0)' }}
             onClick={() => setFounderKey(null)}
             aria-hidden="true"
           />

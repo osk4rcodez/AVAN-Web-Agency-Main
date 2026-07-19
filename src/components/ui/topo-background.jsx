@@ -92,9 +92,21 @@ export default function TopoBackground({ className = '', fixed = false }) {
     }
 
     render()
-    const resizeObserver = new ResizeObserver(render)
+
+    // Debounced: auf Mobile loest Ein-/Ausblenden der Adressleiste beim
+    // Scrollen wiederholte Resize-Events aus. Ohne Debounce wuerde das
+    // komplette Linien-Muster (Noise-Tracing) mehrfach pro Scroll-Geste neu
+    // berechnet werden.
+    let resizeTimer = null
+    const resizeObserver = new ResizeObserver(() => {
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(render, 200)
+    })
     resizeObserver.observe(container)
-    return () => resizeObserver.disconnect()
+    return () => {
+      clearTimeout(resizeTimer)
+      resizeObserver.disconnect()
+    }
   }, [hoverCapable])
 
   useEffect(() => {
@@ -124,7 +136,14 @@ export default function TopoBackground({ className = '', fixed = false }) {
       ref={containerRef}
       aria-hidden="true"
       className={`pointer-events-none ${fixed ? 'fixed' : 'absolute'} inset-0 -z-10 overflow-hidden bg-[--linen] ${className}`}
-      style={{ '--mx': '50%', '--my': '50%' }}
+      style={{
+        '--mx': '50%',
+        '--my': '50%',
+        // Eigene Compositing-Ebene erzwingen: ohne das ruckelt/wandert der
+        // fixe Hintergrund auf iOS/Android beim Scrollen sichtbar hinterher.
+        transform: 'translateZ(0)',
+        willChange: 'transform',
+      }}
     >
       <canvas ref={baseCanvasRef} className="absolute inset-0" />
       {hoverCapable && (

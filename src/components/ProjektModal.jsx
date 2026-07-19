@@ -262,6 +262,7 @@ export default function ProjektModal() {
           {/* Backdrop */}
           <motion.div
             className="absolute inset-0 bg-navy/60 backdrop-blur-md"
+            style={{ transform: 'translateZ(0)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

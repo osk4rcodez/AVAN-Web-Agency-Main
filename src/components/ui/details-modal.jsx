@@ -29,6 +29,7 @@ export function DetailsModal({
         >
           <div
             className="absolute inset-0 bg-navy/40 backdrop-blur-sm"
+            style={{ transform: 'translateZ(0)' }}
             onClick={onClose}
             aria-hidden="true"
           />

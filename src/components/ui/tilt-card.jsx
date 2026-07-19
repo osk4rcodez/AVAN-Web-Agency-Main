@@ -13,12 +13,18 @@ export function TiltCard({ children, className = '', variants, style, ...props }
   const glareY = useTransform(my, [0, 1], ['0%', '100%'])
 
   function onPointerMove(e) {
+    // Nur echte Maus tilten: bei Touch feuert pointermove auch beim
+    // Scrollen ueber die Karte (der Finger "bewegt" sich ueber ihr), was
+    // sonst staendig rotateX/rotateY nachjagt und die Karte sichtbar
+    // hoch/runter wackeln laesst.
+    if (e.pointerType !== 'mouse') return
     const rect = e.currentTarget.getBoundingClientRect()
     mx.set((e.clientX - rect.left) / rect.width)
     my.set((e.clientY - rect.top) / rect.height)
   }
 
-  function onPointerLeave() {
+  function onPointerLeave(e) {
+    if (e.pointerType !== 'mouse') return
     mx.set(0.5)
     my.set(0.5)
   }
