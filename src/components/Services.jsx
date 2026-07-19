@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Globe, Server, ShieldCheck, Headset } from 'lucide-react'
-import { fadeUp, stagger } from './SectionReveal.jsx'
+import { revealScale, stagger } from './SectionReveal.jsx'
+import { TiltCard } from './ui/tilt-card.jsx'
 
 const services = [
   {
@@ -50,17 +51,17 @@ export default function Services() {
           {services.map((s) => {
             const Icon = s.icon
             return (
-              <motion.article
+              <TiltCard
                 key={s.title}
-                variants={fadeUp}
-                className="group rounded-2xl border border-navy/10 bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-cardHover"
+                variants={revealScale}
+                className="group rounded-2xl border border-navy/10 bg-white p-6 shadow-card transition-[border-color,box-shadow] duration-300 hover:border-accent/30 hover:shadow-cardHover"
               >
                 <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent transition-colors group-hover:bg-accent group-hover:text-white">
                   <Icon size={24} strokeWidth={2} />
                 </span>
                 <h3 className="mt-5 text-lg font-bold text-navy">{s.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-ink/65">{s.desc}</p>
-              </motion.article>
+              </TiltCard>
             )
           })}
         </motion.div>

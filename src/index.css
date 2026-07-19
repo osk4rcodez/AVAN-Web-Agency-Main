@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Aliase auf bestehende Tailwind-Tokens (mist/accent) fuer Canvas-Code,
+       der keine Tailwind-Klassen lesen kann. Keine neuen Farben. */
+    --linen: #f7f5fc; /* mist */
+    --violet: #8b5cf6; /* accent */
+  }
   html {
     scroll-behavior: smooth;
     scrollbar-gutter: stable;

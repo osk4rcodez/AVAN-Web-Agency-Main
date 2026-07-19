@@ -37,7 +37,7 @@ export default function Stats() {
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section className="border-y border-navy/5 bg-white py-16">
+    <section className="border-y border-navy/5 py-16">
       <div ref={ref} className="container-px grid gap-10 sm:grid-cols-3">
         <Stat value={100} suffix="%" label="Persönliche Betreuung" inView={inView} />
         <Stat value={24} suffix="/7" label="Erreichbarkeit bei Problemen" inView={inView} />

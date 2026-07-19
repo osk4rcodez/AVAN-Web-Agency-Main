@@ -62,7 +62,7 @@ export default function Process() {
   const isLast = activeStep === steps.length - 1
 
   return (
-    <section id="ablauf" className="section bg-mist">
+    <section id="ablauf" className="section">
       <div className="container-px">
         <div className="max-w-2xl">
           <p className="eyebrow mb-4">Ablauf</p>

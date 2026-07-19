@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import LoadingScreen from './components/LoadingScreen.jsx'
+import ScrollProgressBar from './components/ScrollProgressBar.jsx'
+import TopoBackground from './components/ui/topo-background.jsx'
 import Navbar from './components/Navbar.jsx'
 import Hero from './components/Hero.jsx'
 import CinematicHeroDemo from './components/CinematicHeroDemo.jsx'
@@ -92,6 +94,8 @@ export default function App() {
     <>
       {NetlifyFormProxy}
       <LoadingScreen>
+        <TopoBackground fixed />
+        <ScrollProgressBar />
         {LegalPage ? (
           <>
             <Navbar />

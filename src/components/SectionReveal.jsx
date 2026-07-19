@@ -17,6 +17,18 @@ export const stagger = (staggerChildren = 0.1, delayChildren = 0) => ({
   show: { transition: { staggerChildren, delayChildren } },
 })
 
+// Kräftigerer Reveal für Karten-Grids (Scale + Blur statt nur Fade-Up).
+export const revealScale = {
+  hidden: { opacity: 0, y: 32, scale: 0.94, filter: 'blur(6px)' },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: 'blur(0px)',
+    transition: { duration: 0.7, ease: EASE },
+  },
+}
+
 export default function SectionReveal({ children, className = '', as = 'div', delay = 0 }) {
   const Comp = motion[as] || motion.div
   return (

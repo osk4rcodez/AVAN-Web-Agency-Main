@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
-import { fadeUp, stagger } from './SectionReveal.jsx'
+import { fadeUp, revealScale, stagger } from './SectionReveal.jsx'
 import ProjectScreenshot from './ProjectScreenshot.jsx'
+import { TiltCard } from './ui/tilt-card.jsx'
 
 const projects = [
   {
@@ -23,7 +24,7 @@ const projects = [
 
 export default function Showcase() {
   return (
-    <section id="showcase" className="section bg-mist">
+    <section id="showcase" className="section">
       <div className="container-px">
         <div className="max-w-2xl">
           <p className="eyebrow mb-4">Showcase</p>
@@ -44,10 +45,10 @@ export default function Showcase() {
           className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
         >
           {projects.map((p, i) => (
-            <motion.article
+            <TiltCard
               key={p.name}
-              variants={fadeUp}
-              className="group overflow-hidden rounded-2xl border border-navy/10 bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-cardHover"
+              variants={revealScale}
+              className="group overflow-hidden rounded-2xl border border-navy/10 bg-white shadow-card transition-[border-color,box-shadow] duration-300 hover:border-accent/30 hover:shadow-cardHover"
             >
               <div className="relative aspect-[400/260] overflow-hidden">
                 <div className="h-full w-full transition-transform duration-500 ease-out group-hover:scale-105">
@@ -63,7 +64,7 @@ export default function Showcase() {
                 </div>
                 <p className="mt-2 text-sm leading-relaxed text-ink/65">{p.desc}</p>
               </div>
-            </motion.article>
+            </TiltCard>
           ))}
 
           {/* Noch-platzhalter-Karte im selben Stil */}
