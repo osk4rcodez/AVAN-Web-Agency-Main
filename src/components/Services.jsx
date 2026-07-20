@@ -1,10 +1,11 @@
 import { useState, useCallback, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Globe, Server, ShieldCheck, Headset } from 'lucide-react'
-import { revealScale, stagger } from './SectionReveal.jsx'
+import { revealScale, stagger } from '../lib/motion-variants.js'
 import { TiltCard } from './ui/tilt-card.jsx'
 import { DetailsModal } from './ui/details-modal.jsx'
 import { lockBodyScroll, unlockBodyScroll } from '../lib/scroll-lock.js'
+import { useMediaQuery } from '../lib/use-media-query.js'
 
 const services = [
   {
@@ -65,7 +66,22 @@ const services = [
   },
 ]
 
+function ServiceCardContent({ s }) {
+  const Icon = s.icon
+  return (
+    <>
+      <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent transition-colors group-hover:bg-accent group-hover:text-white">
+        <Icon size={24} strokeWidth={2} />
+      </span>
+      <h3 className="mt-5 text-lg font-bold text-navy">{s.title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-ink/65">{s.desc}</p>
+      <p className="mt-4 text-xs font-medium text-accent">Mehr erfahren →</p>
+    </>
+  )
+}
+
 export default function Services() {
+  const isMobile = useMediaQuery('(max-width: 768px)')
   const [activeIndex, setActiveIndex] = useState(null)
   const open = activeIndex !== null
   const isFirst = activeIndex === 0
@@ -104,6 +120,9 @@ export default function Services() {
       }
     : null
 
+  const cardClass =
+    'group cursor-pointer rounded-2xl border border-navy/10 bg-white p-6 shadow-card transition-[border-color,box-shadow] duration-300 hover:border-accent/30 hover:shadow-cardHover'
+
   return (
     <section id="leistungen" className="section">
       <div className="container-px">
@@ -118,20 +137,14 @@ export default function Services() {
           </p>
         </div>
 
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: '-80px' }}
-          variants={stagger(0.1)}
-          className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
-        >
-          {services.map((s, i) => {
-            const Icon = s.icon
-            return (
-              <TiltCard
+        {isMobile ? (
+          // Auf Mobile komplett ohne Framer Motion / Tilt — reine statische
+          // Karten, kein Einflug, kein Hover-Rest-Effekt moeglich.
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {services.map((s, i) => (
+              <div
                 key={s.title}
-                variants={revealScale}
-                className="group cursor-pointer rounded-2xl border border-navy/10 bg-white p-6 shadow-card transition-[border-color,box-shadow] duration-300 hover:border-accent/30 hover:shadow-cardHover"
+                className={cardClass}
                 role="button"
                 tabIndex={0}
                 aria-label={`Mehr Infos zu ${s.title}`}
@@ -143,16 +156,39 @@ export default function Services() {
                   }
                 }}
               >
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent transition-colors group-hover:bg-accent group-hover:text-white">
-                  <Icon size={24} strokeWidth={2} />
-                </span>
-                <h3 className="mt-5 text-lg font-bold text-navy">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-ink/65">{s.desc}</p>
-                <p className="mt-4 text-xs font-medium text-accent">Mehr erfahren →</p>
+                <ServiceCardContent s={s} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: '-80px' }}
+            variants={stagger(0.1)}
+            className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
+          >
+            {services.map((s, i) => (
+              <TiltCard
+                key={s.title}
+                variants={revealScale}
+                className={cardClass}
+                role="button"
+                tabIndex={0}
+                aria-label={`Mehr Infos zu ${s.title}`}
+                onClick={() => setActiveIndex(i)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    setActiveIndex(i)
+                  }
+                }}
+              >
+                <ServiceCardContent s={s} />
               </TiltCard>
-            )
-          })}
-        </motion.div>
+            ))}
+          </motion.div>
+        )}
       </div>
 
       <DetailsModal

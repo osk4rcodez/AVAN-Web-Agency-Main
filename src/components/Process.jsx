@@ -3,9 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { LiquidMetalButton } from './ui/liquid-metal-button.jsx'
 import { ChevronRight, ChevronLeft } from 'lucide-react'
 import { TiltCard } from './ui/tilt-card.jsx'
-import { revealScale } from './SectionReveal.jsx'
+import { revealScale } from '../lib/motion-variants.js'
 import { DetailsModal } from './ui/details-modal.jsx'
 import { lockBodyScroll, unlockBodyScroll } from '../lib/scroll-lock.js'
+import { useMediaQuery } from '../lib/use-media-query.js'
 
 const steps = [
   {
@@ -67,6 +68,7 @@ const steps = [
 ]
 
 export default function Process() {
+  const isMobile = useMediaQuery('(max-width: 768px)')
   const [activeStep, setActiveStep] = useState(0)
   const [direction, setDirection] = useState(1)
   const [detailsOpen, setDetailsOpen] = useState(false)
@@ -153,34 +155,24 @@ export default function Process() {
           </div>
 
           {/* Step panel (one at a time) */}
-          <TiltCard
-            variants={revealScale}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: '-80px' }}
-            className="glass-panel min-h-[16rem] cursor-pointer overflow-hidden rounded-3xl px-8 py-10 flex flex-col justify-center"
-            aria-live="polite"
-            role="button"
-            tabIndex={0}
-            aria-label={`Mehr Infos zu Schritt ${step.number}: ${step.title}`}
-            onClick={() => setDetailsOpen(true)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                setDetailsOpen(true)
-              }
-            }}
-          >
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={step.number}
-                custom={direction}
-                initial={{ opacity: 0, x: 40 * direction }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -40 * direction }}
-                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className="relative"
-              >
+          {isMobile ? (
+            // Auf Mobile komplett ohne Framer Motion: kein Einflug, kein
+            // Slide-Uebergang zwischen den Schritten.
+            <div
+              className="glass-panel min-h-[16rem] cursor-pointer overflow-hidden rounded-3xl px-8 py-10 flex flex-col justify-center"
+              aria-live="polite"
+              role="button"
+              tabIndex={0}
+              aria-label={`Mehr Infos zu Schritt ${step.number}: ${step.title}`}
+              onClick={() => setDetailsOpen(true)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  setDetailsOpen(true)
+                }
+              }}
+            >
+              <div className="relative">
                 <h3 className="relative z-10 text-3xl font-bold text-navy">
                   {step.title}
                 </h3>
@@ -190,13 +182,58 @@ export default function Process() {
                 <p className="relative z-10 mt-4 text-xs font-medium text-accent">
                   Mehr erfahren →
                 </p>
-              </motion.div>
-            </AnimatePresence>
+              </div>
 
-            <span className="sr-only">
-              Schritt {activeStep + 1} von {steps.length}: {step.title}
-            </span>
-          </TiltCard>
+              <span className="sr-only">
+                Schritt {activeStep + 1} von {steps.length}: {step.title}
+              </span>
+            </div>
+          ) : (
+            <TiltCard
+              variants={revealScale}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: '-80px' }}
+              className="glass-panel min-h-[16rem] cursor-pointer overflow-hidden rounded-3xl px-8 py-10 flex flex-col justify-center"
+              aria-live="polite"
+              role="button"
+              tabIndex={0}
+              aria-label={`Mehr Infos zu Schritt ${step.number}: ${step.title}`}
+              onClick={() => setDetailsOpen(true)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  setDetailsOpen(true)
+                }
+              }}
+            >
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={step.number}
+                  custom={direction}
+                  initial={{ opacity: 0, x: 40 * direction }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -40 * direction }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                  className="relative"
+                >
+                  <h3 className="relative z-10 text-3xl font-bold text-navy">
+                    {step.title}
+                  </h3>
+                  <p className="relative z-10 mt-4 max-w-md text-base leading-relaxed text-ink/65">
+                    {step.description}
+                  </p>
+                  <p className="relative z-10 mt-4 text-xs font-medium text-accent">
+                    Mehr erfahren →
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+
+              <span className="sr-only">
+                Schritt {activeStep + 1} von {steps.length}: {step.title}
+              </span>
+            </TiltCard>
+          )}
 
           {/* Navigation */}
           <div className="mt-8 flex items-center justify-between gap-4">

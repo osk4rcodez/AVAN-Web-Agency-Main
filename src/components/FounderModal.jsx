@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ArrowUpRight } from 'lucide-react'
-import { EASE } from './SectionReveal.jsx'
+import { EASE } from '../lib/motion-variants.js'
 import { lockBodyScroll, unlockBodyScroll } from '../lib/scroll-lock.js'
 
 const FOUNDERS = {

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { EASE } from './SectionReveal.jsx'
+import { EASE } from '../lib/motion-variants.js'
 
 /**
  * Eingebetteter Liquid-Glass-Kalender + Zeitfenster-Auswahl.

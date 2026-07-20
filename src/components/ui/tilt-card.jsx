@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { useMotionPreference } from '../../lib/motion-preference.jsx'
 
 // 3D-Tilt-Karte im 21st.dev-Bento-Stil: reagiert auf Mausposition mit
 // leichter Rotation + Glanzlicht, entspannt sich per Spring zurück.
@@ -7,9 +8,14 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 // pointermove feuert dort auch beim Scrollen ueber die Karte und liess sie
 // sonst sichtbar wackeln.
 export function TiltCard({ children, className = '', variants, style, ...props }) {
-  const [hoverCapable] = useState(
+  // Hover-Faehigkeit (Maus vs. Touch) bleibt eine reine, einmalige Geraete-
+  // abfrage. Die Reduced-Motion-Haelfte kommt reaktiv aus dem gemeinsamen
+  // Hook, damit der manuelle Schalter auch hier sofort greift.
+  const [pointerHoverCapable] = useState(
     () => typeof window !== 'undefined' && window.matchMedia('(hover: hover) and (pointer: fine)').matches
   )
+  const { reduceMotion } = useMotionPreference()
+  const hoverCapable = pointerHoverCapable && !reduceMotion
 
   const mx = useMotionValue(0.5)
   const my = useMotionValue(0.5)

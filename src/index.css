@@ -12,10 +12,19 @@
   html {
     scroll-behavior: smooth;
     scrollbar-gutter: stable;
+    /* iOS Safari zeigt sonst auf JEDEM antippbaren Element kurz ein graues/
+       schwarzes Tipp-Highlight-Rechteck — ohne das explizit auszuschalten,
+       blitzt das bei jedem Button-/Formular-Tap auf. */
+    -webkit-tap-highlight-color: transparent;
   }
   body {
     @apply bg-white text-ink font-sans antialiased;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-tap-highlight-color: transparent;
+  }
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
   }
   body.modal-scroll-lock {
     overflow: hidden;
@@ -244,18 +253,6 @@
   transform: translateX(-50%) translateY(0);
 }
 
-/* Reduzierte Bewegung: Marquee läuft weiter (nur langsamer), damit die
-   Logo-Leiste auch bei "Animationsreduzierung" sichtbar durchläuft. */
-@media (prefers-reduced-motion: reduce) {
-  .marquee {
-    -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
-    mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
-  }
-  .marquee-track {
-    animation: marquee-scroll 45s linear infinite !important;
-  }
-}
-
 .menu-item {
   width: 52px;
   height: 52px;
@@ -318,12 +315,27 @@
   backdrop-filter: blur(8px);
 }
 
+/* Reduced Motion greift aus zwei moeglichen Gruenden: (a) die Systemeinstellung
+   (vor React-Hydration bzw. falls JS deaktiviert ist, als Fallback) — ausser
+   der manuelle Toggle hat "Animationen an" erzwungen (.motion-force-on); oder
+   (b) der manuelle Toggle selbst hat "Animationen aus" erzwungen
+   (.reduce-motion), unabhaengig von der Systemeinstellung. So folgen auch
+   reine CSS-Animationen (Marquee, neon-pulse, Hover-Transitions, ...) immer
+   der kombinierten Praeferenz, nicht nur der OS-Einstellung. */
 @media (prefers-reduced-motion: reduce) {
-  *:not(.marquee-track) {
+  html:not(.motion-force-on) * {
     animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+html.reduce-motion * {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
 }
 
 /* Druckoptimierung: nur rechtlich relevante Inhalte (z. B. AGB / Barrierefreiheit)

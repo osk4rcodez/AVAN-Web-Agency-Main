@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Minus } from 'lucide-react'
-import { EASE, fadeUp, stagger } from './SectionReveal.jsx'
+import { EASE, fadeUp, stagger } from '../lib/motion-variants.js'
+import { useMediaQuery } from '../lib/use-media-query.js'
 
 const faqs = [
   {
@@ -65,6 +66,7 @@ function FaqItem({ item, isOpen, onToggle }) {
 }
 
 export default function Faq() {
+  const isMobile = useMediaQuery('(max-width: 768px)')
   const [openIndex, setOpenIndex] = useState(-1)
 
   return (
@@ -80,23 +82,38 @@ export default function Faq() {
           </p>
         </div>
 
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: '-80px' }}
-          variants={stagger(0.06)}
-          className="mt-12 grid gap-4 lg:grid-cols-2"
-        >
-          {faqs.map((item, i) => (
-            <motion.div key={item.q} variants={fadeUp}>
+        {isMobile ? (
+          // Nur der Scroll-Einflug entfaellt auf Mobile — das Auf-/Zuklappen
+          // einer Frage bleibt (das ist Nutzer-ausgeloest, keine Entrance-Animation).
+          <div className="mt-12 grid gap-4 lg:grid-cols-2">
+            {faqs.map((item, i) => (
               <FaqItem
+                key={item.q}
                 item={item}
                 isOpen={openIndex === i}
                 onToggle={() => setOpenIndex(openIndex === i ? -1 : i)}
               />
-            </motion.div>
-          ))}
-        </motion.div>
+            ))}
+          </div>
+        ) : (
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: '-80px' }}
+            variants={stagger(0.06)}
+            className="mt-12 grid gap-4 lg:grid-cols-2"
+          >
+            {faqs.map((item, i) => (
+              <motion.div key={item.q} variants={fadeUp}>
+                <FaqItem
+                  item={item}
+                  isOpen={openIndex === i}
+                  onToggle={() => setOpenIndex(openIndex === i ? -1 : i)}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
       </div>
     </section>
   )

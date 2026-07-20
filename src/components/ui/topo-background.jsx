@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { createNoise2D } from 'simplex-noise'
+import { useMotionPreference } from '../../lib/motion-preference.jsx'
 
 // Erzeugt einmalig ~30 fliessende Konturlinien per Flow-Field (Simplex-Noise) —
 // statisches generatives Muster, keine Dauer-Animation.
@@ -56,10 +57,14 @@ export default function TopoBackground({ className = '', fixed = false }) {
   const baseCanvasRef = useRef(null)
   const revealCanvasRef = useRef(null)
   const rafRef = useRef(null)
+  const pathsRef = useRef(null)
+  const lastWidthRef = useRef(0)
 
-  const [hoverCapable] = useState(
+  const [pointerHoverCapable] = useState(
     () => typeof window !== 'undefined' && window.matchMedia('(hover: hover) and (pointer: fine)').matches
   )
+  const { reduceMotion } = useMotionPreference()
+  const hoverCapable = pointerHoverCapable && !reduceMotion
 
   useEffect(() => {
     const container = containerRef.current
@@ -75,7 +80,14 @@ export default function TopoBackground({ className = '', fixed = false }) {
       const { width, height } = container.getBoundingClientRect()
       if (width === 0 || height === 0) return
 
-      const paths = generatePaths(width, height)
+      // Muster nur bei echter BREITEN-Aenderung neu erzeugen — sonst wuerde
+      // jede hoehenbedingte Adressleisten-Animation beim Scrollen ein
+      // komplett neues Zufallsmuster erzeugen (Math.random()-Startpunkte).
+      if (!pathsRef.current || Math.round(width) !== lastWidthRef.current) {
+        pathsRef.current = generatePaths(width, height)
+        lastWidthRef.current = Math.round(width)
+      }
+      const paths = pathsRef.current
 
       for (const canvas of [baseCanvas, revealCanvas]) {
         if (!canvas) continue
@@ -87,8 +99,8 @@ export default function TopoBackground({ className = '', fixed = false }) {
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       }
 
-      drawPaths(baseCanvas.getContext('2d'), paths, violet, hoverCapable ? 0.08 : 0.12)
-      if (revealCanvas) drawPaths(revealCanvas.getContext('2d'), paths, violet, 0.45)
+      drawPaths(baseCanvas.getContext('2d'), paths, violet, hoverCapable ? 0.08 : 0.28)
+      if (revealCanvas && hoverCapable) drawPaths(revealCanvas.getContext('2d'), paths, violet, 0.45)
     }
 
     render()
@@ -110,18 +122,24 @@ export default function TopoBackground({ className = '', fixed = false }) {
   }, [hoverCapable])
 
   useEffect(() => {
+    // Touch-Geraete: keinerlei Reveal-/Cursor-Interaktion, nur die statische
+    // Basis-Ebene wird gezeigt.
     if (!hoverCapable) return
     const container = containerRef.current
     if (!container) return
 
-    function onPointerMove(e) {
+    function handlePointerMove(x, y) {
       if (rafRef.current) return
       rafRef.current = requestAnimationFrame(() => {
         const rect = container.getBoundingClientRect()
-        container.style.setProperty('--mx', `${e.clientX - rect.left}px`)
-        container.style.setProperty('--my', `${e.clientY - rect.top}px`)
+        container.style.setProperty('--mx', `${x - rect.left}px`)
+        container.style.setProperty('--my', `${y - rect.top}px`)
         rafRef.current = null
       })
+    }
+
+    function onPointerMove(e) {
+      handlePointerMove(e.clientX, e.clientY)
     }
 
     window.addEventListener('pointermove', onPointerMove)

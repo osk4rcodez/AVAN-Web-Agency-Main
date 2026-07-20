@@ -1,12 +1,17 @@
 import { motion, useScroll, useSpring } from 'framer-motion'
+import { useMotionPreference } from '../lib/motion-preference.jsx'
 
 export default function ScrollProgressBar() {
+  const { reduceMotion: reducedMotion } = useMotionPreference()
   const { scrollYProgress } = useScroll()
-  const scaleX = useSpring(scrollYProgress, {
+  // Reduced Motion: 1:1 an die Scroll-Position gebunden, ohne Feder-
+  // Nachlauf/Ueberschwingen — reagiert nur direkt auf das Scrollen selbst.
+  const springyScaleX = useSpring(scrollYProgress, {
     stiffness: 300,
     damping: 40,
     mass: 0.3,
   })
+  const scaleX = reducedMotion ? scrollYProgress : springyScaleX
 
   return (
     <motion.div

@@ -1,16 +1,27 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { EASE } from './SectionReveal.jsx'
+import { EASE } from '../lib/motion-variants.js'
 import { LiquidMetalButton } from './ui/liquid-metal-button.jsx'
 
 export default function StickyCTA() {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setShow(window.scrollY > window.innerHeight * 0.8)
+    const onScroll = () => {
+      const pastHero = window.scrollY > window.innerHeight * 0.8
+      // Kurz vor dem Footer ausblenden, damit der Button nicht den
+      // Motion-Switch dort verdeckt.
+      const nearFooter =
+        window.innerHeight + window.scrollY > document.documentElement.scrollHeight - 260
+      setShow(pastHero && !nearFooter)
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    window.addEventListener('resize', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
   }, [])
 
   return (

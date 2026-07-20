@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { EASE } from './SectionReveal.jsx'
+import { EASE } from '../lib/motion-variants.js'
 
 function Section({ n, title, children }) {
   return (

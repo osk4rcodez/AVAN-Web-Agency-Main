@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LiquidMetalButton } from "./liquid-metal-button.jsx";
+import { useMotionPreference } from "../../lib/motion-preference.jsx";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -193,6 +194,7 @@ export function CinematicHero({
   const playedOnceRef = useRef(false);
   const [showReplay, setShowReplay] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(0);
+  const { reduceMotion } = useMotionPreference();
 
   const startCountdown = (duration) => {
     clearInterval(countdownRef.current);
@@ -216,6 +218,11 @@ export function CinematicHero({
   }, []);
 
   useEffect(() => {
+    // Reduced Motion: Handy-Mockup bleibt komplett still stehen, keine
+    // Maus-gesteuerte Kipp-Bewegung.
+    if (reduceMotion) {
+      return;
+    }
     const handleMouseMove = (e) => {
       if (window.scrollY > window.innerHeight * 2) return;
       cancelAnimationFrame(requestRef.current);
@@ -242,11 +249,29 @@ export function CinematicHero({
       window.removeEventListener("mousemove", handleMouseMove);
       cancelAnimationFrame(requestRef.current);
     };
-  }, []);
+  }, [reduceMotion]);
 
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
+
     const ctx = gsap.context(() => {
+      if (reduceMotion) {
+        // Reduced Motion: keine Scroll-Pin-Choreografie, keine Kipp-/Zoom-
+        // Animation — direkt in den "aufgedeckten" Endzustand springen
+        // (Tagline aus, Karte + Handy-Mockup + Widgets voll sichtbar,
+        // Zaehler auf Endwert), ohne Uebergang.
+        gsap.set(".hero-text-wrapper", { autoAlpha: 0 });
+        gsap.set(".main-card", { autoAlpha: 1, y: 0, scale: 1, borderRadius: "0px" });
+        gsap.set(
+          [".mockup-scroll-wrapper", ".phone-widget", ".floating-badge", ".card-left-text", ".card-right-text"],
+          { autoAlpha: 1, x: 0, y: 0, z: 0, scale: 1, rotationX: 0, rotationY: 0, rotationZ: 0 }
+        );
+        gsap.set(".progress-ring", { strokeDashoffset: 60 });
+        gsap.set(".counter-val", { innerHTML: metricValue });
+        gsap.set(".cta-wrapper", { autoAlpha: 1, scale: 1 });
+        return;
+      }
+
       gsap.set(".text-track", { autoAlpha: 0, y: 60, scale: 0.85, rotationX: -20 });
       gsap.set(".text-days", { autoAlpha: 1, clipPath: "inset(0 100% 0 0)" });
       gsap.set(".main-card", { y: window.innerHeight + 200, autoAlpha: 1 });
@@ -321,7 +346,7 @@ export function CinematicHero({
     }, containerRef);
 
     return () => ctx.revert();
-  }, [metricValue]);
+  }, [metricValue, reduceMotion]);
 
   return (
     <div

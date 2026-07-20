@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Check, ChevronLeft, ChevronRight } from 'lucide-react'
-import { EASE } from '../SectionReveal.jsx'
+import { EASE } from '../../lib/motion-variants.js'
 import { LiquidMetalButton } from './liquid-metal-button.jsx'
 
 // Wiederverwendbares "Mehr-Infos"-Modal mit Weiter/Zurück-Navigation

@@ -1,11 +1,13 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react'
 import { motion, useSpring, useTransform } from 'framer-motion'
 import { cn } from '@/lib/utils'
+import { useMotionPreference } from '../../lib/motion-preference.jsx'
 
 export function Spotlight({ className, size = 200, fill = '#8B5CF6', springOptions = { bounce: 0 } }) {
   const containerRef = useRef(null)
   const [isHovered, setIsHovered] = useState(false)
   const [parentElement, setParentElement] = useState(null)
+  const { reduceMotion } = useMotionPreference()
 
   const mouseX = useSpring(0, springOptions)
   const mouseY = useSpring(0, springOptions)
@@ -33,6 +35,7 @@ export function Spotlight({ className, size = 200, fill = '#8B5CF6', springOptio
 
   useEffect(() => {
     if (!parentElement) return
+    if (reduceMotion) return
 
     const onEnter = () => setIsHovered(true)
     const onLeave = () => setIsHovered(false)
@@ -46,7 +49,7 @@ export function Spotlight({ className, size = 200, fill = '#8B5CF6', springOptio
       parentElement.removeEventListener('mouseenter', onEnter)
       parentElement.removeEventListener('mouseleave', onLeave)
     }
-  }, [parentElement, handleMouseMove])
+  }, [parentElement, handleMouseMove, reduceMotion])
 
   return (
     <motion.div

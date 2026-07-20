@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@avenra/liquid-glass": "^1.2.0",
     "@paper-design/shaders": "^0.0.77",
+    "@radix-ui/react-radio-group": "^1.4.4",
     "@splinetool/react-spline": "^4.1.0",
     "@splinetool/runtime": "^1.12.98",
     "framer-motion": "^11.3.0",

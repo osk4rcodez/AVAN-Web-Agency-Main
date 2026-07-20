@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Check, Loader2, ArrowLeft } from 'lucide-react'
-import { EASE } from './SectionReveal.jsx'
+import { EASE } from '../lib/motion-variants.js'
 import AppointmentCalendar, { MONTHS } from './AppointmentCalendar.jsx'
 import { lockBodyScroll, unlockBodyScroll } from '../lib/scroll-lock.js'
 

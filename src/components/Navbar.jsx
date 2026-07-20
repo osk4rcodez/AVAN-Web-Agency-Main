@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ArrowUpRight, LayoutGrid, GalleryHorizontalEnd, Workflow, ListChecks, Users, Mail } from 'lucide-react'
 import Logo from './Logo.jsx'
-import { EASE, fadeDown } from './SectionReveal.jsx'
+import { EASE, fadeDown } from '../lib/motion-variants.js'
 import { LiquidMetalButton } from './ui/liquid-metal-button.jsx'
 import { lockBodyScroll, unlockBodyScroll } from '../lib/scroll-lock.js'
+import MotionToggle from './MotionToggle.jsx'
 
 const links = [
   { label: 'Leistungen', href: '#leistungen', icon: LayoutGrid },
@@ -72,6 +73,7 @@ export default function Navbar() {
               Bald
             </span>
           </span>
+          <MotionToggle />
           <a href="#kontakt" className="inline-flex" data-open-project-modal>
             <LiquidMetalButton label="Projekt starten" width={170} />
           </a>
@@ -122,6 +124,7 @@ export default function Navbar() {
                 Bald
               </span>
             </span>
+            <MotionToggle />
             <a
               href="#kontakt"
               data-open-project-modal

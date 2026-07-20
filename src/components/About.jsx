@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
-import { fadeUp, stagger } from './SectionReveal.jsx'
+import { fadeUp, stagger } from '../lib/motion-variants.js'
 import { Plus } from 'lucide-react'
+import { useMediaQuery } from '../lib/use-media-query.js'
 
 function FounderCard({ photo, name, role, slug, delay = 0, imgClass = '' }) {
   return (
@@ -34,6 +35,50 @@ function FounderCard({ photo, name, role, slug, delay = 0, imgClass = '' }) {
 }
 
 export default function About() {
+  const isMobile = useMediaQuery('(max-width: 768px)')
+
+  if (isMobile) {
+    return (
+      <section id="ueber-uns" className="section">
+        <div className="container-px grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <div>
+            <p className="eyebrow mb-4">Über uns</p>
+            <h2 className="text-3xl font-extrabold sm:text-4xl">
+              Zwei Gründer. Direkter Kontakt. Keine Hotline.
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-ink/70">
+              AVAN wurde von Oskar Kielek und Kasum Caka gegründet — mit dem Ziel, Unternehmen
+              einen unkomplizierten, persönlichen Zugang zu professionellen Websites zu bieten.
+              Kein Callcenter, keine anonymen Tickets: bei AVAN sprechen Sie direkt mit den
+              Menschen, die Ihre Website bauen und betreuen.
+            </p>
+            <p className="mt-4 text-base leading-relaxed text-ink/65">
+              Wir sind ein junges Team — und genau das ist unser Vorteil: kurze Reaktionszeiten,
+              flache Hierarchien und echtes Interesse an Ihrem Projekt. Sie bekommen keine
+              Abteilung, Sie bekommen die Gründer.
+            </p>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <FounderCard
+              photo="/oskar-kielek.jpg"
+              name="Oskar Kielek"
+              role="Entwicklung, Technik & Design"
+              slug="oskar"
+            />
+            <FounderCard
+              photo="/kasum-caka.jpg"
+              name="Kasum Caka"
+              role="Entwicklung, Design & Kundenbetreuung"
+              slug="kasum"
+              imgClass="object-[75%_25%] [filter:saturate(0.95)_hue-rotate(-8deg)]"
+            />
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section id="ueber-uns" className="section">
       <motion.div

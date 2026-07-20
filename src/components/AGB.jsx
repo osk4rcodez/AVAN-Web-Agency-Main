@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { EASE } from './SectionReveal.jsx'
+import { EASE } from '../lib/motion-variants.js'
 import { Printer } from 'lucide-react'
 
 function AddressPlaceholder() {

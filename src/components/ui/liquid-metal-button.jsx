@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { liquidMetalFragmentShader, ShaderMount } from "@paper-design/shaders";
 import { Sparkles } from "lucide-react";
+import { useMotionPreference } from "../../lib/motion-preference.jsx";
 
 export function LiquidMetalButton({ label = "Get Started", onClick, viewMode = "text", width = 142 }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -10,6 +11,7 @@ export function LiquidMetalButton({ label = "Get Started", onClick, viewMode = "
   const shaderMount = useRef(null);
   const buttonRef = useRef(null);
   const rippleId = useRef(0);
+  const { reduceMotion: prefersReducedMotion } = useMotionPreference();
 
   const dimensions = useMemo(() => {
     if (viewMode === "icon") {
@@ -64,35 +66,59 @@ export function LiquidMetalButton({ label = "Get Started", onClick, viewMode = "
             undefined,
             0.6,
           );
+          // Reduced Motion: Shader bleibt sichtbar (statisches Liquid-Metal-
+          // Aussehen), aber ohne die kontinuierliche Bewegung.
+          if (prefersReducedMotion) shaderMount.current?.setSpeed?.(0);
         }
       } catch (error) {
         console.error("[v0] Failed to load shader:", error);
       }
     };
 
-    loadShader();
+    // Jede Instanz erzeugt einen eigenen WebGL-Kontext. Bei vielen Buttons
+    // gleichzeitig (Navbar, Sticky-CTA, Ablauf, ...) kommt das zusammen mit
+    // der Spline-Szene an das sehr niedrige WebGL-Kontext-Limit von iOS
+    // Safari heran ("too many active WebGL contexts" -> aeltester Kontext
+    // wird gekillt -> Canvas rendert kurz schwarz). Deshalb Shader erst
+    // erzeugen, wenn der Button tatsaechlich im Viewport ist.
+    let observer = null
+    if (shaderRef.current && 'IntersectionObserver' in window) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0]?.isIntersecting) {
+            loadShader()
+            observer.disconnect()
+          }
+        },
+        { rootMargin: '100px' }
+      )
+      observer.observe(shaderRef.current)
+    } else {
+      loadShader()
+    }
 
     return () => {
+      observer?.disconnect()
       if (shaderMount.current?.destroy) {
         shaderMount.current.destroy();
         shaderMount.current = null;
       }
     };
-  }, []);
+  }, [prefersReducedMotion]);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
-    shaderMount.current?.setSpeed?.(1);
+    if (!prefersReducedMotion) shaderMount.current?.setSpeed?.(1);
   };
 
   const handleMouseLeave = () => {
     setIsHovered(false);
     setIsPressed(false);
-    shaderMount.current?.setSpeed?.(0.6);
+    if (!prefersReducedMotion) shaderMount.current?.setSpeed?.(0.6);
   };
 
   const handleClick = (e) => {
-    if (shaderMount.current?.setSpeed) {
+    if (!prefersReducedMotion && shaderMount.current?.setSpeed) {
       shaderMount.current.setSpeed(2.4);
       setTimeout(() => {
         if (isHovered) shaderMount.current?.setSpeed?.(1);

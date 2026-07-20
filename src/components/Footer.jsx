@@ -1,4 +1,5 @@
 import Logo from './Logo.jsx'
+import MotionToggle from './MotionToggle.jsx'
 
 const columns = [
   {
@@ -98,8 +99,11 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 border-t border-navy/10 pt-6 text-center text-xs text-silver">
-          © 2026 AVAN Web Agency &nbsp;·&nbsp; Augsburg &nbsp;·&nbsp; Alle Rechte vorbehalten.
+        <div className="mt-12 flex flex-col items-center gap-4 border-t border-navy/10 pt-6 text-center text-xs text-silver sm:flex-row sm:justify-between sm:text-left">
+          <span>
+            © 2026 AVAN Web Agency &nbsp;·&nbsp; Augsburg &nbsp;·&nbsp; Alle Rechte vorbehalten.
+          </span>
+          <MotionToggle />
         </div>
       </div>
     </footer>
