@@ -11,7 +11,7 @@ import { useMotionPreference } from "../../lib/motion-preference.jsx"
 
 export function SplineSceneBasic() {
   const robotRef = useRef(null)
-  const isInView = useInView(robotRef, { once: true, margin: '-100px' })
+  const isInView = useInView(robotRef, { once: true, margin: '400px' })
   const isMobile = useMediaQuery('(max-width: 768px)')
   const { reduceMotion: prefersReducedMotion } = useMotionPreference()
 

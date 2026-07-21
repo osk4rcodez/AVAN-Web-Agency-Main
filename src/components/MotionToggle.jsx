@@ -44,7 +44,7 @@ export default function MotionToggle({ large = false }) {
         {/* Liquid-Glass-Textur nur auf PC/Desktop (siehe showLiquid oben). */}
         {showLiquid && (
           <div
-            className="absolute inset-0 isolate z-0 overflow-hidden rounded-md bg-gradient-to-br from-white/70 via-lilac/40 to-accent/25"
+            className="absolute inset-0 isolate z-0 overflow-hidden rounded-md bg-gradient-to-br from-white/80 via-white/50 to-white/25"
             style={{ filter: 'url("#radio-glass")' }}
           />
         )}

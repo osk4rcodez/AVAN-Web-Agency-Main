@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Check, ChevronLeft, ChevronRight } from 'lucide-react'
 import { EASE } from '../../lib/motion-variants.js'
 import { LiquidMetalButton } from './liquid-metal-button.jsx'
+import SupportForm from '../SupportForm.jsx'
 
 // Wiederverwendbares "Mehr-Infos"-Modal mit Weiter/Zurück-Navigation
 // zwischen mehreren Eintraegen (Ablauf-Schritte, Leistungen, ...).
@@ -37,7 +38,7 @@ export function DetailsModal({
             role="dialog"
             aria-modal="true"
             aria-label={`Details: ${item.title}`}
-            className="glass-panel relative z-10 w-full max-w-xl overflow-hidden rounded-3xl p-6 sm:p-8"
+            className="glass-panel relative z-10 max-h-[85vh] w-full max-w-xl overflow-y-auto rounded-2xl p-4 sm:rounded-3xl sm:p-8"
             initial={{ opacity: 0, y: 24, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.98 }}
@@ -47,9 +48,10 @@ export function DetailsModal({
               type="button"
               onClick={onClose}
               aria-label="Schließen"
-              className="absolute right-4 top-4 z-20 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/70 text-navy transition-colors hover:bg-accent hover:text-white"
+              className="absolute right-3 top-3 z-20 inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/70 text-navy transition-colors hover:bg-accent hover:text-white sm:right-4 sm:top-4 sm:h-9 sm:w-9"
             >
-              <X size={18} />
+              <X size={16} className="sm:hidden" />
+              <X size={18} className="hidden sm:block" />
             </button>
 
             <AnimatePresence mode="wait">
@@ -61,7 +63,7 @@ export function DetailsModal({
                 transition={{ duration: 0.25, ease: EASE }}
               >
                 {item.eyebrow && <p className="eyebrow mb-2">{item.eyebrow}</p>}
-                <h3 className="font-display text-2xl font-extrabold text-navy sm:text-3xl">
+                <h3 className="font-display text-xl font-extrabold text-navy sm:text-3xl">
                   {item.title}
                 </h3>
                 {item.subtitle && (
@@ -97,6 +99,8 @@ export function DetailsModal({
                     Ergebnis: <span className="font-normal text-ink/70">{item.outcome}</span>
                   </p>
                 )}
+
+                {item.formType === 'support' && <SupportForm />}
               </motion.div>
             </AnimatePresence>
 

@@ -8,7 +8,7 @@ const columns = [
       { label: 'Website-Entwicklung', href: '#leistungen' },
       { label: 'Hosting & Bereitstellung', href: '#leistungen' },
       { label: 'Wartung & Pflege', href: '#leistungen' },
-      { label: 'Support & Beratung', href: '#leistungen' },
+      { label: 'Support & Beratung', href: '#leistungen', onClick: 'support' },
     ],
   },
   {
@@ -85,7 +85,13 @@ export default function Footer() {
                                 e.preventDefault()
                                 if (window.openCookieSettings) window.openCookieSettings()
                               }
-                            : undefined
+                            : l.onClick === 'support'
+                              ? (e) => {
+                                  e.preventDefault()
+                                  document.querySelector('#leistungen')?.scrollIntoView({ behavior: 'smooth' })
+                                  window.dispatchEvent(new CustomEvent('open-support-details'))
+                                }
+                              : undefined
                         }
                         className="inline-flex items-center gap-1 text-sm text-ink/70 transition-colors hover:text-accent"
                       >

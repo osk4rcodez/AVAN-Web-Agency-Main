@@ -3,32 +3,47 @@ import { ArrowUpRight } from 'lucide-react'
 import { fadeUp, revealScale, stagger } from '../lib/motion-variants.js'
 import ProjectScreenshot from './ProjectScreenshot.jsx'
 import { TiltCard } from './ui/tilt-card.jsx'
+import { SpadeHero } from './ui/spade-hero.jsx'
+import { ClassicSalesPage } from './ui/classic-sales-page.jsx'
+import { BookingSystemPage } from './ui/booking-system-page.jsx'
 import { useMediaQuery } from '../lib/use-media-query.js'
+import { useMotionPreference } from '../lib/motion-preference.jsx'
 
 const projects = [
   {
-    name: 'NORDWERK',
-    type: 'Corporate Website',
-    desc: 'Markenauftritt für ein norddeutsches Handwerksunternehmen — klar, schnell, auffindbar.',
+    name: 'Professionelle Seiten mit Animationen',
+    type: 'Design',
+    desc: 'Moderne, interaktive Websites mit durchdachten Animationen und Effekten — für Unternehmen, die auffallen wollen.',
   },
   {
-    name: 'MERIDIAN',
-    type: 'Landingpage',
-    desc: 'Conversion-fokussierte Kampagnenseite mit klarem Call-to-Action und schneller Ladezeit.',
+    name: 'Klassische, verkaufsstarke Seiten',
+    type: 'Conversion',
+    desc: 'Reduziertes, klares Design, das auf Conversion ausgelegt ist — schnell, übersichtlich, ohne Ablenkung vom Wesentlichen.',
   },
   {
-    name: 'LUMA STUDIO',
-    type: 'Portfolio',
-    desc: 'Eleganter Auftritt für ein Designstudio — Bild im Mittelpunkt, ruhige Typografie.',
+    name: 'Seiten mit Buchungssystem',
+    type: 'Funktion',
+    desc: 'Interaktive Seiten mit Buchungssystem — für Hotels und Betriebe, bei denen Kunden direkt online reservieren oder bestellen.',
   },
 ]
 
+const LIVE_PREVIEWS = [SpadeHero, ClassicSalesPage, BookingSystemPage]
+
 function ProjectCard({ p, i }) {
+  const { reduceMotion } = useMotionPreference()
+  // Nur bei angemachter Option (Animationen an): jede Karte zeigt eine echte
+  // interaktive Live-Vorschau statt des statischen Platzhalters.
+  const LivePreview = !reduceMotion ? LIVE_PREVIEWS[i] : null
+
   return (
     <>
       <div className="relative aspect-[400/260] overflow-hidden">
         <div className="h-full w-full transition-transform duration-500 ease-out group-hover:scale-105">
-          <ProjectScreenshot index={i} rounded={false} />
+          {LivePreview ? (
+            <LivePreview compact />
+          ) : (
+            <ProjectScreenshot index={i} rounded={false} />
+          )}
         </div>
       </div>
       <div className="p-6">

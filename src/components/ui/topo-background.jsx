@@ -60,11 +60,11 @@ export default function TopoBackground({ className = '', fixed = false }) {
   const pathsRef = useRef(null)
   const lastWidthRef = useRef(0)
 
-  const [pointerHoverCapable] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia('(hover: hover) and (pointer: fine)').matches
-  )
   const { reduceMotion } = useMotionPreference()
-  const hoverCapable = pointerHoverCapable && !reduceMotion
+  // Reveal-Effekt jetzt unabhaengig von Maus-/Touch-Faehigkeit — solange
+  // Animationen an sind, soll das Leuchten auch auf dem Handy per Antippen/
+  // Ziehen funktionieren, genau wie der Hover auf dem PC.
+  const hoverCapable = !reduceMotion
 
   useEffect(() => {
     const container = containerRef.current
@@ -99,7 +99,7 @@ export default function TopoBackground({ className = '', fixed = false }) {
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       }
 
-      drawPaths(baseCanvas.getContext('2d'), paths, violet, hoverCapable ? 0.08 : 0.28)
+      drawPaths(baseCanvas.getContext('2d'), paths, violet, hoverCapable ? 0.08 : 0.12)
       if (revealCanvas && hoverCapable) drawPaths(revealCanvas.getContext('2d'), paths, violet, 0.45)
     }
 
@@ -122,8 +122,8 @@ export default function TopoBackground({ className = '', fixed = false }) {
   }, [hoverCapable])
 
   useEffect(() => {
-    // Touch-Geraete: keinerlei Reveal-/Cursor-Interaktion, nur die statische
-    // Basis-Ebene wird gezeigt.
+    // Bei Animationen aus: keinerlei Reveal-/Cursor-Interaktion, nur die
+    // statische Basis-Ebene wird gezeigt.
     if (!hoverCapable) return
     const container = containerRef.current
     if (!container) return
@@ -142,9 +142,14 @@ export default function TopoBackground({ className = '', fixed = false }) {
       handlePointerMove(e.clientX, e.clientY)
     }
 
+    // pointerdown zusaetzlich zu pointermove: ein reines Antippen auf dem
+    // Handy (ohne Ziehen) feuert kein pointermove — ohne das wuerde der
+    // Leucht-Effekt beim ersten Touch nicht am Tipp-Punkt erscheinen.
     window.addEventListener('pointermove', onPointerMove)
+    window.addEventListener('pointerdown', onPointerMove)
     return () => {
       window.removeEventListener('pointermove', onPointerMove)
+      window.removeEventListener('pointerdown', onPointerMove)
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
   }, [hoverCapable])

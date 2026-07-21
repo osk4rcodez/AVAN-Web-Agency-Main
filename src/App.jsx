@@ -4,6 +4,7 @@ import ScrollProgressBar from './components/ScrollProgressBar.jsx'
 import TopoBackground from './components/ui/topo-background.jsx'
 import Navbar from './components/Navbar.jsx'
 import Hero from './components/Hero.jsx'
+import WebsiteComparison from './components/WebsiteComparison.jsx'
 import CinematicHeroDemo from './components/CinematicHeroDemo.jsx'
 import TrustBar from './components/TrustBar.jsx'
 import Services from './components/Services.jsx'
@@ -30,6 +31,7 @@ function Landing() {
     <>
       <main>
         <Hero />
+        <WebsiteComparison />
         <CinematicHeroDemo />
         <TrustBar />
         <Services />
@@ -88,11 +90,27 @@ export default function App() {
     </form>
   )
 
+  // Gleiches Prinzip fuer das kleine Support-Formular (siehe SupportForm.jsx).
+  const NetlifySupportFormProxy = (
+    <form
+      name="support-anfrage"
+      data-netlify="true"
+      hidden
+      aria-hidden="true"
+    >
+      <input type="hidden" name="form-name" value="support-anfrage" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <textarea name="anliegen" />
+    </form>
+  )
+
   const LegalPage = LEGAL[hash]
 
   return (
     <>
       {NetlifyFormProxy}
+      {NetlifySupportFormProxy}
       <LoadingScreen>
         <TopoBackground fixed />
         <ScrollProgressBar />

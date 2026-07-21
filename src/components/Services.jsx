@@ -98,6 +98,18 @@ export default function Services() {
     }
   }, [open])
 
+  // Direktlink aus dem Footer ("Support & Beratung") oeffnet das Detail
+  // sofort mit dem eingebetteten Support-Formular, statt nur zum Abschnitt
+  // zu scrollen.
+  useEffect(() => {
+    const onOpenSupport = () => {
+      const i = services.findIndex((s) => s.title === 'Support & Beratung')
+      if (i !== -1) setActiveIndex(i)
+    }
+    window.addEventListener('open-support-details', onOpenSupport)
+    return () => window.removeEventListener('open-support-details', onOpenSupport)
+  }, [])
+
   const handlePrev = useCallback(() => {
     setActiveIndex((i) => (i > 0 ? i - 1 : i))
   }, [])
@@ -117,6 +129,7 @@ export default function Services() {
         noteLabel: activeService.noteLabel,
         noteItems: activeService.noteItems,
         outcome: activeService.outcome,
+        formType: activeService.title === 'Support & Beratung' ? 'support' : undefined,
       }
     : null
 

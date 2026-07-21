@@ -2,14 +2,7 @@ import { motion } from 'framer-motion'
 import { EASE } from '../lib/motion-variants.js'
 
 function AddressField() {
-  return (
-    <span>
-      86830 Schwabmünchen
-      <span className="ml-1 rounded bg-yellow-200 px-1.5 py-0.5 font-medium italic text-yellow-900">
-        [Straße &amp; Hausnr. ergänzen]
-      </span>
-    </span>
-  )
+  return <span>Nebelhornstraße, 86830 Schwabmünchen</span>
 }
 
 export default function Impressum() {
@@ -56,11 +49,6 @@ export default function Impressum() {
           </span>
           <br />
           Kasum Caka, Oskar Kielek (Anschrift wie oben)
-        </p>
-
-        <p className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-900">
-          Hinweis: Es fehlt noch die Straße &amp; Hausnummer (gelb markiert), damit die
-          Anschrift vor dem Go-Live ladungsfähig nach § 5 TMG ist.
         </p>
       </div>
 

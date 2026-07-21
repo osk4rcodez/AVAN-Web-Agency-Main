@@ -9,14 +9,16 @@ function getSystemPrefersReduced() {
 }
 
 export function MotionProvider({ children }) {
-  // null = kein manueller Override gesetzt -> Systemeinstellung gilt als Default.
+  // null = kein manueller Override gesetzt -> Default ist "An" (Animationen
+  // aktiv), unabhaengig von der Systemeinstellung. Sobald der Nutzer den
+  // Schalter selbst bedient, wird dessen Wahl dauerhaft respektiert.
   const [manualOverride, setManualOverride] = useState(() => {
-    if (typeof window === 'undefined') return null
+    if (typeof window === 'undefined') return false
     const stored = window.localStorage.getItem(STORAGE_KEY)
-    return stored === null ? null : stored === 'true'
+    return stored === null ? false : stored === 'true'
   })
 
-  const reduceMotion = manualOverride === null ? getSystemPrefersReduced() : manualOverride
+  const reduceMotion = manualOverride
 
   // CSS-Regeln (@media prefers-reduced-motion) lesen NUR die Systemeinstellung
   // und wuerden den manuellen Toggle sonst ignorieren -> Klasse am <html>

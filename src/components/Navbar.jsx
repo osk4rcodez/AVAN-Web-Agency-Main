@@ -39,13 +39,19 @@ export default function Navbar() {
       animate="show"
       variants={fadeDown}
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'border-b border-navy/5 bg-white/85 shadow-nav backdrop-blur-md'
-          : 'border-b border-transparent bg-transparent'
+        open
+          ? 'border-b border-transparent bg-white'
+          : scrolled
+            ? 'border-b border-navy/5 bg-white/85 shadow-nav backdrop-blur-md'
+            : 'border-b border-transparent bg-transparent'
       }`}
     >
-      <nav className="container-px flex h-16 items-center justify-between lg:h-20">
-        <a href="#top" className="shrink-0" aria-label="AVAN Web Agency — Startseite">
+      <nav className="container-px relative flex h-16 items-center justify-between lg:h-20">
+        <a
+          href="#top"
+          className={`shrink-0 mx-auto md:mx-0 ${open ? 'invisible md:visible' : ''}`}
+          aria-label="AVAN Web Agency — Startseite"
+        >
           <Logo />
         </a>
 
@@ -97,9 +103,12 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25, ease: EASE }}
-            className="fixed inset-0 top-16 z-40 flex flex-col items-center justify-center gap-8 bg-mist px-6 md:hidden"
+            className="fixed inset-0 top-16 z-40 flex flex-col items-center justify-center gap-8 bg-white px-6 md:hidden"
           >
-            <div className="flex flex-wrap items-center justify-center gap-3">
+            <a href="#top" onClick={() => setOpen(false)} aria-label="AVAN Web Agency — Startseite">
+              <Logo size={56} />
+            </a>
+            <div className="flex flex-col items-center gap-3">
               {links.map((l, i) => {
                 const Icon = l.icon
                 return (
@@ -118,13 +127,6 @@ export default function Navbar() {
                 )
               })}
             </div>
-            <span className="inline-flex items-center gap-2 text-sm font-medium text-silver">
-              Login / Kundenbereich
-              <span className="rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wider text-accent">
-                Bald
-              </span>
-            </span>
-            <MotionToggle />
             <a
               href="#kontakt"
               data-open-project-modal
@@ -133,6 +135,13 @@ export default function Navbar() {
             >
               Projekt starten <ArrowUpRight size={18} />
             </a>
+            <MotionToggle />
+            <span className="inline-flex items-center gap-2 text-sm font-medium text-silver">
+              Login / Kundenbereich
+              <span className="rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wider text-accent">
+                Bald
+              </span>
+            </span>
           </motion.div>
         )}
       </AnimatePresence>
