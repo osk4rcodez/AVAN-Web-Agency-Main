@@ -1,5 +1,9 @@
+import { Linkedin } from 'lucide-react'
 import Logo from './Logo.jsx'
 import MotionToggle from './MotionToggle.jsx'
+
+const LINKEDIN_URL =
+  'https://www.linkedin.com/in/avan-web-agency-a03566422?utm_source=share_via&utm_content=profile&utm_medium=member_ios'
 
 const columns = [
   {
@@ -109,7 +113,18 @@ export default function Footer() {
           <span>
             © 2026 AVAN Web Agency &nbsp;·&nbsp; Augsburg &nbsp;·&nbsp; Alle Rechte vorbehalten.
           </span>
-          <MotionToggle />
+          <div className="flex items-center gap-4">
+            <a
+              href={LINKEDIN_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="AVAN Web Agency auf LinkedIn"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-navy/10 text-navy/70 transition-colors hover:border-accent/30 hover:text-accent"
+            >
+              <Linkedin size={16} />
+            </a>
+            <MotionToggle />
+          </div>
         </div>
       </div>
     </footer>

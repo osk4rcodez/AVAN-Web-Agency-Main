@@ -29,6 +29,9 @@ export function unlockBodyScroll() {
     document.body.style.left = ''
     document.body.style.right = ''
     document.body.classList.remove('modal-scroll-lock')
-    window.scrollTo(0, savedScrollY)
+    // { behavior: 'instant' } explizit noetig: html hat global
+    // scroll-behavior:smooth gesetzt, das sonst auch diese Wiederherstellung
+    // sichtbar von ganz oben bis zur alten Position animiert.
+    window.scrollTo({ top: savedScrollY, left: 0, behavior: 'instant' })
   }
 }

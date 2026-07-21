@@ -1,7 +1,24 @@
 import { motion } from 'framer-motion'
 import { fadeUp, stagger } from '../lib/motion-variants.js'
-import { Plus } from 'lucide-react'
+import { Plus, Linkedin } from 'lucide-react'
 import { useMediaQuery } from '../lib/use-media-query.js'
+
+const LINKEDIN_URL =
+  'https://www.linkedin.com/in/avan-web-agency-a03566422?utm_source=share_via&utm_content=profile&utm_medium=member_ios'
+
+function LinkedInLink() {
+  return (
+    <a
+      href={LINKEDIN_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-accent transition-colors hover:text-navy"
+    >
+      <Linkedin size={18} />
+      AVAN auf LinkedIn
+    </a>
+  )
+}
 
 function FounderCard({ photo, name, role, slug, delay = 0, imgClass = '' }) {
   return (
@@ -57,6 +74,7 @@ export default function About() {
               flache Hierarchien und echtes Interesse an Ihrem Projekt. Sie bekommen keine
               Abteilung, Sie bekommen die Gründer.
             </p>
+            <LinkedInLink />
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
@@ -104,6 +122,7 @@ export default function About() {
             flache Hierarchien und echtes Interesse an Ihrem Projekt. Sie bekommen keine
             Abteilung, Sie bekommen die Gründer.
           </p>
+          <LinkedInLink />
         </motion.div>
 
         <motion.div variants={fadeUp} className="grid gap-4 sm:grid-cols-2">
