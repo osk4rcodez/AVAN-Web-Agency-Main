@@ -35,7 +35,7 @@ function Landing() {
         <WebsiteComparison />
         {/* Extra Abstand, damit der Uebergang (Fade, sitzt in
             CinematicHeroDemo.jsx) etwas weiter unten beginnt. */}
-        <div className="h-[130px] w-full sm:h-[145px] lg:h-[160px]" aria-hidden="true" />
+        <div className="h-[210px] w-full sm:h-[225px] lg:h-[240px]" aria-hidden="true" />
         <CinematicHeroDemo />
         {/* Fade am Rand weiss (CinematicHero) / mist (TrustBar). */}
         <div className="h-32 w-full bg-gradient-to-b from-white to-mist/60" aria-hidden="true" />

@@ -6,7 +6,7 @@ import MotionToggle from './MotionToggle.jsx'
 
 export default function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden pt-24 pb-8 sm:pt-24 sm:pb-10 lg:pt-28 lg:pb-12 xl:pt-32 xl:pb-14 2xl:pt-40 2xl:pb-16">
+    <section id="top" className="relative overflow-hidden pt-24 pb-16 sm:pt-24 sm:pb-20 lg:pt-28 lg:pb-24 xl:pt-32 xl:pb-28 2xl:pt-40 2xl:pb-32">
       <div
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
