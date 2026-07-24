@@ -6,19 +6,22 @@ import { EASE, fadeDown } from '../lib/motion-variants.js'
 import { LiquidMetalButton } from './ui/liquid-metal-button.jsx'
 import { lockBodyScroll, unlockBodyScroll } from '../lib/scroll-lock.js'
 import MotionToggle from './MotionToggle.jsx'
+import LanguageToggle from './LanguageToggle.jsx'
+import { useTranslate } from '../lib/language-preference.jsx'
 
 const links = [
-  { label: 'Leistungen', href: '#leistungen', icon: LayoutGrid },
-  { label: 'Showcase', href: '#showcase', icon: GalleryHorizontalEnd },
-  { label: 'Ablauf', href: '#ablauf', icon: Workflow },
-  { label: 'FAQ', href: '#faq', icon: ListChecks },
-  { label: 'Über uns', href: '#ueber-uns', icon: Users },
-  { label: 'Kontakt', href: '#kontakt', icon: Mail },
+  { label: { de: 'Leistungen', en: 'Services' }, href: '#leistungen', icon: LayoutGrid },
+  { label: { de: 'Showcase', en: 'Showcase' }, href: '#showcase', icon: GalleryHorizontalEnd },
+  { label: { de: 'Ablauf', en: 'Process' }, href: '#ablauf', icon: Workflow },
+  { label: { de: 'FAQ', en: 'FAQ' }, href: '#faq', icon: ListChecks },
+  { label: { de: 'Über uns', en: 'About us' }, href: '#ueber-uns', icon: Users },
+  { label: { de: 'Kontakt', en: 'Contact' }, href: '#kontakt', icon: Mail },
 ]
 
 export default function Navbar({ pushedDown = false }) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const t = useTranslate()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -62,28 +65,28 @@ export default function Navbar({ pushedDown = false }) {
             {links.map((l) => {
               const Icon = l.icon
               return (
-                <a key={l.href} href={l.href} className="menu-item group" aria-label={l.label}>
+                <a key={l.href} href={l.href} className="menu-item group" aria-label={t(l.label)}>
                   <Icon size={22} strokeWidth={2} />
-                  <span className="menu-label">{l.label}</span>
+                  <span className="menu-label">{t(l.label)}</span>
                 </a>
               )
             })}
           </nav>
         </div>
 
-        <div className="hidden items-center gap-5 md:flex">
+        <div className="hidden items-center gap-4 md:flex xl:gap-5">
           <span
-            className="inline-flex cursor-default items-center gap-2 text-xs font-medium tracking-wide text-silver"
-            title="Der Kundenbereich ist bald verfügbar."
+            className="hidden shrink-0 cursor-default whitespace-nowrap rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wider text-accent 2xl:inline-flex"
+            title={t({ de: 'Login / Kundenbereich — bald verfügbar', en: 'Login / Client area — coming soon' })}
           >
-            Login / Kundenbereich
-            <span className="rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wider text-accent">
-              Bald
-            </span>
+            {t({ de: 'Login bald', en: 'Login soon' })}
           </span>
-          <MotionToggle />
-          <a href="#kontakt" className="inline-flex" data-open-project-modal>
-            <LiquidMetalButton label="Projekt starten" width={170} />
+          <LanguageToggle />
+          <div className="shrink-0">
+            <MotionToggle />
+          </div>
+          <a href="#kontakt" className="inline-flex shrink-0" data-open-project-modal>
+            <LiquidMetalButton label={t({ de: 'Projekt starten', en: 'Start Project' })} width={170} />
           </a>
         </div>
 
@@ -91,7 +94,7 @@ export default function Navbar({ pushedDown = false }) {
           type="button"
           onClick={() => setOpen((v) => !v)}
           className="inline-flex h-10 w-10 items-center justify-center rounded-full text-navy transition-colors hover:bg-accent/10 md:hidden"
-          aria-label={open ? 'Menü schließen' : 'Menü öffnen'}
+          aria-label={open ? t({ de: 'Menü schließen', en: 'Close menu' }) : t({ de: 'Menü öffnen', en: 'Open menu' })}
           aria-expanded={open}
         >
           {open ? <X size={22} /> : <Menu size={22} />}
@@ -124,7 +127,7 @@ export default function Navbar({ pushedDown = false }) {
                     className="menu-item group"
                   >
                     <Icon size={22} strokeWidth={2} />
-                    <span className="menu-label">{l.label}</span>
+                    <span className="menu-label">{t(l.label)}</span>
                   </motion.a>
                 )
               })}
@@ -135,13 +138,14 @@ export default function Navbar({ pushedDown = false }) {
               onClick={() => setOpen(false)}
               className="btn-neon mt-2 text-base"
             >
-              Projekt starten <ArrowUpRight size={18} />
+              {t({ de: 'Projekt starten', en: 'Start Project' })} <ArrowUpRight size={18} />
             </a>
             <MotionToggle />
+            <LanguageToggle />
             <span className="inline-flex items-center gap-2 text-sm font-medium text-silver">
-              Login / Kundenbereich
+              {t({ de: 'Login / Kundenbereich', en: 'Login / Client area' })}
               <span className="rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wider text-accent">
-                Bald
+                {t({ de: 'Bald', en: 'Soon' })}
               </span>
             </span>
           </motion.div>

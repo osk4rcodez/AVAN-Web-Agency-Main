@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { MotionConfig } from 'framer-motion'
 import App from './App.jsx'
 import { MotionProvider, useMotionPreference } from './lib/motion-preference.jsx'
+import { LanguageProvider } from './lib/language-preference.jsx'
 import '@avenra/liquid-glass/styles'
 import './index.css'
 
@@ -17,9 +18,11 @@ function MotionConfigBridge({ children }) {
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <MotionProvider>
-      <MotionConfigBridge>
-        <App />
-      </MotionConfigBridge>
+      <LanguageProvider>
+        <MotionConfigBridge>
+          <App />
+        </MotionConfigBridge>
+      </LanguageProvider>
     </MotionProvider>
   </React.StrictMode>,
 )

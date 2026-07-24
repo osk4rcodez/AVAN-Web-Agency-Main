@@ -114,10 +114,12 @@ export default function App() {
     <form
       name="projekt-starten"
       data-netlify="true"
+      data-netlify-honeypot="bot-field"
       hidden
       aria-hidden="true"
     >
       <input type="hidden" name="form-name" value="projekt-starten" />
+      <input name="bot-field" />
       <input type="text" name="name" />
       <input type="email" name="email" />
       <input type="tel" name="telefon" />
@@ -135,10 +137,12 @@ export default function App() {
     <form
       name="support-anfrage"
       data-netlify="true"
+      data-netlify-honeypot="bot-field"
       hidden
       aria-hidden="true"
     >
       <input type="hidden" name="form-name" value="support-anfrage" />
+      <input name="bot-field" />
       <input type="text" name="name" />
       <input type="email" name="email" />
       <textarea name="anliegen" />
@@ -158,7 +162,12 @@ export default function App() {
             echte Navbar rutscht mit top-* darunter (siehe Navbar.jsx). */}
         {heroInView && (
           <div className="fixed inset-x-0 top-[3px] z-[55] hidden px-4 pt-2 md:block">
-            <MacOSMenuBar appName="AVAN" />
+            <MacOSMenuBar
+              appName="AVAN"
+              onMenuAction={(action) => {
+                if (action === 'app-help') window.dispatchEvent(new CustomEvent('open-project-modal'))
+              }}
+            />
           </div>
         )}
         <Navbar pushedDown={heroInView} />

@@ -1,49 +1,57 @@
 import { Linkedin } from 'lucide-react'
 import Logo from './Logo.jsx'
 import MotionToggle from './MotionToggle.jsx'
+import LanguageToggle from './LanguageToggle.jsx'
+import { useTranslate } from '../lib/language-preference.jsx'
 
 const LINKEDIN_URL =
   'https://www.linkedin.com/in/avan-web-agency-a03566422?utm_source=share_via&utm_content=profile&utm_medium=member_ios'
 
 const columns = [
   {
-    title: 'Leistungen',
+    id: 'leistungen',
+    title: { de: 'Leistungen', en: 'Services' },
     links: [
-      { label: 'Website-Entwicklung', href: '#leistungen' },
-      { label: 'Hosting & Bereitstellung', href: '#leistungen' },
-      { label: 'Wartung & Pflege', href: '#leistungen' },
-      { label: 'Support & Beratung', href: '#leistungen', onClick: 'support' },
+      { id: 'website', label: { de: 'Website-Entwicklung', en: 'Website development' }, href: '#leistungen' },
+      { id: 'hosting', label: { de: 'Hosting & Bereitstellung', en: 'Hosting & deployment' }, href: '#leistungen' },
+      { id: 'wartung', label: { de: 'Wartung & Pflege', en: 'Maintenance & care' }, href: '#leistungen' },
+      { id: 'support', label: { de: 'Support & Beratung', en: 'Support & consulting' }, href: '#leistungen', onClick: 'support' },
     ],
   },
   {
-    title: 'Unternehmen',
+    id: 'unternehmen',
+    title: { de: 'Unternehmen', en: 'Company' },
     links: [
-      { label: 'Über uns', href: '#ueber-uns' },
-      { label: 'Ablauf', href: '#ablauf' },
-      { label: 'Showcase', href: '#showcase' },
-      { label: 'Kontakt', href: '#kontakt' },
+      { id: 'ueber-uns', label: { de: 'Über uns', en: 'About us' }, href: '#ueber-uns' },
+      { id: 'ablauf', label: { de: 'Ablauf', en: 'Process' }, href: '#ablauf' },
+      { id: 'showcase', label: { de: 'Showcase', en: 'Showcase' }, href: '#showcase' },
+      { id: 'kontakt', label: { de: 'Kontakt', en: 'Contact' }, href: '#kontakt' },
     ],
   },
   {
-    title: 'Kontakt',
+    id: 'kontakt',
+    title: { de: 'Kontakt', en: 'Contact' },
     links: [
-      { label: 'avanwebagency@gmail.com', href: 'mailto:avanwebagency@gmail.com' },
-      { label: 'Login / Kundenbereich', href: '#kontakt', soon: true },
+      { id: 'email', label: { de: 'avanwebagency@gmail.com', en: 'avanwebagency@gmail.com' }, href: 'mailto:avanwebagency@gmail.com' },
+      { id: 'login', label: { de: 'Login / Kundenbereich', en: 'Login / Client area' }, href: '#kontakt', soon: true },
     ],
   },
   {
-    title: 'Rechtliches',
+    id: 'rechtliches',
+    title: { de: 'Rechtliches', en: 'Legal' },
     links: [
-      { label: 'Impressum', href: '#impressum' },
-      { label: 'Datenschutz', href: '#datenschutz' },
-      { label: 'AGB', href: '#agb' },
-      { label: 'Barrierefreiheit', href: '#barrierefreiheit' },
-      { label: 'Cookie-Einstellungen', href: '#', onClick: 'cookies' },
+      { id: 'impressum', label: { de: 'Impressum', en: 'Imprint' }, href: '#impressum' },
+      { id: 'datenschutz', label: { de: 'Datenschutz', en: 'Privacy policy' }, href: '#datenschutz' },
+      { id: 'agb', label: { de: 'AGB', en: 'Terms' }, href: '#agb' },
+      { id: 'barrierefreiheit', label: { de: 'Barrierefreiheit', en: 'Accessibility' }, href: '#barrierefreiheit' },
+      { id: 'cookies', label: { de: 'Cookie-Einstellungen', en: 'Cookie settings' }, href: '#', onClick: 'cookies' },
     ],
   },
 ]
 
 export default function Footer() {
+  const t = useTranslate()
+
   return (
     <footer className="border-t border-navy/10 bg-white">
       <div className="container-px py-14">
@@ -51,8 +59,10 @@ export default function Footer() {
           <div>
             <Logo />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-ink/60">
-              Ihre Website. Unsere Verantwortung. Von der Idee bis zum Server — alles aus
-              einer Hand.
+              {t({
+                de: 'Ihre Website. Unsere Verantwortung. Von der Idee bis zum Server — alles aus einer Hand.',
+                en: 'Your website. Our responsibility. From idea to server — all from a single source.',
+              })}
             </p>
             <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-3 py-1.5">
               <span className="relative flex h-2.5 w-2.5">
@@ -60,24 +70,24 @@ export default function Footer() {
                 <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
               </span>
               <span className="text-xs font-semibold text-green-700">
-                Alle betreuten Websites online
+                {t({ de: 'Alle betreuten Websites online', en: 'All managed websites online' })}
               </span>
             </div>
           </div>
 
           {columns.map((col) => (
-            <div key={col.title}>
+            <div key={col.id}>
               <p className="text-xs font-semibold uppercase tracking-widest text-silver">
-                {col.title}
+                {t(col.title)}
               </p>
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((l) => (
-                  <li key={l.label}>
+                  <li key={l.id}>
                     {l.soon ? (
                       <span className="inline-flex items-center gap-2 text-sm text-ink/50">
-                        {l.label}
+                        {t(l.label)}
                         <span className="rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wider text-accent">
-                          Bald
+                          {t({ de: 'Bald', en: 'Soon' })}
                         </span>
                       </span>
                     ) : (
@@ -99,7 +109,7 @@ export default function Footer() {
                         }
                         className="inline-flex items-center gap-1 text-sm text-ink/70 transition-colors hover:text-accent"
                       >
-                        {l.label}
+                        {t(l.label)}
                       </a>
                     )}
                   </li>
@@ -111,7 +121,8 @@ export default function Footer() {
 
         <div className="mt-12 flex flex-col items-center gap-4 border-t border-navy/10 pt-6 text-center text-xs text-silver sm:flex-row sm:justify-between sm:text-left">
           <span>
-            © 2026 AVAN Web Agency &nbsp;·&nbsp; Augsburg &nbsp;·&nbsp; Alle Rechte vorbehalten.
+            © 2026 AVAN Web Agency &nbsp;·&nbsp; Augsburg &nbsp;·&nbsp;{' '}
+            {t({ de: 'Alle Rechte vorbehalten.', en: 'All rights reserved.' })}
           </span>
           <div className="flex items-center gap-4">
             <a
@@ -124,6 +135,7 @@ export default function Footer() {
               <Linkedin size={16} />
             </a>
             <MotionToggle />
+            <LanguageToggle />
           </div>
         </div>
       </div>

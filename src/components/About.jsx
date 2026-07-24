@@ -2,11 +2,12 @@ import { motion } from 'framer-motion'
 import { fadeUp, stagger } from '../lib/motion-variants.js'
 import { Plus, Linkedin } from 'lucide-react'
 import { useMediaQuery } from '../lib/use-media-query.js'
+import { useTranslate } from '../lib/language-preference.jsx'
 
 const LINKEDIN_URL =
   'https://www.linkedin.com/in/avan-web-agency-a03566422?utm_source=share_via&utm_content=profile&utm_medium=member_ios'
 
-function LinkedInLink() {
+function LinkedInLink({ t }) {
   return (
     <a
       href={LINKEDIN_URL}
@@ -15,12 +16,12 @@ function LinkedInLink() {
       className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-accent transition-colors hover:text-navy"
     >
       <Linkedin size={18} />
-      AVAN auf LinkedIn
+      {t({ de: 'AVAN auf LinkedIn', en: 'AVAN on LinkedIn' })}
     </a>
   )
 }
 
-function TrustCard() {
+function TrustCard({ t }) {
   return (
     <div className="mt-6 flex w-fit items-center gap-4 rounded-2xl border border-navy/10 bg-white/60 p-3 pr-5 backdrop-blur-sm lg:ml-auto">
       <div className="flex -space-x-2.5">
@@ -32,21 +33,21 @@ function TrustCard() {
         </span>
       </div>
       <div className="leading-tight">
-        <p className="text-sm font-semibold text-navy">Direkt von den Gründern</p>
-        <p className="text-xs text-ink/60">Antwort in der Regel innerhalb eines Tages</p>
+        <p className="text-sm font-semibold text-navy">{t({ de: 'Direkt von den Gründern', en: 'Straight from the founders' })}</p>
+        <p className="text-xs text-ink/60">{t({ de: 'Antwort in der Regel innerhalb eines Tages', en: 'Reply usually within one day' })}</p>
       </div>
     </div>
   )
 }
 
-function FounderCard({ photo, name, role, slug, delay = 0, imgClass = '' }) {
+function FounderCard({ photo, name, role, slug, delay = 0, imgClass = '', t }) {
   return (
     <motion.button
       type="button"
       data-open-founder={slug}
       variants={fadeUp}
       transition={{ delay }}
-      aria-label={`Mehr über ${name} erfahren`}
+      aria-label={`${t({ de: 'Mehr über', en: 'Learn more about' })} ${name}`}
       className="group relative w-full rounded-2xl border border-navy/10 bg-white p-6 text-left shadow-card transition-shadow duration-300 hover:shadow-cardHover focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/25"
     >
       <div className="relative mb-5 aspect-square w-full overflow-hidden rounded-2xl">
@@ -64,7 +65,7 @@ function FounderCard({ photo, name, role, slug, delay = 0, imgClass = '' }) {
       <p className="font-bold text-navy">{name}</p>
       <p className="text-sm text-ink/60">{role}</p>
       <p className="mt-2 text-xs font-medium text-accent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        Mehr erfahren →
+        {t({ de: 'Mehr erfahren →', en: 'Learn more →' })}
       </p>
     </motion.button>
   )
@@ -72,44 +73,45 @@ function FounderCard({ photo, name, role, slug, delay = 0, imgClass = '' }) {
 
 export default function About() {
   const isMobile = useMediaQuery('(max-width: 768px)')
+  const t = useTranslate()
+
+  const roleOskar = t({ de: 'Entwicklung, Technik & Design', en: 'Development, tech & design' })
+  const roleKasum = t({ de: 'Entwicklung, Design & Kundenbetreuung', en: 'Development, design & client care' })
 
   if (isMobile) {
     return (
       <section id="ueber-uns" className="section">
         <div className="container-px grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
-            <p className="eyebrow mb-4">Über uns</p>
+            <p className="eyebrow mb-4">{t({ de: 'Über uns', en: 'About us' })}</p>
             <h2 className="text-3xl font-extrabold sm:text-4xl">
-              Zwei Gründer. Direkter Kontakt. Keine Hotline.
+              {t({ de: 'Zwei Gründer. Direkter Kontakt. Keine Hotline.', en: 'Two founders. Direct contact. No hotline.' })}
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-ink/70">
-              AVAN wurde von Oskar Kielek und Kasum Caka gegründet — mit dem Ziel, Unternehmen
-              einen unkomplizierten, persönlichen Zugang zu professionellen Websites zu bieten.
-              Kein Callcenter, keine anonymen Tickets: bei AVAN sprechen Sie direkt mit den
-              Menschen, die Ihre Website bauen und betreuen.
+              {t({
+                de: 'AVAN wurde von Oskar Kielek und Kasum Caka gegründet — mit dem Ziel, Unternehmen einen unkomplizierten, persönlichen Zugang zu professionellen Websites zu bieten. Kein Callcenter, keine anonymen Tickets: bei AVAN sprechen Sie direkt mit den Menschen, die Ihre Website bauen und betreuen.',
+                en: 'AVAN was founded by Oskar Kielek and Kasum Caka — with the goal of giving businesses uncomplicated, personal access to professional websites. No call center, no anonymous tickets: at AVAN you speak directly with the people who build and maintain your website.',
+              })}
             </p>
             <p className="mt-4 text-base leading-relaxed text-ink/65">
-              Wir sind ein junges Team — und genau das ist unser Vorteil: kurze Reaktionszeiten,
-              flache Hierarchien und echtes Interesse an Ihrem Projekt. Sie bekommen keine
-              Abteilung, Sie bekommen die Gründer.
+              {t({
+                de: 'Wir sind ein junges Team — und genau das ist unser Vorteil: kurze Reaktionszeiten, flache Hierarchien und echtes Interesse an Ihrem Projekt. Sie bekommen keine Abteilung, Sie bekommen die Gründer.',
+                en: 'We’re a young team — and that’s exactly our advantage: short response times, flat hierarchies and genuine interest in your project. You don’t get a department, you get the founders.',
+              })}
             </p>
-            <LinkedInLink />
-            <TrustCard />
+            <LinkedInLink t={t} />
+            <TrustCard t={t} />
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <FounderCard
-              photo="/oskar-kielek.jpg"
-              name="Oskar Kielek"
-              role="Entwicklung, Technik & Design"
-              slug="oskar"
-            />
+            <FounderCard photo="/oskar-kielek.jpg" name="Oskar Kielek" role={roleOskar} slug="oskar" t={t} />
             <FounderCard
               photo="/kasum-caka.jpg"
               name="Kasum Caka"
-              role="Entwicklung, Design & Kundenbetreuung"
+              role={roleKasum}
               slug="kasum"
               imgClass="object-[75%_25%] [filter:saturate(0.95)_hue-rotate(-8deg)]"
+              t={t}
             />
           </div>
         </div>
@@ -127,40 +129,36 @@ export default function About() {
         variants={stagger(0.1)}
       >
         <motion.div variants={fadeUp}>
-          <p className="eyebrow mb-4">Über uns</p>
+          <p className="eyebrow mb-4">{t({ de: 'Über uns', en: 'About us' })}</p>
           <h2 className="text-3xl font-extrabold sm:text-4xl">
-            Zwei Gründer. Direkter Kontakt. Keine Hotline.
+            {t({ de: 'Zwei Gründer. Direkter Kontakt. Keine Hotline.', en: 'Two founders. Direct contact. No hotline.' })}
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-ink/70">
-            AVAN wurde von Oskar Kielek und Kasum Caka gegründet — mit dem Ziel, Unternehmen
-            einen unkomplizierten, persönlichen Zugang zu professionellen Websites zu bieten.
-            Kein Callcenter, keine anonymen Tickets: bei AVAN sprechen Sie direkt mit den
-            Menschen, die Ihre Website bauen und betreuen.
+            {t({
+              de: 'AVAN wurde von Oskar Kielek und Kasum Caka gegründet — mit dem Ziel, Unternehmen einen unkomplizierten, persönlichen Zugang zu professionellen Websites zu bieten. Kein Callcenter, keine anonymen Tickets: bei AVAN sprechen Sie direkt mit den Menschen, die Ihre Website bauen und betreuen.',
+              en: 'AVAN was founded by Oskar Kielek and Kasum Caka — with the goal of giving businesses uncomplicated, personal access to professional websites. No call center, no anonymous tickets: at AVAN you speak directly with the people who build and maintain your website.',
+            })}
           </p>
           <p className="mt-4 text-base leading-relaxed text-ink/65">
-            Wir sind ein junges Team — und genau das ist unser Vorteil: kurze Reaktionszeiten,
-            flache Hierarchien und echtes Interesse an Ihrem Projekt. Sie bekommen keine
-            Abteilung, Sie bekommen die Gründer.
+            {t({
+              de: 'Wir sind ein junges Team — und genau das ist unser Vorteil: kurze Reaktionszeiten, flache Hierarchien und echtes Interesse an Ihrem Projekt. Sie bekommen keine Abteilung, Sie bekommen die Gründer.',
+              en: 'We’re a young team — and that’s exactly our advantage: short response times, flat hierarchies and genuine interest in your project. You don’t get a department, you get the founders.',
+            })}
           </p>
-          <LinkedInLink />
-          <TrustCard />
+          <LinkedInLink t={t} />
+          <TrustCard t={t} />
         </motion.div>
 
         <motion.div variants={fadeUp} className="grid gap-4 sm:grid-cols-2">
-          <FounderCard
-            photo="/oskar-kielek.jpg"
-            name="Oskar Kielek"
-            role="Entwicklung, Technik & Design"
-            slug="oskar"
-            delay={0}
-          />
+          <FounderCard photo="/oskar-kielek.jpg" name="Oskar Kielek" role={roleOskar} slug="oskar" delay={0} t={t} />
           <FounderCard
             photo="/kasum-caka.jpg"
             name="Kasum Caka"
-            role="Entwicklung, Design & Kundenbetreuung"
+            role={roleKasum}
             slug="kasum"
             delay={0.1}
             imgClass="object-[75%_25%] [filter:saturate(0.95)_hue-rotate(-8deg)]"
+            t={t}
           />
         </motion.div>
       </motion.div>

@@ -82,6 +82,7 @@ export default function SupportForm() {
             key="form"
             name="support-anfrage"
             data-netlify="true"
+            data-netlify-honeypot="bot-field"
             onSubmit={handleSubmit}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -90,6 +91,12 @@ export default function SupportForm() {
             noValidate
           >
             <input type="hidden" name="form-name" value="support-anfrage" />
+            {/* Honeypot: fuer echte Nutzer unsichtbar, Bots fuellen es oft aus. */}
+            <p className="hidden" aria-hidden="true">
+              <label>
+                Bitte nicht ausfüllen: <input name="bot-field" tabIndex="-1" autoComplete="off" />
+              </label>
+            </p>
 
             <div>
               <label htmlFor="sf-name" className={labelClass}>

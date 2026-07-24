@@ -408,12 +408,19 @@ export default function ProjektModal() {
                   <form
                     name="projekt-starten"
                     data-netlify="true"
+                    data-netlify-honeypot="bot-field"
                     onSubmit={handleSubmit}
                     className="mt-8 space-y-5"
                     noValidate
                   >
                     {/* Netlify Forms: verstecktes Pflichtfeld mit Form-Namen. */}
                     <input type="hidden" name="form-name" value="projekt-starten" />
+                    {/* Honeypot: fuer echte Nutzer unsichtbar, Bots fuellen es oft aus. */}
+                    <p className="hidden" aria-hidden="true">
+                      <label>
+                        Bitte nicht ausfüllen: <input name="bot-field" tabIndex="-1" autoComplete="off" />
+                      </label>
+                    </p>
                     {/* Verstecktes Feld: Termin-Info fließt in denselben Backend-Submit. */}
                     {cameFromCalendar && (
                       <input type="hidden" name="termin" value={terminValue} readOnly />

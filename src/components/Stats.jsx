@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { useInView, animate } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useMediaQuery } from '../lib/use-media-query.js'
+import { useTranslate } from '../lib/language-preference.jsx'
 
 function useCountUp(target, inView, suffix = '', decimals = 0, skipAnimation = false) {
   const [value, setValue] = useState(skipAnimation ? target : 0)
@@ -37,13 +38,14 @@ export default function Stats() {
   const isMobile = useMediaQuery('(max-width: 768px)')
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
+  const t = useTranslate()
 
   return (
     <section className="border-y border-navy/5 py-16">
       <div ref={ref} className="container-px grid gap-10 sm:grid-cols-3">
-        <Stat value={100} suffix="%" label="Persönliche Betreuung" inView={inView} skipAnimation={isMobile} />
-        <Stat value={24} suffix="/7" label="Erreichbarkeit bei Problemen" inView={inView} skipAnimation={isMobile} />
-        <Stat value={2} label="Gründer, direkter Kontakt" inView={inView} skipAnimation={isMobile} />
+        <Stat value={100} suffix="%" label={t({ de: 'Persönliche Betreuung', en: 'Personal support' })} inView={inView} skipAnimation={isMobile} />
+        <Stat value={24} suffix="/7" label={t({ de: 'Erreichbarkeit bei Problemen', en: 'Availability for issues' })} inView={inView} skipAnimation={isMobile} />
+        <Stat value={2} label={t({ de: 'Gründer, direkter Kontakt', en: 'Founders, direct contact' })} inView={inView} skipAnimation={isMobile} />
       </div>
     </section>
   )

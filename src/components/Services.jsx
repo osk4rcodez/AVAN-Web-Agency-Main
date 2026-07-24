@@ -6,76 +6,147 @@ import { TiltCard } from './ui/tilt-card.jsx'
 import { DetailsModal } from './ui/details-modal.jsx'
 import { lockBodyScroll, unlockBodyScroll } from '../lib/scroll-lock.js'
 import { useMediaQuery } from '../lib/use-media-query.js'
+import { useTranslate } from '../lib/language-preference.jsx'
 
 const services = [
   {
+    id: 'website',
     icon: Globe,
-    title: 'Website-Entwicklung',
-    desc: 'Individuelles Design & Umsetzung, maßgeschneidert auf das Unternehmen — keine Baukasten-Vorlagen.',
-    subtitle: 'Individuelles Design, kein Baukasten',
+    title: { de: 'Website-Entwicklung', en: 'Website development' },
+    desc: {
+      de: 'Individuelles Design & Umsetzung, maßgeschneidert auf das Unternehmen — keine Baukasten-Vorlagen.',
+      en: 'Custom design & implementation, tailored to your business — no website-builder templates.',
+    },
+    subtitle: { de: 'Individuelles Design, kein Baukasten', en: 'Custom design, no website builder' },
     details: [
-      'Eigenes Konzept und Design, abgestimmt auf Ihre Marke — keine austauschbare Vorlage.',
-      'Umsetzung mit modernen, schnellen Technologien statt aufgeblähtem Website-Baukasten.',
-      'Responsive für Smartphone, Tablet und Desktop, von Anfang an mitgedacht.',
+      {
+        de: 'Eigenes Konzept und Design, abgestimmt auf Ihre Marke — keine austauschbare Vorlage.',
+        en: 'A custom concept and design matched to your brand — not an interchangeable template.',
+      },
+      {
+        de: 'Umsetzung mit modernen, schnellen Technologien statt aufgeblähtem Website-Baukasten.',
+        en: 'Built with modern, fast technology instead of a bloated website builder.',
+      },
+      {
+        de: 'Responsive für Smartphone, Tablet und Desktop, von Anfang an mitgedacht.',
+        en: 'Responsive for phone, tablet and desktop, considered from the start.',
+      },
     ],
-    noteLabel: 'Ideal für',
-    noteItems: ['Neue Unternehmens-Website', 'Relaunch einer veralteten Seite', 'Landingpages für Kampagnen'],
-    outcome: 'Eine Website, die zu Ihrem Unternehmen passt — technisch sauber und visuell eigenständig.',
+    noteLabel: { de: 'Ideal für', en: 'Ideal for' },
+    noteItems: [
+      { de: 'Neue Unternehmens-Website', en: 'New company website' },
+      { de: 'Relaunch einer veralteten Seite', en: 'Relaunch of an outdated site' },
+      { de: 'Landingpages für Kampagnen', en: 'Landing pages for campaigns' },
+    ],
+    outcome: {
+      de: 'Eine Website, die zu Ihrem Unternehmen passt — technisch sauber und visuell eigenständig.',
+      en: 'A website that fits your business — technically clean and visually distinctive.',
+    },
   },
   {
+    id: 'hosting',
     icon: Server,
-    title: 'Hosting & Bereitstellung',
-    desc: 'Wir bringen die Seite zuverlässig online und halten sie am Laufen — performant und sicher.',
-    subtitle: 'Zuverlässig online, ohne dass Sie sich kümmern müssen',
+    title: { de: 'Hosting & Bereitstellung', en: 'Hosting & deployment' },
+    desc: {
+      de: 'Wir bringen die Seite zuverlässig online und halten sie am Laufen — performant und sicher.',
+      en: 'We reliably bring your site online and keep it running — fast and secure.',
+    },
+    subtitle: { de: 'Zuverlässig online, ohne dass Sie sich kümmern müssen', en: 'Reliably online, without you having to worry' },
     details: [
-      'Einrichtung von Domain, Hosting und SSL-Zertifikat — startklar ohne technisches Vorwissen Ihrerseits.',
-      'Performance-Optimierung, damit die Seite schnell lädt — wichtig für Nutzer und Google.',
-      'Überwachung der Erreichbarkeit — wir merken es, bevor Ihre Kunden es merken.',
+      {
+        de: 'Einrichtung von Domain, Hosting und SSL-Zertifikat — startklar ohne technisches Vorwissen Ihrerseits.',
+        en: 'Setup of domain, hosting and SSL certificate — ready to go without any technical knowledge on your end.',
+      },
+      {
+        de: 'Performance-Optimierung, damit die Seite schnell lädt — wichtig für Nutzer und Google.',
+        en: 'Performance optimization so the site loads fast — important for users and Google.',
+      },
+      {
+        de: 'Überwachung der Erreichbarkeit — wir merken es, bevor Ihre Kunden es merken.',
+        en: 'Uptime monitoring — we notice before your customers do.',
+      },
     ],
-    noteLabel: 'Enthalten',
-    noteItems: ['Domain- & SSL-Einrichtung', 'Server-Monitoring', 'Performance-Checks'],
-    outcome: 'Ihre Seite ist erreichbar, schnell und technisch abgesichert.',
+    noteLabel: { de: 'Enthalten', en: 'Included' },
+    noteItems: [
+      { de: 'Domain- & SSL-Einrichtung', en: 'Domain & SSL setup' },
+      { de: 'Server-Monitoring', en: 'Server monitoring' },
+      { de: 'Performance-Checks', en: 'Performance checks' },
+    ],
+    outcome: {
+      de: 'Ihre Seite ist erreichbar, schnell und technisch abgesichert.',
+      en: 'Your site stays reachable, fast and technically secure.',
+    },
   },
   {
+    id: 'wartung',
     icon: ShieldCheck,
-    title: 'Wartung & Pflege',
-    desc: 'Updates, Sicherheits-Checks, Inhalte pflegen — laufend, nicht einmalig.',
-    subtitle: 'Laufend, nicht einmalig',
+    title: { de: 'Wartung & Pflege', en: 'Maintenance & care' },
+    desc: {
+      de: 'Updates, Sicherheits-Checks, Inhalte pflegen — laufend, nicht einmalig.',
+      en: 'Updates, security checks, content upkeep — ongoing, not a one-off.',
+    },
+    subtitle: { de: 'Laufend, nicht einmalig', en: 'Ongoing, not a one-off' },
     details: [
-      'Regelmäßige Sicherheits-Updates für Software und Plugins.',
-      'Kleinere Inhaltsänderungen (Texte, Bilder, Preise) übernehmen wir auf Zuruf.',
-      'Regelmäßige Backups, damit im Ernstfall nichts verloren geht.',
+      { de: 'Regelmäßige Sicherheits-Updates für Software und Plugins.', en: 'Regular security updates for software and plugins.' },
+      {
+        de: 'Kleinere Inhaltsänderungen (Texte, Bilder, Preise) übernehmen wir auf Zuruf.',
+        en: 'We handle small content changes (text, images, prices) on request.',
+      },
+      { de: 'Regelmäßige Backups, damit im Ernstfall nichts verloren geht.', en: 'Regular backups so nothing is lost in an emergency.' },
     ],
-    noteLabel: 'Enthalten',
-    noteItems: ['Sicherheits-Updates', 'Backups', 'Kleinere Textanpassungen'],
-    outcome: 'Ihre Website bleibt aktuell, sicher und funktioniert dauerhaft zuverlässig.',
+    noteLabel: { de: 'Enthalten', en: 'Included' },
+    noteItems: [
+      { de: 'Sicherheits-Updates', en: 'Security updates' },
+      { de: 'Backups', en: 'Backups' },
+      { de: 'Kleinere Textanpassungen', en: 'Minor text edits' },
+    ],
+    outcome: {
+      de: 'Ihre Website bleibt aktuell, sicher und funktioniert dauerhaft zuverlässig.',
+      en: 'Your website stays current, secure and reliably functional long-term.',
+    },
   },
   {
+    id: 'support',
     icon: Headset,
-    title: 'Support & Beratung',
-    desc: 'Direkter Draht zu den Gründern, keine anonyme Hotline oder Ticket-Schlange.',
-    subtitle: 'Direkter Draht zu den Gründern',
+    title: { de: 'Support & Beratung', en: 'Support & consulting' },
+    desc: {
+      de: 'Direkter Draht zu den Gründern, keine anonyme Hotline oder Ticket-Schlange.',
+      en: 'A direct line to the founders — no anonymous hotline or ticket queue.',
+    },
+    subtitle: { de: 'Direkter Draht zu den Gründern', en: 'A direct line to the founders' },
     details: [
-      'Fragen und Änderungswünsche gehen direkt an Oskar oder Kasum — nicht in ein Ticket-System.',
-      'Beratung bei neuen Ideen: Was lohnt sich, was nicht?',
-      'Schnelle Reaktionszeiten, weil wir ein kleines, persönliches Team sind.',
+      {
+        de: 'Fragen und Änderungswünsche gehen direkt an Oskar oder Kasum — nicht in ein Ticket-System.',
+        en: 'Questions and change requests go straight to Oskar or Kasum — not into a ticket system.',
+      },
+      { de: 'Beratung bei neuen Ideen: Was lohnt sich, was nicht?', en: 'Advice on new ideas: what’s worth it, what isn’t?' },
+      {
+        de: 'Schnelle Reaktionszeiten, weil wir ein kleines, persönliches Team sind.',
+        en: 'Fast response times because we’re a small, personal team.',
+      },
     ],
-    noteLabel: 'Erreichbar über',
-    noteItems: ['avanwebagency@gmail.com', 'Persönliches Gespräch nach Bedarf'],
-    outcome: 'Sie haben feste Ansprechpartner statt einer anonymen Hotline.',
+    noteLabel: { de: 'Erreichbar über', en: 'Reachable via' },
+    noteItems: [
+      { de: 'avanwebagency@gmail.com', en: 'avanwebagency@gmail.com' },
+      { de: 'Persönliches Gespräch nach Bedarf', en: 'Personal call as needed' },
+    ],
+    outcome: {
+      de: 'Sie haben feste Ansprechpartner statt einer anonymen Hotline.',
+      en: 'You get fixed contacts instead of an anonymous hotline.',
+    },
   },
 ]
 
-function ServiceCardContent({ s }) {
+function ServiceCardContent({ s, t }) {
   const Icon = s.icon
   return (
     <>
       <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent transition-colors group-hover:bg-accent group-hover:text-white">
         <Icon size={24} strokeWidth={2} />
       </span>
-      <h3 className="mt-5 text-lg font-bold text-navy">{s.title}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-ink/65">{s.desc}</p>
-      <p className="mt-4 text-xs font-medium text-accent">Mehr erfahren →</p>
+      <h3 className="mt-5 text-lg font-bold text-navy">{t(s.title)}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-ink/65">{t(s.desc)}</p>
+      <p className="mt-4 text-xs font-medium text-accent">{t({ de: 'Mehr erfahren →', en: 'Learn more →' })}</p>
     </>
   )
 }
@@ -83,6 +154,7 @@ function ServiceCardContent({ s }) {
 export default function Services() {
   const isMobile = useMediaQuery('(max-width: 768px)')
   const [activeIndex, setActiveIndex] = useState(null)
+  const t = useTranslate()
   const open = activeIndex !== null
   const isFirst = activeIndex === 0
   const isLast = activeIndex === services.length - 1
@@ -103,7 +175,7 @@ export default function Services() {
   // zu scrollen.
   useEffect(() => {
     const onOpenSupport = () => {
-      const i = services.findIndex((s) => s.title === 'Support & Beratung')
+      const i = services.findIndex((s) => s.id === 'support')
       if (i !== -1) setActiveIndex(i)
     }
     window.addEventListener('open-support-details', onOpenSupport)
@@ -121,15 +193,15 @@ export default function Services() {
   const activeService = open ? services[activeIndex] : null
   const modalItem = activeService
     ? {
-        key: activeService.title,
-        eyebrow: 'Leistung',
-        title: activeService.title,
-        subtitle: activeService.subtitle,
-        details: activeService.details,
-        noteLabel: activeService.noteLabel,
-        noteItems: activeService.noteItems,
-        outcome: activeService.outcome,
-        formType: activeService.title === 'Support & Beratung' ? 'support' : undefined,
+        key: activeService.id,
+        eyebrow: t({ de: 'Leistung', en: 'Service' }),
+        title: t(activeService.title),
+        subtitle: t(activeService.subtitle),
+        details: activeService.details.map(t),
+        noteLabel: t(activeService.noteLabel),
+        noteItems: activeService.noteItems.map(t),
+        outcome: t(activeService.outcome),
+        formType: activeService.id === 'support' ? 'support' : undefined,
       }
     : null
 
@@ -140,13 +212,15 @@ export default function Services() {
     <section id="leistungen" className="section">
       <div className="container-px">
         <div className="max-w-2xl">
-          <p className="eyebrow mb-4">Leistungen</p>
+          <p className="eyebrow mb-4">{t({ de: 'Leistungen', en: 'Services' })}</p>
           <h2 className="text-3xl font-extrabold sm:text-4xl">
-            Alles aus einer Hand — von der Idee bis zum Server.
+            {t({ de: 'Alles aus einer Hand — von der Idee bis zum Server.', en: 'Everything from a single source — from idea to server.' })}
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-ink/70">
-            Vier Bausteine, die zusammen eine Website ergeben, die nicht nur gut aussieht,
-            sondern zuverlässig für Ihr Unternehmen arbeitet.
+            {t({
+              de: 'Vier Bausteine, die zusammen eine Website ergeben, die nicht nur gut aussieht, sondern zuverlässig für Ihr Unternehmen arbeitet.',
+              en: 'Four building blocks that together make a website that not only looks good but works reliably for your business.',
+            })}
           </p>
         </div>
 
@@ -156,11 +230,11 @@ export default function Services() {
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {services.map((s, i) => (
               <div
-                key={s.title}
+                key={s.id}
                 className={cardClass}
                 role="button"
                 tabIndex={0}
-                aria-label={`Mehr Infos zu ${s.title}`}
+                aria-label={`${t({ de: 'Mehr Infos zu', en: 'More info on' })} ${t(s.title)}`}
                 onClick={() => setActiveIndex(i)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
@@ -169,7 +243,7 @@ export default function Services() {
                   }
                 }}
               >
-                <ServiceCardContent s={s} />
+                <ServiceCardContent s={s} t={t} />
               </div>
             ))}
           </div>
@@ -183,12 +257,12 @@ export default function Services() {
           >
             {services.map((s, i) => (
               <TiltCard
-                key={s.title}
+                key={s.id}
                 variants={revealScale}
                 className={cardClass}
                 role="button"
                 tabIndex={0}
-                aria-label={`Mehr Infos zu ${s.title}`}
+                aria-label={`${t({ de: 'Mehr Infos zu', en: 'More info on' })} ${t(s.title)}`}
                 onClick={() => setActiveIndex(i)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
@@ -197,7 +271,7 @@ export default function Services() {
                   }
                 }}
               >
-                <ServiceCardContent s={s} />
+                <ServiceCardContent s={s} t={t} />
               </TiltCard>
             ))}
           </motion.div>

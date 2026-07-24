@@ -8,22 +8,35 @@ import { ClassicSalesPage } from './ui/classic-sales-page.jsx'
 import { BookingSystemPage } from './ui/booking-system-page.jsx'
 import { useMediaQuery } from '../lib/use-media-query.js'
 import { useMotionPreference } from '../lib/motion-preference.jsx'
+import { useTranslate } from '../lib/language-preference.jsx'
 
 const projects = [
   {
-    name: 'Professionelle Seiten mit Animationen',
-    type: 'Design',
-    desc: 'Moderne, interaktive Websites mit durchdachten Animationen und Effekten — für Unternehmen, die auffallen wollen.',
+    id: 'design',
+    name: { de: 'Professionelle Seiten mit Animationen', en: 'Professional pages with animations' },
+    type: { de: 'Design', en: 'Design' },
+    desc: {
+      de: 'Moderne, interaktive Websites mit durchdachten Animationen und Effekten — für Unternehmen, die auffallen wollen.',
+      en: 'Modern, interactive websites with thoughtful animations and effects — for businesses that want to stand out.',
+    },
   },
   {
-    name: 'Klassische, verkaufsstarke Seiten',
-    type: 'Conversion',
-    desc: 'Reduziertes, klares Design, das auf Conversion ausgelegt ist — schnell, übersichtlich, ohne Ablenkung vom Wesentlichen.',
+    id: 'conversion',
+    name: { de: 'Klassische, verkaufsstarke Seiten', en: 'Classic, high-converting pages' },
+    type: { de: 'Conversion', en: 'Conversion' },
+    desc: {
+      de: 'Reduziertes, klares Design, das auf Conversion ausgelegt ist — schnell, übersichtlich, ohne Ablenkung vom Wesentlichen.',
+      en: 'Reduced, clear design built for conversion — fast, clear, no distraction from what matters.',
+    },
   },
   {
-    name: 'Seiten mit Buchungssystem',
-    type: 'Funktion',
-    desc: 'Interaktive Seiten mit Buchungssystem — für Hotels und Betriebe, bei denen Kunden direkt online reservieren oder bestellen.',
+    id: 'booking',
+    name: { de: 'Seiten mit Buchungssystem', en: 'Pages with a booking system' },
+    type: { de: 'Funktion', en: 'Function' },
+    desc: {
+      de: 'Interaktive Seiten mit Buchungssystem — für Hotels und Betriebe, bei denen Kunden direkt online reservieren oder bestellen.',
+      en: 'Interactive pages with a booking system — for hotels and businesses where customers book or order directly online.',
+    },
   },
 ]
 
@@ -31,6 +44,7 @@ const LIVE_PREVIEWS = [SpadeHero, ClassicSalesPage, BookingSystemPage]
 
 function ProjectCard({ p, i }) {
   const { reduceMotion } = useMotionPreference()
+  const t = useTranslate()
   // Nur bei angemachter Option (Animationen an): jede Karte zeigt eine echte
   // interaktive Live-Vorschau statt des statischen Platzhalters.
   const LivePreview = !reduceMotion ? LIVE_PREVIEWS[i] : null
@@ -48,12 +62,12 @@ function ProjectCard({ p, i }) {
       </div>
       <div className="p-6">
         <div className="flex items-center justify-between gap-3">
-          <h3 className="text-lg font-bold text-navy">{p.name}</h3>
+          <h3 className="text-lg font-bold text-navy">{t(p.name)}</h3>
           <span className="rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
-            {p.type}
+            {t(p.type)}
           </span>
         </div>
-        <p className="mt-2 text-sm leading-relaxed text-ink/65">{p.desc}</p>
+        <p className="mt-2 text-sm leading-relaxed text-ink/65">{t(p.desc)}</p>
       </div>
     </>
   )
@@ -61,6 +75,7 @@ function ProjectCard({ p, i }) {
 
 export default function Showcase() {
   const isMobile = useMediaQuery('(max-width: 768px)')
+  const t = useTranslate()
   const cardClass =
     'group overflow-hidden rounded-2xl border border-navy/10 bg-white shadow-card transition-[border-color,box-shadow] duration-300 hover:border-accent/30 hover:shadow-cardHover'
 
@@ -68,13 +83,15 @@ export default function Showcase() {
     <section id="showcase" className="section">
       <div className="container-px">
         <div className="max-w-2xl">
-          <p className="eyebrow mb-4">Showcase</p>
+          <p className="eyebrow mb-4">{t({ de: 'Showcase', en: 'Showcase' })}</p>
           <h2 className="text-3xl font-extrabold sm:text-4xl">
-            Ausgewählte Projekte.
+            {t({ de: 'Ausgewählte Projekte.', en: 'Selected projects.' })}
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-ink/70">
-            Eine Auswahl an Websites, die wir konzipiert, gebaut und betreuen. Echte Projekte
-            folgen, sobald die ersten Mandate live sind.
+            {t({
+              de: 'Eine Auswahl an Websites, die wir konzipiert, gebaut und betreuen. Echte Projekte folgen, sobald die ersten Mandate live sind.',
+              en: 'A selection of websites we design, build and manage. Real projects will follow as soon as the first clients go live.',
+            })}
           </p>
         </div>
 
@@ -83,20 +100,20 @@ export default function Showcase() {
           // Karten, kein Einflug, kein Hover-Rest-Effekt moeglich.
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {projects.map((p, i) => (
-              <div key={p.name} className={cardClass}>
+              <div key={p.id} className={cardClass}>
                 <ProjectCard p={p} i={i} />
               </div>
             ))}
             <div className="group flex flex-col justify-center rounded-2xl border border-dashed border-navy/15 bg-white/50 p-6">
               <p className="font-display text-2xl font-extrabold text-navy/30">#4</p>
               <p className="mt-2 text-sm leading-relaxed text-ink/45">
-                Platzhalter für ein weiteres echtes Projekt.
+                {t({ de: 'Platzhalter für ein weiteres echtes Projekt.', en: 'Placeholder for another real project.' })}
               </p>
               <a
                 href="#kontakt"
                 className="group/link mt-4 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-navy"
               >
-                Eigenes Projekt starten
+                {t({ de: 'Eigenes Projekt starten', en: 'Start your own project' })}
                 <ArrowUpRight
                   size={16}
                   className="transition-transform group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
@@ -113,7 +130,7 @@ export default function Showcase() {
             className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
           >
             {projects.map((p, i) => (
-              <TiltCard key={p.name} variants={revealScale} className={cardClass}>
+              <TiltCard key={p.id} variants={revealScale} className={cardClass}>
                 <ProjectCard p={p} i={i} />
               </TiltCard>
             ))}
@@ -125,13 +142,13 @@ export default function Showcase() {
             >
               <p className="font-display text-2xl font-extrabold text-navy/30">#4</p>
               <p className="mt-2 text-sm leading-relaxed text-ink/45">
-                Platzhalter für ein weiteres echtes Projekt.
+                {t({ de: 'Platzhalter für ein weiteres echtes Projekt.', en: 'Placeholder for another real project.' })}
               </p>
               <a
                 href="#kontakt"
                 className="group/link mt-4 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-navy"
               >
-                Eigenes Projekt starten
+                {t({ de: 'Eigenes Projekt starten', en: 'Start your own project' })}
                 <ArrowUpRight
                   size={16}
                   className="transition-transform group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"

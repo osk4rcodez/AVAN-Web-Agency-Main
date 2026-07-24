@@ -1,3 +1,5 @@
+import { useTranslate } from '../lib/language-preference.jsx'
+
 const tech = [
   {
     name: 'React',
@@ -104,14 +106,16 @@ function LogoItem({ name, Logo }) {
 }
 
 export default function TrustBar() {
+  const t = useTranslate()
   const items = [...tech, ...tech]
+  const label = t({ de: 'Technologien, mit denen wir arbeiten', en: 'Technologies we work with' })
   return (
     <section className="border-y border-navy/5 bg-mist/60 py-8">
       <div className="container-px">
         <p className="mb-6 text-center text-xs font-semibold uppercase tracking-widest text-accent">
-          Technologien, mit denen wir arbeiten
+          {label}
         </p>
-        <div className="marquee" role="list" aria-label="Technologien, mit denen wir arbeiten">
+        <div className="marquee" role="list" aria-label={label}>
           <div className="marquee-track">
             {items.map(({ name, Logo }, i) => (
               <LogoItem key={`${name}-${i}`} name={name} Logo={Logo} />
