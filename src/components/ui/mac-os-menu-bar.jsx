@@ -117,7 +117,7 @@ export default function MacOSMenuBar({ appName = 'Finder', menus = DEFAULT_MENUS
   const menuRefs = useRef({})
 
   useEffect(() => {
-    const updateTime = () => setCurrentTime(new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }))
+    const updateTime = () => setCurrentTime(new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', hour12: false }))
     updateTime()
     const interval = setInterval(updateTime, 60000)
     return () => clearInterval(interval)

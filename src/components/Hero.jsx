@@ -6,7 +6,7 @@ import MotionToggle from './MotionToggle.jsx'
 
 export default function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden pt-24 pb-14 sm:pt-24 sm:pb-16 lg:pt-28 lg:pb-24 xl:pt-32 xl:pb-28 2xl:pt-40 2xl:pb-36">
+    <section id="top" className="relative overflow-hidden pt-24 pb-8 sm:pt-24 sm:pb-10 lg:pt-28 lg:pb-12 xl:pt-32 xl:pb-14 2xl:pt-40 2xl:pb-16">
       <div
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
@@ -102,27 +102,6 @@ export default function Hero() {
               ),
             )}
           </motion.ul>
-
-          {/* Vertrauens-Karte: Gründer + Reaktionszeit */}
-          <motion.div
-            variants={fadeUp}
-            className="mt-36 hidden items-center gap-4 rounded-2xl border border-navy/10 bg-white/60 p-3 pr-5 backdrop-blur-sm sm:inline-flex"
-          >
-            <div className="flex -space-x-2.5">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-accent to-navy text-sm font-bold text-white">
-                A
-              </span>
-              <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-navy to-accent text-sm font-bold text-white">
-                V
-              </span>
-            </div>
-            <div className="leading-tight">
-              <p className="text-sm font-semibold text-navy">Direkt von den Gründern</p>
-              <p className="text-xs text-ink/60">
-                Antwort in der Regel innerhalb eines Tages
-              </p>
-            </div>
-          </motion.div>
         </motion.div>
       </div>
     </section>

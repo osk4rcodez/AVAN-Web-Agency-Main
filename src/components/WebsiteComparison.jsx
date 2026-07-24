@@ -17,7 +17,7 @@ export default function WebsiteComparison() {
   const showBrowserChrome = !reduceMotion
 
   return (
-    <section className="section pt-8 pb-8 sm:pt-10 sm:pb-10 lg:pt-12 lg:pb-12">
+    <section className="section pt-0 pb-8 sm:pt-2 sm:pb-10 lg:pt-4 lg:pb-12">
       <div className="container-px">
         <motion.div
           initial="hidden"

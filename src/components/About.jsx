@@ -20,6 +20,25 @@ function LinkedInLink() {
   )
 }
 
+function TrustCard() {
+  return (
+    <div className="mt-6 inline-flex items-center gap-4 rounded-2xl border border-navy/10 bg-white/60 p-3 pr-5 backdrop-blur-sm">
+      <div className="flex -space-x-2.5">
+        <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-accent to-navy text-sm font-bold text-white">
+          A
+        </span>
+        <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-navy to-accent text-sm font-bold text-white">
+          V
+        </span>
+      </div>
+      <div className="leading-tight">
+        <p className="text-sm font-semibold text-navy">Direkt von den Gründern</p>
+        <p className="text-xs text-ink/60">Antwort in der Regel innerhalb eines Tages</p>
+      </div>
+    </div>
+  )
+}
+
 function FounderCard({ photo, name, role, slug, delay = 0, imgClass = '' }) {
   return (
     <motion.button
@@ -75,6 +94,7 @@ export default function About() {
               Abteilung, Sie bekommen die Gründer.
             </p>
             <LinkedInLink />
+            <TrustCard />
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
@@ -123,6 +143,7 @@ export default function About() {
             Abteilung, Sie bekommen die Gründer.
           </p>
           <LinkedInLink />
+          <TrustCard />
         </motion.div>
 
         <motion.div variants={fadeUp} className="grid gap-4 sm:grid-cols-2">
