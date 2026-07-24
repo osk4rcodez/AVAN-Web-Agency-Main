@@ -4,3 +4,5 @@ dist
 *.local 
 .kilo/
 .playwright-mcp/
+.vercel
+.env*
