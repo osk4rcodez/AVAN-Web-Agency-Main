@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { MotionConfig } from 'framer-motion'
+import { Analytics } from '@vercel/analytics/react'
 import App from './App.jsx'
 import { MotionProvider, useMotionPreference } from './lib/motion-preference.jsx'
 import { LanguageProvider } from './lib/language-preference.jsx'
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <MotionConfigBridge>
           <App />
         </MotionConfigBridge>
+        <Analytics />
       </LanguageProvider>
     </MotionProvider>
   </React.StrictMode>,
