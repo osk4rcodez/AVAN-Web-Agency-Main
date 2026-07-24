@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import LoadingScreen from './components/LoadingScreen.jsx'
 import ScrollProgressBar from './components/ScrollProgressBar.jsx'
 import TopoBackground from './components/ui/topo-background.jsx'
@@ -183,6 +184,7 @@ export default function App() {
         <CookieConsent />
         <FounderModal />
       </LoadingScreen>
+      <Analytics />
     </>
   )
 }
