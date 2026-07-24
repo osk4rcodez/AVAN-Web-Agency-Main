@@ -2,14 +2,7 @@ import { motion } from 'framer-motion'
 import { EASE } from '../lib/motion-variants.js'
 
 function AddressField() {
-  return (
-    <span>
-      86830 Schwabmünchen
-      <span className="ml-1 rounded bg-yellow-200 px-1.5 py-0.5 font-medium italic text-yellow-900">
-        [Straße &amp; Hausnr. ergänzen]
-      </span>
-    </span>
-  )
+  return <span>Nebelhornstraße, 86830 Schwabmünchen</span>
 }
 
 function Section({ n, title, children }) {
@@ -82,7 +75,7 @@ export default function Datenschutz() {
       </p>
 
       <a href="#top" className="mt-10 inline-flex text-sm font-semibold text-accent hover:text-navy">
-        ← Zurück zur Startseite
+        ← Zurück
       </a>
     </motion.main>
   )

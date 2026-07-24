@@ -10,6 +10,9 @@ export function ImageComparison({
   altBefore = 'Vorher',
   altAfter = 'Nachher',
   className = '',
+  // Wenn true: kein eigener Rahmen/Schatten — fuer den Einsatz innerhalb
+  // eines BrowserFrame (siehe browser-frame.jsx), das den Rahmen selbst stellt.
+  bare = false,
 }) {
   const [sliderPosition, setSliderPosition] = useState(50)
   const [isDragging, setIsDragging] = useState(false)
@@ -42,7 +45,7 @@ export function ImageComparison({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full select-none overflow-hidden rounded-2xl border border-navy/10 shadow-cardHover ${className}`}
+      className={`relative w-full select-none overflow-hidden ${bare ? '' : 'rounded-2xl border border-navy/10 shadow-cardHover'} ${className}`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseUp}
       onTouchMove={handleTouchMove}

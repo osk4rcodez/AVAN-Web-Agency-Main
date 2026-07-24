@@ -16,7 +16,7 @@ const links = [
   { label: 'Kontakt', href: '#kontakt', icon: Mail },
 ]
 
-export default function Navbar() {
+export default function Navbar({ pushedDown = false }) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
 
@@ -38,7 +38,7 @@ export default function Navbar() {
       initial="hidden"
       animate="show"
       variants={fadeDown}
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${pushedDown ? 'md:top-[47px]' : 'md:top-0'} ${
         open
           ? 'border-b border-transparent bg-white'
           : scrolled
@@ -49,10 +49,12 @@ export default function Navbar() {
       <nav className="container-px relative flex h-16 items-center justify-between lg:h-20">
         <a
           href="#top"
-          className={`shrink-0 mx-auto md:mx-0 ${open ? 'invisible md:visible' : ''}`}
+          className={`shrink-0 mx-auto translate-y-2 md:mx-0 md:translate-y-0 ${open ? 'invisible md:visible' : ''}`}
           aria-label="AVAN Web Agency — Startseite"
         >
-          <Logo />
+          <div className="scale-110 md:scale-100">
+            <Logo />
+          </div>
         </a>
 
         <div className="hidden items-center md:flex">

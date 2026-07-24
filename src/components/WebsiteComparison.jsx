@@ -3,13 +3,21 @@ import { fadeUp, stagger } from '../lib/motion-variants.js'
 import { ImageComparison } from './ui/image-comparison-slider.jsx'
 import { SpadeHero } from './ui/spade-hero.jsx'
 import { BadWebsite } from './ui/bad-website.jsx'
+import { BrowserFrame } from './ui/browser-frame.jsx'
 import { useMotionPreference } from '../lib/motion-preference.jsx'
+import { useMediaQuery } from '../lib/use-media-query.js'
 
 export default function WebsiteComparison() {
   const { reduceMotion } = useMotionPreference()
+  const isMobile = useMediaQuery('(max-width: 768px)')
+  // Der Browser-Rahmen (Ampel-Punkte + Adressleiste) zeigt sich bei
+  // aktivierten Animationen auf PC UND Handy — das Herumziehen der Karte an
+  // der oberen Leiste bleibt aber PC-only (auf dem Handy wuerde das mit dem
+  // Scrollen/dem Regler kollidieren).
+  const showBrowserChrome = !reduceMotion
 
   return (
-    <section className="section">
+    <section className="section pt-8 pb-8 sm:pt-10 sm:pb-10 lg:pt-12 lg:pb-12">
       <div className="container-px">
         <motion.div
           initial="hidden"
@@ -53,6 +61,15 @@ export default function WebsiteComparison() {
                 Tipp: Animationen oben einschalten, um die interaktive Live-Vorschau zu sehen.
               </p>
             </>
+          ) : showBrowserChrome ? (
+            <BrowserFrame draggable={!isMobile}>
+              <ImageComparison
+                altBefore="Veralteter Website-Auftritt mit grellen Farben und Comic Sans"
+                beforeContent={<BadWebsite />}
+                afterContent={<SpadeHero />}
+                bare
+              />
+            </BrowserFrame>
           ) : (
             <ImageComparison
               altBefore="Veralteter Website-Auftritt mit grellen Farben und Comic Sans"

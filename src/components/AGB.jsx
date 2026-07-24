@@ -3,11 +3,7 @@ import { EASE } from '../lib/motion-variants.js'
 import { Printer } from 'lucide-react'
 
 function AddressPlaceholder() {
-  return (
-    <span className="rounded bg-yellow-200 px-1.5 py-0.5 font-medium italic text-yellow-900">
-      [ANSCHRIFT EINFÜGEN]
-    </span>
-  )
+  return <span>Nebelhornstraße, 86830 Schwabmünchen</span>
 }
 
 function Section({ n, title, children }) {
@@ -114,7 +110,7 @@ export default function AGB() {
       </p>
 
       <a href="#top" className="mt-8 inline-flex text-sm font-semibold text-accent hover:text-navy">
-        ← Zurück zur Startseite
+        ← Zurück
       </a>
     </motion.main>
   )

@@ -16,8 +16,12 @@ export default function Hero() {
       />
       {/* Auf Mobile deckt Hero den globalen Linien-Hintergrund ab — nur der
           Streifen hinter der Navbar (oben, h-16) bleibt frei, damit das
-          Muster dort weiter durchscheint. */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 top-16 -z-10 bg-white md:hidden" />
+          Muster dort weiter durchscheint. Leichter Fade am Uebergang statt
+          hartem Schnitt. */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 top-16 -z-10 md:hidden"
+        style={{ background: 'linear-gradient(to bottom, transparent 0px, #ffffff 28px)' }}
+      />
       <div className="container-px">
         <div className="pointer-events-none absolute -top-[8%] right-[2%] -z-10 h-[34vmin] max-h-[560px] min-h-[220px] w-[34vmin] min-w-[220px] max-w-[560px] rounded-full bg-accent/10 blur-3xl" />
         <motion.div

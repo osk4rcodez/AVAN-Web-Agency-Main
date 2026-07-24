@@ -30,7 +30,7 @@ const tech = [
     ),
   },
   {
-    name: 'Netlify',
+    name: 'Vercel',
     Logo: ({ className }) => (
       <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
         <path d="M12 2 22 20H2L12 2z" />
@@ -108,7 +108,7 @@ export default function TrustBar() {
   return (
     <section className="border-y border-navy/5 bg-mist/60 py-8">
       <div className="container-px">
-        <p className="mb-6 text-center text-xs font-semibold uppercase tracking-widest text-silver">
+        <p className="mb-6 text-center text-xs font-semibold uppercase tracking-widest text-accent">
           Technologien, mit denen wir arbeiten
         </p>
         <div className="marquee" role="list" aria-label="Technologien, mit denen wir arbeiten">

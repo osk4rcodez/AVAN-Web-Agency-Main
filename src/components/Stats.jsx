@@ -26,7 +26,7 @@ function Stat({ value, suffix = '', label, inView, skipAnimation }) {
       <p className="font-display text-5xl font-extrabold tabular-nums text-navy sm:text-6xl">
         {display}
       </p>
-      <p className="mt-3 text-xs font-semibold uppercase tracking-widest text-silver">
+      <p className="mt-3 text-xs font-semibold uppercase tracking-widest text-accent">
         {label}
       </p>
     </div>

@@ -158,7 +158,7 @@ export default function TopoBackground({ className = '', fixed = false }) {
     <div
       ref={containerRef}
       aria-hidden="true"
-      className={`pointer-events-none ${fixed ? 'fixed' : 'absolute'} inset-0 -z-10 overflow-hidden bg-[--linen] ${className}`}
+      className={`site-backdrop pointer-events-none ${fixed ? 'fixed' : 'absolute'} inset-0 -z-10 overflow-hidden bg-[--linen] ${className}`}
       style={{
         '--mx': '50%',
         '--my': '50%',

@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import LoadingScreen from './components/LoadingScreen.jsx'
 import ScrollProgressBar from './components/ScrollProgressBar.jsx'
 import TopoBackground from './components/ui/topo-background.jsx'
+import MacOSMenuBar from './components/ui/mac-os-menu-bar.jsx'
 import Navbar from './components/Navbar.jsx'
 import Hero from './components/Hero.jsx'
 import WebsiteComparison from './components/WebsiteComparison.jsx'
@@ -33,7 +34,11 @@ function Landing() {
         <Hero />
         <WebsiteComparison />
         <CinematicHeroDemo />
+        {/* Fade am Rand weiss (CinematicHero) / mist (TrustBar). */}
+        <div className="h-32 w-full bg-gradient-to-b from-white to-mist/60" aria-hidden="true" />
         <TrustBar />
+        {/* Fade am Rand mist (TrustBar) / grau (site-backdrop hinter Services). */}
+        <div className="h-32 w-full bg-gradient-to-b from-mist/60 to-transparent" aria-hidden="true" />
         <Services />
         <Showcase />
         <section className="container-px py-16 lg:py-24">
@@ -61,12 +66,44 @@ const LEGAL = {
 
 export default function App() {
   const [hash, setHash] = useState(() => window.location.hash)
+  const prevHashRef = useRef(hash)
 
   useEffect(() => {
     const onHash = () => setHash(window.location.hash)
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
+
+  useEffect(() => {
+    const wasLegal = !!LEGAL[prevHashRef.current]
+    const isLegal = !!LEGAL[hash]
+    if (wasLegal && !isLegal) {
+      // Von einer Rechtsseite zurueck zur Landingpage: dort landen, wo man
+      // war (ganz unten, beim Footer), statt auf die viel laengere Seite
+      // hochgespuelt zu werden und beim Hero zu landen.
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: document.documentElement.scrollHeight, left: 0, behavior: 'instant' })
+      })
+    }
+    prevHashRef.current = hash
+  }, [hash])
+
+  // Die dekorative macOS-Menuleiste soll nur ganz oben sichtbar sein —
+  // sobald man ueberhaupt zu scrollen anfaengt (oder auf einer Rechtsseite
+  // landet), verschwindet sie sofort und die echte Navbar rutscht zurueck
+  // an ihre urspruengliche Position (top-0).
+  const [heroInView, setHeroInView] = useState(!LEGAL[hash] && window.scrollY <= 1)
+
+  useEffect(() => {
+    if (LEGAL[hash]) {
+      setHeroInView(false)
+      return
+    }
+    const onScroll = () => setHeroInView(window.scrollY <= 1)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [hash])
 
   // Statisches, unsichtbares Markup damit Netlify das Formular "projekt-starten"
   // beim Build erkennt (das echte Formular im Modal ist zur Build-Zeit nicht im DOM).
@@ -114,24 +151,25 @@ export default function App() {
       <LoadingScreen>
         <TopoBackground fixed />
         <ScrollProgressBar />
+        {/* Rein dekorative macOS-Menuleiste — fix ganz oben, nur PC. Die
+            echte Navbar rutscht mit top-* darunter (siehe Navbar.jsx). */}
+        {heroInView && (
+          <div className="fixed inset-x-0 top-[3px] z-[55] hidden px-4 pt-2 md:block">
+            <MacOSMenuBar appName="AVAN" />
+          </div>
+        )}
+        <Navbar pushedDown={heroInView} />
         {LegalPage ? (
           <>
-            <Navbar />
             <LegalPage />
             <Footer />
-            <ProjektModal />
-            <CookieConsent />
-            <FounderModal />
           </>
         ) : (
-          <>
-            <Navbar />
-            <Landing />
-            <ProjektModal />
-            <CookieConsent />
-            <FounderModal />
-          </>
+          <Landing />
         )}
+        <ProjektModal />
+        <CookieConsent />
+        <FounderModal />
       </LoadingScreen>
     </>
   )

@@ -53,7 +53,7 @@ export default function Barrierefreiheit() {
           <br />
           E-Mail: avanwebagency@gmail.com
           <br />
-          [ANSCHRIFT EINFÜGEN]
+          Nebelhornstraße, 86830 Schwabmünchen
         </p>
         <p className="mt-3">
           Sie können sich zudem an die für die Durchsetzung des BFSG zuständige Stelle wenden, wenn
@@ -67,7 +67,7 @@ export default function Barrierefreiheit() {
       </p>
 
       <a href="#top" className="mt-8 inline-flex text-sm font-semibold text-accent hover:text-navy">
-        ← Zurück zur Startseite
+        ← Zurück
       </a>
     </motion.main>
   )
