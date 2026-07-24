@@ -1,36 +1,12 @@
-import { useEffect, useRef } from 'react'
-import { createLiquidGlass } from '@avenra/liquid-glass'
 import { RadioGroup, RadioGroupItem } from './ui/radio-group.jsx'
-import { GlassFilter } from './ui/liquid-radio.jsx'
 import { useMotionPreference } from '../lib/motion-preference.jsx'
-import { useMediaQuery } from '../lib/use-media-query.js'
 
 export default function MotionToggle({ large = false }) {
   const { reduceMotion, toggleMotion } = useMotionPreference()
   const state = reduceMotion ? 'off' : 'on'
-  const wrapperRef = useRef(null)
-  // Liquid-Glass nur auf PC/Desktop: auf Mobile bringt der SVG-Verzerrungs-
-  // filter kaum sichtbaren Effekt (teils gar keinen, je nach Safari-Version)
-  // und kostet nur Leistung — dort bleibt der Schalter bewusst schlicht.
-  const isDesktop = useMediaQuery('(min-width: 769px)')
-  const showLiquid = isDesktop && !reduceMotion
-
-  useEffect(() => {
-    if (!showLiquid || !wrapperRef.current) return
-    const glass = createLiquidGlass(wrapperRef.current, {
-      bezelWidth: 10,
-      glassThickness: 60,
-      refractiveIndex: 1.4,
-      profile: 'convexSquircle',
-    })
-    return () => glass.destroy()
-  }, [showLiquid])
 
   return (
-    <div
-      ref={wrapperRef}
-      className={`relative inline-flex rounded-lg bg-navy/5 p-0.5 ${large ? 'h-9 sm:h-11' : 'h-9'}`}
-    >
+    <div className={`relative inline-flex rounded-lg bg-navy/5 p-0.5 ${large ? 'h-9 sm:h-11' : 'h-9'}`}>
       <RadioGroup
         value={state}
         onValueChange={(next) => {
@@ -41,13 +17,6 @@ export default function MotionToggle({ large = false }) {
         }`}
         data-state={state}
       >
-        {/* Liquid-Glass-Textur nur auf PC/Desktop (siehe showLiquid oben). */}
-        {showLiquid && (
-          <div
-            className="absolute inset-0 isolate z-0 overflow-hidden rounded-md bg-gradient-to-br from-white/80 via-white/50 to-white/25"
-            style={{ filter: 'url("#radio-glass")' }}
-          />
-        )}
         <label
           className={`relative z-10 inline-flex h-full min-w-8 cursor-pointer select-none items-center justify-center whitespace-nowrap transition-colors text-ink/50 group-data-[state=on]:text-ink/50 group-data-[state=off]:text-navy ${
             large ? 'px-4 sm:px-6' : 'px-4'
@@ -64,7 +33,6 @@ export default function MotionToggle({ large = false }) {
           An
           <RadioGroupItem id="motion-on" value="on" className="sr-only" />
         </label>
-        <GlassFilter />
       </RadioGroup>
     </div>
   )
