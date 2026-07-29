@@ -2,7 +2,12 @@ import { motion } from 'framer-motion'
 import { EASE } from '../lib/motion-variants.js'
 
 function AddressField() {
-  return <span>Nebelhornstraße, 86830 Schwabmünchen</span>
+  return (
+    <span>
+      {/* TODO: Straße und Hausnummer ergänzen, sobald bekannt */}
+      [STRASSE UND HAUSNUMMER], 62-080 Lusówko, Polen
+    </span>
+  )
 }
 
 function Section({ n, title, children }) {
@@ -30,41 +35,62 @@ export default function Datenschutz() {
 
       <Section n={1} title="Verantwortlicher">
         <p>
-          Kasum Caka &amp; Oskar Kielek, avanwebagency@gmail.com (<AddressField />)
+          Grzegorz Kiełek
+          <br />
+          <AddressField />
+          <br />
+          E-Mail: avanwebagency@gmail.com
         </p>
       </Section>
 
-      <Section n={2} title="Hosting">
+      <Section n={2} title="Allgemeines zur Datenverarbeitung">
         <p>
-          Diese Website wird über Netlify, Inc. gehostet. Netlify verarbeitet dabei automatisch
-          erhobene Server-Logs (u.a. IP-Adresse, Zugriffszeit, aufgerufene Seite) zur technischen
-          Bereitstellung der Website. Netlify kann Daten in die USA übertragen; es gelten die
-          EU-Standardvertragsklauseln von Netlify als Grundlage für die Datenübertragung.
+          Wir verarbeiten personenbezogene Daten unserer Nutzer grundsätzlich nur, soweit dies zur
+          Bereitstellung einer funktionsfähigen Website sowie unserer Inhalte und Leistungen
+          erforderlich ist.
         </p>
       </Section>
 
-      <Section n={3} title="Kontaktformular (Netlify Forms)">
+      <Section n={3} title="Kontaktformular">
         <p>
-          Wenn Sie unser Kontaktformular nutzen, werden die von Ihnen eingegebenen Daten (Name,
-          E-Mail, Nachricht) über Netlify Forms verarbeitet und an unsere E-Mail-Adresse
-          (avanwebagency@gmail.com) weitergeleitet, um Ihre Anfrage zu bearbeiten.
-          Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Anfrage). Die Daten werden
-          gelöscht, sobald sie für die Bearbeitung Ihrer Anfrage nicht mehr erforderlich sind.
+          Wenn Sie uns über das Kontakt-/Anfrageformular auf dieser Website kontaktieren, werden
+          die von Ihnen angegebenen Daten (Name, E-Mail, Telefonnummer, Nachricht) zum Zweck der
+          Bearbeitung Ihrer Anfrage gespeichert und verarbeitet. Die Verarbeitung erfolgt auf
+          Grundlage von Art. 6 Abs. 1 lit. b DSGVO.
+        </p>
+        <p className="mt-3">
+          Die über das Formular übermittelten Daten werden über den Formular-Dienstleister
+          Netlify Forms verarbeitet und an unsere oben genannte E-Mail-Adresse weitergeleitet.
         </p>
       </Section>
 
-      <Section n={4} title="Rechte der betroffenen Person">
+      <Section n={4} title="Hosting">
         <p>
-          Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der
-          Verarbeitung, Widerspruch, Datenübertragbarkeit sowie das Beschwerderecht bei einer
-          Aufsichtsbehörde.
+          Diese Website wird bei Netlify gehostet. Der Anbieter verarbeitet dabei automatisch
+          technische Daten wie IP-Adresse, Datum und Uhrzeit des Zugriffs, um die Website
+          zuverlässig auszuliefern.
         </p>
       </Section>
 
-      <Section n={5} title="Hinweis zu Tracking">
+      <Section n={5} title="Eingebettete Inhalte (3D-Elemente)">
         <p>
-          Aktuell werden keine Analyse- oder Tracking-Tools eingesetzt. Sollte sich das ändern,
-          wird diese Erklärung entsprechend aktualisiert.
+          Diese Website bindet interaktive 3D-Inhalte über den Dienst Spline ein. Beim Laden
+          dieser Inhalte kann eine Verbindung zu Servern des Anbieters hergestellt werden.
+        </p>
+      </Section>
+
+      <Section n={6} title="Ihre Rechte">
+        <p>
+          Sie haben jederzeit das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der
+          Verarbeitung Ihrer bei uns gespeicherten personenbezogenen Daten sowie ein Recht auf
+          Datenübertragbarkeit und Beschwerde bei einer Aufsichtsbehörde.
+        </p>
+      </Section>
+
+      <Section n={7} title="Kontakt bei Fragen zum Datenschutz">
+        <p>
+          Bei Fragen zur Erhebung, Verarbeitung oder Nutzung Ihrer personenbezogenen Daten wenden
+          Sie sich bitte an: avanwebagency@gmail.com
         </p>
       </Section>
 

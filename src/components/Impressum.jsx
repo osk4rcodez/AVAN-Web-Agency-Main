@@ -2,7 +2,12 @@ import { motion } from 'framer-motion'
 import { EASE } from '../lib/motion-variants.js'
 
 function AddressField() {
-  return <span>Nebelhornstraße, 86830 Schwabmünchen</span>
+  return (
+    <span>
+      {/* TODO: Straße und Hausnummer ergänzen, sobald bekannt */}
+      [STRASSE UND HAUSNUMMER], 62-080 Lusówko, Polen
+    </span>
+  )
 }
 
 export default function Impressum() {
@@ -23,8 +28,7 @@ export default function Impressum() {
         <p>
           AVAN Web Agency
           <br />
-          (Zusammenschluss von Kasum Caka und Oskar Kielek — derzeit als Privatpersonen,
-          Gewerbeanmeldung in Vorbereitung)
+          Grzegorz Kiełek
         </p>
 
         <p>
@@ -40,7 +44,7 @@ export default function Impressum() {
         <p>
           <span className="font-semibold text-navy">Vertreten durch:</span>
           <br />
-          Kasum Caka, Oskar Kielek
+          Grzegorz Kiełek
         </p>
 
         <p>
@@ -48,7 +52,13 @@ export default function Impressum() {
             Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV:
           </span>
           <br />
-          Kasum Caka, Oskar Kielek (Anschrift wie oben)
+          Grzegorz Kiełek (Anschrift wie oben)
+        </p>
+
+        <p>
+          <span className="font-semibold text-navy">Team / Ansprechpartner:</span>
+          <br />
+          Kasum Caka, Oskar Kielek
         </p>
       </div>
 
