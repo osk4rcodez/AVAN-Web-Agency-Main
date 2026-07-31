@@ -4,6 +4,7 @@ import { X, Check, Loader2, ArrowLeft } from 'lucide-react'
 import { EASE } from '../lib/motion-variants.js'
 import AppointmentCalendar, { MONTHS } from './AppointmentCalendar.jsx'
 import { lockBodyScroll, unlockBodyScroll } from '../lib/scroll-lock.js'
+import { submitToWeb3Forms } from '../lib/web3forms.js'
 
 /**
  * Globales Modal für "Projekt starten" und "Termin vereinbaren".
@@ -101,6 +102,7 @@ export default function ProjektModal() {
   const [form, setForm] = useState(INITIAL_FORM)
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const [agbAccepted, setAgbAccepted] = useState(false)
 
   const [selectedDay, setSelectedDay] = useState(null)
@@ -119,6 +121,7 @@ export default function ProjektModal() {
       setForm(INITIAL_FORM)
       setErrors({})
       setSubmitting(false)
+      setSubmitError('')
       setAgbAccepted(false)
       setSelectedDay(null)
       setSelectedTime(null)
@@ -214,10 +217,9 @@ export default function ProjektModal() {
       return
     }
     setSubmitting(true)
-    // Echte Anbindung an Netlify Forms (Form-Name: projekt-starten).
-    // Felder werden als FormData gesendet (inkl. optionalem `termin`).
+    setSubmitError('')
     const payload = {
-      'form-name': 'projekt-starten',
+      subject: `Neue Anfrage: ${form.name}`,
       name: form.name,
       email: form.email,
       telefon: form.telefon,
@@ -230,18 +232,13 @@ export default function ProjektModal() {
     if (terminValue) payload.termin = terminValue
 
     try {
-      await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(payload).toString(),
-      })
+      await submitToWeb3Forms(payload)
+      setStep('success')
     } catch (err) {
-      // Netlify meldet i.d.R. auch bei Erfolg 200 zurück; bei Netzwerkfehler
-      // trotzdem Success zeigen, damit der Nutzer nicht hängen bleibt.
       console.error('Formular-Übermittlung fehlgeschlagen:', err)
+      setSubmitError('Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.')
     }
     setSubmitting(false)
-    setStep('success')
   }
 
   // Live-Ansage für Screenreader je nach Schritt.
@@ -407,14 +404,10 @@ export default function ProjektModal() {
 
                   <form
                     name="projekt-starten"
-                    data-netlify="true"
-                    data-netlify-honeypot="bot-field"
                     onSubmit={handleSubmit}
                     className="mt-8 space-y-5"
                     noValidate
                   >
-                    {/* Netlify Forms: verstecktes Pflichtfeld mit Form-Namen. */}
-                    <input type="hidden" name="form-name" value="projekt-starten" />
                     {/* Honeypot: fuer echte Nutzer unsichtbar, Bots fuellen es oft aus. */}
                     <p className="hidden" aria-hidden="true">
                       <label>
@@ -597,6 +590,12 @@ export default function ProjektModal() {
                         </p>
                       )}
                     </div>
+
+                    {submitError && (
+                      <p className="text-sm text-red-500/90" role="alert">
+                        {submitError}
+                      </p>
+                    )}
 
                     <button
                       type="submit"

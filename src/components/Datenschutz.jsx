@@ -60,13 +60,13 @@ export default function Datenschutz() {
         </p>
         <p className="mt-3">
           Die über das Formular übermittelten Daten werden über den Formular-Dienstleister
-          Netlify Forms verarbeitet und an unsere oben genannte E-Mail-Adresse weitergeleitet.
+          Web3Forms verarbeitet und an unsere oben genannte E-Mail-Adresse weitergeleitet.
         </p>
       </Section>
 
       <Section n={4} title="Hosting">
         <p>
-          Diese Website wird bei Netlify gehostet. Der Anbieter verarbeitet dabei automatisch
+          Diese Website wird bei Vercel gehostet. Der Anbieter verarbeitet dabei automatisch
           technische Daten wie IP-Adresse, Datum und Uhrzeit des Zugriffs, um die Website
           zuverlässig auszuliefern.
         </p>

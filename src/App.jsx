@@ -108,53 +108,10 @@ export default function App() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [hash])
 
-  // Statisches, unsichtbares Markup damit Netlify das Formular "projekt-starten"
-  // beim Build erkennt (das echte Formular im Modal ist zur Build-Zeit nicht im DOM).
-  const NetlifyFormProxy = (
-    <form
-      name="projekt-starten"
-      data-netlify="true"
-      data-netlify-honeypot="bot-field"
-      hidden
-      aria-hidden="true"
-    >
-      <input type="hidden" name="form-name" value="projekt-starten" />
-      <input name="bot-field" />
-      <input type="text" name="name" />
-      <input type="email" name="email" />
-      <input type="tel" name="telefon" />
-      <input type="text" name="unternehmen" />
-      <input type="text" name="bedarf" />
-      <input type="text" name="zeitrahmen" />
-      <input type="text" name="budget" />
-      <textarea name="nachricht" />
-      <input type="text" name="termin" />
-    </form>
-  )
-
-  // Gleiches Prinzip fuer das kleine Support-Formular (siehe SupportForm.jsx).
-  const NetlifySupportFormProxy = (
-    <form
-      name="support-anfrage"
-      data-netlify="true"
-      data-netlify-honeypot="bot-field"
-      hidden
-      aria-hidden="true"
-    >
-      <input type="hidden" name="form-name" value="support-anfrage" />
-      <input name="bot-field" />
-      <input type="text" name="name" />
-      <input type="email" name="email" />
-      <textarea name="anliegen" />
-    </form>
-  )
-
   const LegalPage = LEGAL[hash]
 
   return (
     <>
-      {NetlifyFormProxy}
-      {NetlifySupportFormProxy}
       <LoadingScreen>
         <TopoBackground fixed />
         <ScrollProgressBar />

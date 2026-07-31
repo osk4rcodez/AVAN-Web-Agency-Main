@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check, Loader2 } from 'lucide-react'
 import { EASE } from '../lib/motion-variants.js'
+import { submitToWeb3Forms } from '../lib/web3forms.js'
 
 const INITIAL = { name: '', email: '', anliegen: '' }
 const REQUIRED = ['name', 'email', 'anliegen']
@@ -14,12 +15,13 @@ const inputClass =
 const labelClass = 'mb-1.5 block text-xs font-medium text-navy/70'
 
 // Kompaktes Support-Formular, eingebettet im "Support & Beratung"-Detail
-// (siehe details-modal.jsx). Eigenes, kleines Netlify-Formular
-// (Form-Name: support-anfrage), unabhaengig vom grossen Projekt-Formular.
+// (siehe details-modal.jsx). Eigenes, kleines Formular, unabhaengig vom
+// grossen Projekt-Formular.
 export default function SupportForm() {
   const [form, setForm] = useState(INITIAL)
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const [sent, setSent] = useState(false)
 
   const setValue = (key, value) => {
@@ -41,22 +43,20 @@ export default function SupportForm() {
       return
     }
     setSubmitting(true)
+    setSubmitError('')
     try {
-      await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          'form-name': 'support-anfrage',
-          name: form.name,
-          email: form.email,
-          anliegen: form.anliegen,
-        }).toString(),
+      await submitToWeb3Forms({
+        subject: `Support-Anfrage: ${form.name}`,
+        name: form.name,
+        email: form.email,
+        anliegen: form.anliegen,
       })
+      setSent(true)
     } catch (err) {
       console.error('Support-Formular fehlgeschlagen:', err)
+      setSubmitError('Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.')
     }
     setSubmitting(false)
-    setSent(true)
   }
 
   return (
@@ -81,8 +81,6 @@ export default function SupportForm() {
           <motion.form
             key="form"
             name="support-anfrage"
-            data-netlify="true"
-            data-netlify-honeypot="bot-field"
             onSubmit={handleSubmit}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -90,7 +88,6 @@ export default function SupportForm() {
             className="mt-3 space-y-3"
             noValidate
           >
-            <input type="hidden" name="form-name" value="support-anfrage" />
             {/* Honeypot: fuer echte Nutzer unsichtbar, Bots fuellen es oft aus. */}
             <p className="hidden" aria-hidden="true">
               <label>
@@ -154,6 +151,12 @@ export default function SupportForm() {
                 </p>
               )}
             </div>
+
+            {submitError && (
+              <p className="text-xs text-red-500/90" role="alert">
+                {submitError}
+              </p>
+            )}
 
             <button
               type="submit"
