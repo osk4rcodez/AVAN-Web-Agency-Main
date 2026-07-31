@@ -5,7 +5,7 @@ function AddressField() {
   return (
     <span>
       {/* TODO: Straße und Hausnummer ergänzen, sobald bekannt */}
-      [STRASSE UND HAUSNUMMER], 62-080 Lusówko, Polen
+      Straße und Hausnummer folgen in Kürze, 62-080 Lusówko, Polen
     </span>
   )
 }
