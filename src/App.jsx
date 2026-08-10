@@ -119,12 +119,7 @@ export default function App() {
             echte Navbar rutscht mit top-* darunter (siehe Navbar.jsx). */}
         {heroInView && (
           <div className="fixed inset-x-0 top-[3px] z-[55] hidden px-4 pt-2 md:block">
-            <MacOSMenuBar
-              appName="AVAN"
-              onMenuAction={(action) => {
-                if (action === 'app-help') window.dispatchEvent(new CustomEvent('open-project-modal'))
-              }}
-            />
+            <MacOSMenuBar appName="AVAN" />
           </div>
         )}
         <Navbar pushedDown={heroInView} />

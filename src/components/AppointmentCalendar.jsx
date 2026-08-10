@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { EASE } from '../lib/motion-variants.js'
+import { useTranslate, useLanguage } from '../lib/language-preference.jsx'
 
 /**
  * Eingebetteter Liquid-Glass-Kalender + Zeitfenster-Auswahl.
@@ -14,11 +15,20 @@ import { EASE } from '../lib/motion-variants.js'
  *  - onSelectTime(time)
  */
 
-const WEEKDAYS = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So']
-const MONTHS = [
-  'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
-  'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember',
-]
+// Mo-So (fuer die Kalender-Kopfzeile) und So-Sa (fuer date.getDay()-Indizes,
+// z.B. in ProjektModal.jsx) — beide bilingual, per aktueller Sprache waehlen.
+const WEEKDAYS = {
+  de: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
+  en: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+}
+const WEEKDAYS_FULL = {
+  de: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+  en: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+}
+const MONTHS = {
+  de: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+  en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+}
 
 const TIME_SLOTS = ['09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00']
 
@@ -54,6 +64,10 @@ export default function AppointmentCalendar({
   onSelectDay,
   onSelectTime,
 }) {
+  const t = useTranslate()
+  const { language } = useLanguage()
+  const months = MONTHS[language]
+  const weekdays = WEEKDAYS[language]
   const today = startOfDay(new Date())
   const [viewMonth, setViewMonth] = useState(
     () => new Date(today.getFullYear(), today.getMonth(), 1),
@@ -99,20 +113,20 @@ export default function AppointmentCalendar({
               setViewMonth((m) => new Date(m.getFullYear(), m.getMonth() - 1, 1))
             }
             disabled={!canGoPrev}
-            aria-label="Vorheriger Monat"
+            aria-label={t({ de: 'Vorheriger Monat', en: 'Previous month' })}
             className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-navy/10 bg-white/60 text-navy transition-colors hover:bg-white hover:text-accent disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white/60 disabled:hover:text-navy"
           >
             <ChevronLeft size={16} />
           </button>
           <span className="text-sm font-semibold text-navy">
-            {MONTHS[viewMonth.getMonth()]} {viewMonth.getFullYear()}
+            {months[viewMonth.getMonth()]} {viewMonth.getFullYear()}
           </span>
           <button
             type="button"
             onClick={() =>
               setViewMonth((m) => new Date(m.getFullYear(), m.getMonth() + 1, 1))
             }
-            aria-label="Nächster Monat"
+            aria-label={t({ de: 'Nächster Monat', en: 'Next month' })}
             className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-navy/10 bg-white/60 text-navy transition-colors hover:bg-white hover:text-accent"
           >
             <ChevronRight size={16} />
@@ -121,7 +135,7 @@ export default function AppointmentCalendar({
 
         {/* Wochentage */}
         <div className="mb-1 grid grid-cols-7 gap-1">
-          {WEEKDAYS.map((w) => (
+          {weekdays.map((w) => (
             <div
               key={w}
               className="py-1 text-center text-[0.65rem] font-semibold uppercase tracking-wide text-silver"
@@ -143,7 +157,7 @@ export default function AppointmentCalendar({
                 type="button"
                 disabled={unavailable}
                 aria-pressed={selected}
-                aria-label={`${date.getDate()}. ${MONTHS[date.getMonth()]}`}
+                aria-label={language === 'en' ? `${months[date.getMonth()]} ${date.getDate()}` : `${date.getDate()}. ${months[date.getMonth()]}`}
                 onClick={() => onSelectDay(date)}
                 animate={selected ? { scale: [1, 1.12, 1] } : { scale: 1 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
@@ -173,11 +187,11 @@ export default function AppointmentCalendar({
             className="mt-5"
           >
             <span className="mb-2 block text-xs font-medium text-navy/70">
-              Uhrzeit wählen
+              {t({ de: 'Uhrzeit wählen', en: 'Choose a time' })}
             </span>
             <div
               role="radiogroup"
-              aria-label="Uhrzeit wählen"
+              aria-label={t({ de: 'Uhrzeit wählen', en: 'Choose a time' })}
               className="grid grid-cols-3 gap-2 sm:grid-cols-4"
             >
               {TIME_SLOTS.map((slot) => {
@@ -211,4 +225,4 @@ export default function AppointmentCalendar({
   )
 }
 
-export { WEEKDAYS, MONTHS }
+export { WEEKDAYS, WEEKDAYS_FULL, MONTHS }

@@ -2,9 +2,10 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Check, Loader2, ArrowLeft } from 'lucide-react'
 import { EASE } from '../lib/motion-variants.js'
-import AppointmentCalendar, { MONTHS } from './AppointmentCalendar.jsx'
+import AppointmentCalendar, { MONTHS, WEEKDAYS_FULL } from './AppointmentCalendar.jsx'
 import { lockBodyScroll, unlockBodyScroll } from '../lib/scroll-lock.js'
 import { submitToWeb3Forms } from '../lib/web3forms.js'
+import { useTranslate, useLanguage } from '../lib/language-preference.jsx'
 
 /**
  * Globales Modal für "Projekt starten" und "Termin vereinbaren".
@@ -17,23 +18,30 @@ import { submitToWeb3Forms } from '../lib/web3forms.js'
  * Interner Zustand: mode = "project" | "appointment", step = "calendar" | "form" | "success".
  *
  * Nutzt ausschließlich vorhandene Design-Tokens und den Liquid-Glass-Stil.
- * Keine neuen Farben. Alle Texte auf Deutsch.
+ * Keine neuen Farben. Alle sichtbaren Texte über t({de, en}) übersetzt.
  */
 
+// Jede Option hat einen stabilen (deutschen) `value` fuers Formular/E-Mail-
+// Backend, unabhaengig von der UI-Sprache — nur das sichtbare `label` folgt t().
 const BEDARF_OPTIONEN = [
-  'Neue Website',
-  'Überarbeitung / Relaunch',
-  'Laufende Wartung',
-  'Sonstiges',
+  { value: 'Neue Website', label: { de: 'Neue Website', en: 'New website' } },
+  { value: 'Überarbeitung / Relaunch', label: { de: 'Überarbeitung / Relaunch', en: 'Redesign / relaunch' } },
+  { value: 'Laufende Wartung', label: { de: 'Laufende Wartung', en: 'Ongoing maintenance' } },
+  { value: 'Sonstiges', label: { de: 'Sonstiges', en: 'Other' } },
 ]
 
 const ZEITRAHMEN_OPTIONEN = [
-  'So schnell wie möglich',
-  'Innerhalb von 1 Monat',
-  'Kein fester Zeitrahmen',
+  { value: 'So schnell wie möglich', label: { de: 'So schnell wie möglich', en: 'As soon as possible' } },
+  { value: 'Innerhalb von 1 Monat', label: { de: 'Innerhalb von 1 Monat', en: 'Within 1 month' } },
+  { value: 'Kein fester Zeitrahmen', label: { de: 'Kein fester Zeitrahmen', en: 'No fixed timeframe' } },
 ]
 
-const BUDGET_OPTIONEN = ['Unter 200 €', '200–500 €', '500 €+', 'Noch unklar']
+const BUDGET_OPTIONEN = [
+  { value: 'Unter 200 €', label: { de: 'Unter 200 €', en: 'Under €200' } },
+  { value: '200–500 €', label: { de: '200–500 €', en: '€200–500' } },
+  { value: '500 €+', label: { de: '500 €+', en: '€500+' } },
+  { value: 'Noch unklar', label: { de: 'Noch unklar', en: 'Not sure yet' } },
+]
 
 const INITIAL_FORM = {
   name: '',
@@ -72,17 +80,18 @@ function Field({ label, htmlFor, required, error, children }) {
   )
 }
 
-// Datum hübsch (z. B. "Dienstag, 22. Juli").
-function formatDayLong(date) {
+// Datum hübsch (z. B. "Dienstag, 22. Juli" / "Tuesday, July 22").
+function formatDayLong(date, lang) {
   if (!date) return ''
-  const wdFull = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
-  return `${wdFull[date.getDay()]}, ${date.getDate()}. ${MONTHS[date.getMonth()]}`
+  if (lang === 'en') return `${WEEKDAYS_FULL.en[date.getDay()]}, ${MONTHS.en[date.getMonth()]} ${date.getDate()}`
+  return `${WEEKDAYS_FULL.de[date.getDay()]}, ${date.getDate()}. ${MONTHS.de[date.getMonth()]}`
 }
 
-// Datum kurz (z. B. "22. Juli").
-function formatDayShort(date) {
+// Datum kurz (z. B. "22. Juli" / "July 22").
+function formatDayShort(date, lang) {
   if (!date) return ''
-  return `${date.getDate()}. ${MONTHS[date.getMonth()]}`
+  if (lang === 'en') return `${MONTHS.en[date.getMonth()]} ${date.getDate()}`
+  return `${date.getDate()}. ${MONTHS.de[date.getMonth()]}`
 }
 
 // ISO-Datum (YYYY-MM-DD) ohne Zeitzonen-Verschiebung.
@@ -95,6 +104,8 @@ function toISODate(date) {
 }
 
 export default function ProjektModal() {
+  const t = useTranslate()
+  const { language } = useLanguage()
   const [open, setOpen] = useState(false)
   const [mode, setMode] = useState('project') // 'project' | 'appointment'
   const [step, setStep] = useState('form') // 'calendar' | 'form' | 'success'
@@ -194,7 +205,7 @@ export default function ProjektModal() {
 
   const validateField = (key) => {
     if (REQUIRED.includes(key) && !form[key].trim()) {
-      setErrors((prev) => ({ ...prev, [key]: 'Bitte ausfüllen.' }))
+      setErrors((prev) => ({ ...prev, [key]: t({ de: 'Bitte ausfüllen.', en: 'Please fill this in.' }) }))
     }
   }
 
@@ -207,10 +218,10 @@ export default function ProjektModal() {
     e.preventDefault()
     const nextErrors = {}
     REQUIRED.forEach((k) => {
-      if (!form[k].trim()) nextErrors[k] = 'Bitte ausfüllen.'
+      if (!form[k].trim()) nextErrors[k] = t({ de: 'Bitte ausfüllen.', en: 'Please fill this in.' })
     })
     if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      nextErrors.email = 'Bitte eine gültige E-Mail angeben.'
+      nextErrors.email = t({ de: 'Bitte eine gültige E-Mail angeben.', en: 'Please enter a valid email address.' })
     }
     if (Object.keys(nextErrors).length) {
       setErrors(nextErrors)
@@ -236,20 +247,21 @@ export default function ProjektModal() {
       setStep('success')
     } catch (err) {
       console.error('Formular-Übermittlung fehlgeschlagen:', err)
-      setSubmitError('Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.')
+      setSubmitError(t({ de: 'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.', en: 'Something went wrong. Please try again.' }))
     }
     setSubmitting(false)
   }
 
   // Live-Ansage für Screenreader je nach Schritt.
   const liveMessage = useMemo(() => {
-    if (step === 'calendar') return 'Schritt 1 von 2: Termin wählen'
-    if (step === 'form' && cameFromCalendar) return 'Schritt 2 von 2: Ihre Kontaktdaten'
+    if (step === 'calendar') return t({ de: 'Schritt 1 von 2: Termin wählen', en: 'Step 1 of 2: choose an appointment' })
+    if (step === 'form' && cameFromCalendar) return t({ de: 'Schritt 2 von 2: Ihre Kontaktdaten', en: 'Step 2 of 2: your contact details' })
     return ''
-  }, [step, cameFromCalendar])
+  }, [step, cameFromCalendar, t])
 
-  const ariaLabel =
-    mode === 'appointment' ? 'Termin vereinbaren' : 'Projekt starten'
+  const ariaLabel = mode === 'appointment'
+    ? t({ de: 'Termin vereinbaren', en: 'Schedule appointment' })
+    : t({ de: 'Projekt starten', en: 'Start project' })
 
   return (
     <AnimatePresence>
@@ -291,7 +303,7 @@ export default function ProjektModal() {
               <button
                 type="button"
                 onClick={() => setStep('calendar')}
-                aria-label="Zurück zur Terminauswahl"
+                aria-label={t({ de: 'Zurück zur Terminauswahl', en: 'Back to appointment selection' })}
                 className="absolute left-5 top-5 inline-flex h-9 w-9 items-center justify-center rounded-full border border-navy/10 bg-white/60 text-navy backdrop-blur-sm transition-colors hover:bg-white hover:text-accent"
               >
                 <ArrowLeft size={18} />
@@ -302,7 +314,7 @@ export default function ProjektModal() {
             <button
               type="button"
               onClick={handleClose}
-              aria-label="Schließen"
+              aria-label={t({ de: 'Schließen', en: 'Close' })}
               className="absolute right-5 top-5 inline-flex h-9 w-9 items-center justify-center rounded-full border border-navy/10 bg-white/60 text-navy backdrop-blur-sm transition-colors hover:bg-white hover:text-accent"
             >
               <X size={18} />
@@ -334,12 +346,12 @@ export default function ProjektModal() {
                   exit={{ opacity: 0, x: -12 }}
                   transition={{ duration: 0.3, ease: EASE }}
                 >
-                  <p className="eyebrow mb-3">Termin vereinbaren</p>
+                  <p className="eyebrow mb-3">{t({ de: 'Termin vereinbaren', en: 'Schedule appointment' })}</p>
                   <h2 className="font-display text-2xl font-extrabold leading-tight text-navy sm:text-3xl">
-                    Wählen Sie einen passenden Termin.
+                    {t({ de: 'Wählen Sie einen passenden Termin.', en: 'Choose a time that works for you.' })}
                   </h2>
                   <p className="mt-3 text-sm leading-relaxed text-ink/60">
-                    15 Minuten, unverbindlich — per Telefon oder Video.
+                    {t({ de: '15 Minuten, unverbindlich — per Telefon oder Video.', en: '15 minutes, no obligation — by phone or video.' })}
                   </p>
 
                   <div className="mt-8">
@@ -360,7 +372,7 @@ export default function ProjektModal() {
                     onClick={() => setStep('form')}
                     className="btn-neon mt-8 w-full disabled:cursor-not-allowed disabled:opacity-50 disabled:animate-none"
                   >
-                    Weiter
+                    {t({ de: 'Weiter', en: 'Continue' })}
                   </button>
                 </motion.div>
               )}
@@ -376,28 +388,32 @@ export default function ProjektModal() {
                 >
                   {/* Header */}
                   <p className="eyebrow mb-3">
-                    {cameFromCalendar ? 'Ihre Kontaktdaten' : 'Projekt starten'}
+                    {cameFromCalendar
+                      ? t({ de: 'Ihre Kontaktdaten', en: 'Your contact details' })
+                      : t({ de: 'Projekt starten', en: 'Start project' })}
                   </p>
                   <h2 className="font-display text-2xl font-extrabold leading-tight text-navy sm:text-3xl">
-                    Erzählen Sie uns von Ihrem Vorhaben.
+                    {t({ de: 'Erzählen Sie uns von Ihrem Vorhaben.', en: 'Tell us about your project.' })}
                   </h2>
                   <p className="mt-3 text-sm leading-relaxed text-ink/60">
-                    Wir melden uns in der Regel innerhalb eines Tages zurück.
+                    {t({ de: 'Wir melden uns in der Regel innerhalb eines Tages zurück.', en: "We usually get back to you within a day." })}
                   </p>
 
                   {/* Termin-Chip (nur im Termin-Flow) */}
                   {cameFromCalendar && selectedDay && selectedTime && (
                     <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-xl border border-accent/25 bg-accent/10 px-4 py-3 text-sm text-navy backdrop-blur-sm">
                       <span>
-                        <span className="font-semibold">Ihr Termin:</span>{' '}
-                        {formatDayLong(selectedDay)} um {selectedTime} Uhr
+                        <span className="font-semibold">{t({ de: 'Ihr Termin:', en: 'Your appointment:' })}</span>{' '}
+                        {language === 'en'
+                          ? `${formatDayLong(selectedDay, language)} at ${selectedTime}`
+                          : `${formatDayLong(selectedDay, language)} um ${selectedTime} Uhr`}
                       </span>
                       <button
                         type="button"
                         onClick={() => setStep('calendar')}
                         className="font-semibold text-accent underline underline-offset-2 transition-colors hover:text-navy"
                       >
-                        Ändern
+                        {t({ de: 'Ändern', en: 'Change' })}
                       </button>
                     </div>
                   )}
@@ -411,7 +427,8 @@ export default function ProjektModal() {
                     {/* Honeypot: fuer echte Nutzer unsichtbar, Bots fuellen es oft aus. */}
                     <p className="hidden" aria-hidden="true">
                       <label>
-                        Bitte nicht ausfüllen: <input name="bot-field" tabIndex="-1" autoComplete="off" />
+                        {t({ de: 'Bitte nicht ausfüllen:', en: 'Please leave this empty:' })}{' '}
+                        <input name="bot-field" tabIndex="-1" autoComplete="off" />
                       </label>
                     </p>
                     {/* Verstecktes Feld: Termin-Info fließt in denselben Backend-Submit. */}
@@ -419,44 +436,44 @@ export default function ProjektModal() {
                       <input type="hidden" name="termin" value={terminValue} readOnly />
                     )}
 
-                    <Field label="Name" htmlFor="pm-name" required error={errors.name}>
+                    <Field label={t({ de: 'Name', en: 'Name' })} htmlFor="pm-name" required error={errors.name}>
                       <input
                         id="pm-name"
                         ref={firstFieldRef}
                         type="text"
                         className={inputClass}
-                        placeholder="Ihr Name"
+                        placeholder={t({ de: 'Ihr Name', en: 'Your name' })}
                         value={form.name}
                         onChange={(e) => setValue('name', e.target.value)}
                         onBlur={() => validateField('name')}
                       />
                     </Field>
 
-                    <Field label="E-Mail" htmlFor="pm-email" required error={errors.email}>
+                    <Field label={t({ de: 'E-Mail', en: 'Email' })} htmlFor="pm-email" required error={errors.email}>
                       <input
                         id="pm-email"
                         type="email"
                         className={inputClass}
-                        placeholder="Ihre E-Mail"
+                        placeholder={t({ de: 'Ihre E-Mail', en: 'Your email' })}
                         value={form.email}
                         onChange={(e) => setValue('email', e.target.value)}
                         onBlur={() => validateField('email')}
                       />
                     </Field>
 
-                    <Field label="Telefon" htmlFor="pm-telefon">
+                    <Field label={t({ de: 'Telefon', en: 'Phone' })} htmlFor="pm-telefon">
                       <input
                         id="pm-telefon"
                         type="tel"
                         className={inputClass}
-                        placeholder="Telefonnummer (optional)"
+                        placeholder={t({ de: 'Telefonnummer (optional)', en: 'Phone number (optional)' })}
                         value={form.telefon}
                         onChange={(e) => setValue('telefon', e.target.value)}
                       />
                     </Field>
 
                     <Field
-                      label="Unternehmen / Branche"
+                      label={t({ de: 'Unternehmen / Branche', en: 'Company / industry' })}
                       htmlFor="pm-unternehmen"
                       required
                       error={errors.unternehmen}
@@ -465,7 +482,7 @@ export default function ProjektModal() {
                         id="pm-unternehmen"
                         type="text"
                         className={inputClass}
-                        placeholder="z. B. Bäckerei Müller"
+                        placeholder={t({ de: 'z. B. Bäckerei Müller', en: 'e.g. Smith Bakery' })}
                         value={form.unternehmen}
                         onChange={(e) => setValue('unternehmen', e.target.value)}
                         onBlur={() => validateField('unternehmen')}
@@ -475,29 +492,29 @@ export default function ProjektModal() {
                     {/* Bedarf – Single-Select Pills */}
                     <div>
                       <span className={labelClass}>
-                        Was brauchen Sie?<span className="text-accent"> *</span>
+                        {t({ de: 'Was brauchen Sie?', en: 'What do you need?' })}<span className="text-accent"> *</span>
                       </span>
                       <div
                         role="radiogroup"
-                        aria-label="Was brauchen Sie?"
+                        aria-label={t({ de: 'Was brauchen Sie?', en: 'What do you need?' })}
                         className="flex flex-wrap gap-2"
                       >
                         {BEDARF_OPTIONEN.map((opt) => {
-                          const active = form.bedarf === opt
+                          const active = form.bedarf === opt.value
                           return (
                             <button
                               type="button"
-                              key={opt}
+                              key={opt.value}
                               role="radio"
                               aria-checked={active}
-                              onClick={() => setValue('bedarf', opt)}
+                              onClick={() => setValue('bedarf', opt.value)}
                               className={`rounded-full border px-4 py-2 text-sm font-medium backdrop-blur-sm transition-all duration-200 ${
                                 active
                                   ? 'border-accent bg-accent text-white shadow-[0_0_18px_rgba(139,92,246,0.35)]'
                                   : 'border-navy/10 bg-white/50 text-navy hover:border-accent/40 hover:bg-white'
                               }`}
                             >
-                              {opt}
+                              {t(opt.label)}
                             </button>
                           )
                         })}
@@ -510,33 +527,33 @@ export default function ProjektModal() {
                     </div>
 
                     <div className="grid gap-5 sm:grid-cols-2">
-                      <Field label="Zeitrahmen" htmlFor="pm-zeitrahmen">
+                      <Field label={t({ de: 'Zeitrahmen', en: 'Timeframe' })} htmlFor="pm-zeitrahmen">
                         <select
                           id="pm-zeitrahmen"
                           className={inputClass}
                           value={form.zeitrahmen}
                           onChange={(e) => setValue('zeitrahmen', e.target.value)}
                         >
-                          <option value="">Bitte wählen</option>
+                          <option value="">{t({ de: 'Bitte wählen', en: 'Please choose' })}</option>
                           {ZEITRAHMEN_OPTIONEN.map((o) => (
-                            <option key={o} value={o}>
-                              {o}
+                            <option key={o.value} value={o.value}>
+                              {t(o.label)}
                             </option>
                           ))}
                         </select>
                       </Field>
 
-                      <Field label="Budget-Rahmen" htmlFor="pm-budget">
+                      <Field label={t({ de: 'Budget-Rahmen', en: 'Budget range' })} htmlFor="pm-budget">
                         <select
                           id="pm-budget"
                           className={inputClass}
                           value={form.budget}
                           onChange={(e) => setValue('budget', e.target.value)}
                         >
-                          <option value="">Bitte wählen</option>
+                          <option value="">{t({ de: 'Bitte wählen', en: 'Please choose' })}</option>
                           {BUDGET_OPTIONEN.map((o) => (
-                            <option key={o} value={o}>
-                              {o}
+                            <option key={o.value} value={o.value}>
+                              {t(o.label)}
                             </option>
                           ))}
                         </select>
@@ -544,7 +561,7 @@ export default function ProjektModal() {
                     </div>
 
                     <Field
-                      label="Nachricht"
+                      label={t({ de: 'Nachricht', en: 'Message' })}
                       htmlFor="pm-nachricht"
                       required
                       error={errors.nachricht}
@@ -553,7 +570,7 @@ export default function ProjektModal() {
                         id="pm-nachricht"
                         rows={4}
                         className={`${inputClass} resize-none`}
-                        placeholder="Kurz beschrieben: was schwebt Ihnen vor?"
+                        placeholder={t({ de: 'Kurz beschrieben: was schwebt Ihnen vor?', en: 'Briefly describe what you have in mind.' })}
                         value={form.nachricht}
                         onChange={(e) => setValue('nachricht', e.target.value)}
                         onBlur={() => validateField('nachricht')}
@@ -572,21 +589,21 @@ export default function ProjektModal() {
                           className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-navy/30 text-accent accent-accent focus:ring-2 focus:ring-accent/40"
                         />
                         <span className="text-sm leading-relaxed text-ink/70">
-                          Ich habe die{' '}
+                          {t({ de: 'Ich habe die', en: 'I have read the' })}{' '}
                           <a
                             href="#agb"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="font-semibold text-accent underline underline-offset-2 hover:text-navy"
                           >
-                            Allgemeinen Geschäftsbedingungen
+                            {t({ de: 'Allgemeinen Geschäftsbedingungen', en: 'Terms and Conditions' })}
                           </a>{' '}
-                          gelesen und akzeptiere sie.
+                          {t({ de: 'gelesen und akzeptiere sie.', en: 'and agree to them.' })}
                         </span>
                       </label>
                       {!agbAccepted && (
                         <p className="mt-2 pl-7 text-xs text-red-500/90" role="alert">
-                          Bitte bestätigen Sie die AGB, um Ihre Anfrage abzusenden.
+                          {t({ de: 'Bitte bestätigen Sie die AGB, um Ihre Anfrage abzusenden.', en: 'Please confirm the terms to send your request.' })}
                         </p>
                       )}
                     </div>
@@ -605,10 +622,10 @@ export default function ProjektModal() {
                       {submitting ? (
                         <>
                           <Loader2 size={18} className="animate-spin" />
-                          Wird gesendet …
+                          {t({ de: 'Wird gesendet …', en: 'Sending …' })}
                         </>
                       ) : (
-                        'Anfrage senden'
+                        t({ de: 'Anfrage senden', en: 'Send request' })
                       )}
                     </button>
                   </form>
@@ -634,19 +651,21 @@ export default function ProjektModal() {
                     <Check size={32} strokeWidth={2.5} />
                   </motion.span>
                   <h3 className="mt-6 font-display text-2xl font-extrabold text-navy">
-                    Danke!
+                    {t({ de: 'Danke!', en: 'Thank you!' })}
                   </h3>
                   <p className="mt-2 max-w-sm text-sm leading-relaxed text-ink/65">
                     {cameFromCalendar && selectedDay && selectedTime
-                      ? `Ihr Termin am ${formatDayShort(selectedDay)} um ${selectedTime} Uhr ist vorgemerkt — wir melden uns kurz vorher zur Bestätigung.`
-                      : 'Wir melden uns bald bei Ihnen.'}
+                      ? (language === 'en'
+                          ? `Your appointment on ${formatDayShort(selectedDay, language)} at ${selectedTime} is booked — we'll reach out shortly beforehand to confirm.`
+                          : `Ihr Termin am ${formatDayShort(selectedDay, language)} um ${selectedTime} Uhr ist vorgemerkt — wir melden uns kurz vorher zur Bestätigung.`)
+                      : t({ de: 'Wir melden uns bald bei Ihnen.', en: "We'll be in touch soon." })}
                   </p>
                   <button
                     type="button"
                     onClick={handleClose}
                     className="mt-8 rounded-full border border-navy/10 bg-white/60 px-6 py-2.5 text-sm font-semibold text-navy backdrop-blur-sm transition-colors hover:bg-white hover:text-accent"
                   >
-                    Schließen
+                    {t({ de: 'Schließen', en: 'Close' })}
                   </button>
                 </motion.div>
               )}

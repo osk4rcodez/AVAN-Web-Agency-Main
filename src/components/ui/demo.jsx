@@ -8,12 +8,14 @@ import { Spotlight } from "@/components/ui/spotlight"
 import { LiquidMetalButton } from "@/components/ui/liquid-metal-button"
 import { useMediaQuery } from "../../lib/use-media-query.js"
 import { useMotionPreference } from "../../lib/motion-preference.jsx"
+import { useTranslate } from "../../lib/language-preference.jsx"
 
 export function SplineSceneBasic() {
   const robotRef = useRef(null)
   const isInView = useInView(robotRef, { once: true, margin: '400px' })
   const isMobile = useMediaQuery('(max-width: 768px)')
   const { reduceMotion: prefersReducedMotion } = useMotionPreference()
+  const t = useTranslate()
 
   return (
     <Card className="w-full h-auto md:h-[650px] bg-gradient-to-br from-navy/80 via-navy/70 to-purple-900/50 rounded-[2rem] shadow-cardHover relative overflow-hidden border-white/10">
@@ -27,16 +29,17 @@ export function SplineSceneBasic() {
         <div className="flex-1 p-8 relative z-10 flex flex-col justify-center items-center md:items-start">
           <p className="eyebrow mb-4 text-lilac/90">AVAN Web Agency</p>
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-b from-white via-lilac to-accent -mt-2 pb-1">
-            Ihr digitaler Auftritt
+            {t({ de: 'Ihr digitaler Auftritt', en: 'Your digital presence' })}
           </h1>
           <p className="mt-5 max-w-lg text-lg text-white/90 leading-relaxed text-center md:text-left">
-            Wir bauen moderne, schnelle Websites für lokale Unternehmen — von der
-            Bäckerei bis zum Ferienhotel. Reduziert, durchdacht, mit echtem Handwerk
-            statt Baukasten.
+            {t({
+              de: 'Wir bauen moderne, schnelle Websites für lokale Unternehmen — von der Bäckerei bis zum Ferienhotel. Reduziert, durchdacht, mit echtem Handwerk statt Baukasten.',
+              en: 'We build modern, fast websites for local businesses — from the bakery to the holiday hotel. Reduced, thoughtful, with real craftsmanship instead of a website builder.',
+            })}
           </p>
           <div className="mt-7 w-full flex justify-center md:justify-start">
             <a href="#kontakt" className="inline-flex rounded-full" data-open-project-modal>
-              <LiquidMetalButton label="Projekt starten" width={240} />
+              <LiquidMetalButton label={t({ de: 'Projekt starten', en: 'Start project' })} width={240} />
             </a>
           </div>
         </div>
@@ -62,7 +65,18 @@ export function SplineSceneBasic() {
                   : undefined
               }
             >
-              {isInView ? (
+              {prefersReducedMotion ? (
+                // Reduced Motion: die Spline-Szene rendert intern dauerhaft per
+                // WebGL (eigener RAF-Loop, laesst sich von aussen nicht stoppen)
+                // — bei ausgeschalteten Animationen wird sie deshalb gar nicht
+                // erst gemountet. Stattdessen ein eingefrorener Frame der
+                // echten Szene als statisches Bild.
+                <img
+                  src="/hero-robot-poster.jpg"
+                  alt={t({ de: 'AVAN Roboter', en: 'AVAN robot' })}
+                  className="h-full w-full object-cover"
+                />
+              ) : isInView ? (
                 <SplineScene
                   scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
                   className="w-full h-full"

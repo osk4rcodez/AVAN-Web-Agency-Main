@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
-import { fadeUp, revealScale, stagger } from '../lib/motion-variants.js'
+import { fadeUp, slideInRight, stagger } from '../lib/motion-variants.js'
 import ProjectScreenshot from './ProjectScreenshot.jsx'
 import { TiltCard } from './ui/tilt-card.jsx'
 import { SpadeHero } from './ui/spade-hero.jsx'
@@ -51,7 +51,7 @@ function ProjectCard({ p, i }) {
 
   return (
     <>
-      <div className="relative aspect-[400/260] overflow-hidden">
+      <div className="relative aspect-[400/230] overflow-hidden">
         <div className="h-full w-full transition-transform duration-500 ease-out group-hover:scale-105">
           {LivePreview ? (
             <LivePreview compact />
@@ -75,6 +75,7 @@ function ProjectCard({ p, i }) {
 
 export default function Showcase() {
   const isMobile = useMediaQuery('(max-width: 768px)')
+  const { reduceMotion } = useMotionPreference()
   const t = useTranslate()
   const cardClass =
     'group overflow-hidden rounded-2xl border border-navy/10 bg-white shadow-card transition-[border-color,box-shadow] duration-300 hover:border-accent/30 hover:shadow-cardHover'
@@ -89,8 +90,8 @@ export default function Showcase() {
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-ink/70">
             {t({
-              de: 'Eine Auswahl an Websites, die wir konzipiert, gebaut und betreuen. Echte Projekte folgen, sobald die ersten Mandate live sind.',
-              en: 'A selection of websites we design, build and manage. Real projects will follow as soon as the first clients go live.',
+              de: 'Beispiel-Hero-Sektionen, die drei Stile zeigen, die wir umsetzen können. Echte Kundenprojekte folgen, sobald die ersten Mandate live sind.',
+              en: 'Example hero sections showing three styles we can build. Real client projects will follow as soon as the first mandates go live.',
             })}
           </p>
         </div>
@@ -98,24 +99,24 @@ export default function Showcase() {
         {isMobile ? (
           // Auf Mobile komplett ohne Framer Motion / Tilt — reine statische
           // Karten, kein Einflug, kein Hover-Rest-Effekt moeglich.
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid gap-6 md:grid-cols-2">
             {projects.map((p, i) => (
               <div key={p.id} className={cardClass}>
                 <ProjectCard p={p} i={i} />
               </div>
             ))}
             <div className="group flex flex-col justify-center rounded-2xl border border-dashed border-navy/15 bg-white/50 p-6">
-              <p className="font-display text-2xl font-extrabold text-navy/30">#4</p>
-              <p className="mt-2 text-sm leading-relaxed text-ink/45">
+              <p className="font-display text-4xl font-extrabold text-navy/30">#4</p>
+              <p className="mt-3 text-lg leading-relaxed text-ink/45">
                 {t({ de: 'Platzhalter für ein weiteres echtes Projekt.', en: 'Placeholder for another real project.' })}
               </p>
               <a
                 href="#kontakt"
-                className="group/link mt-4 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-navy"
+                className="group/link mt-5 inline-flex w-fit items-center gap-1.5 text-base font-semibold text-accent transition-colors hover:text-navy"
               >
                 {t({ de: 'Eigenes Projekt starten', en: 'Start your own project' })}
                 <ArrowUpRight
-                  size={16}
+                  size={18}
                   className="transition-transform group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
                 />
               </a>
@@ -127,10 +128,14 @@ export default function Showcase() {
             whileInView="show"
             viewport={{ once: true, margin: '-80px' }}
             variants={stagger(0.1)}
-            className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+            className="mt-12 grid gap-6 md:grid-cols-2"
           >
             {projects.map((p, i) => (
-              <TiltCard key={p.id} variants={revealScale} className={cardClass}>
+              <TiltCard
+                key={p.id}
+                variants={reduceMotion ? undefined : slideInRight}
+                className={cardClass}
+              >
                 <ProjectCard p={p} i={i} />
               </TiltCard>
             ))}
@@ -140,17 +145,17 @@ export default function Showcase() {
               variants={fadeUp}
               className="group flex flex-col justify-center rounded-2xl border border-dashed border-navy/15 bg-white/50 p-6"
             >
-              <p className="font-display text-2xl font-extrabold text-navy/30">#4</p>
-              <p className="mt-2 text-sm leading-relaxed text-ink/45">
+              <p className="font-display text-4xl font-extrabold text-navy/30">#4</p>
+              <p className="mt-3 text-lg leading-relaxed text-ink/45">
                 {t({ de: 'Platzhalter für ein weiteres echtes Projekt.', en: 'Placeholder for another real project.' })}
               </p>
               <a
                 href="#kontakt"
-                className="group/link mt-4 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-navy"
+                className="group/link mt-5 inline-flex w-fit items-center gap-1.5 text-base font-semibold text-accent transition-colors hover:text-navy"
               >
                 {t({ de: 'Eigenes Projekt starten', en: 'Start your own project' })}
                 <ArrowUpRight
-                  size={16}
+                  size={18}
                   className="transition-transform group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
                 />
               </a>

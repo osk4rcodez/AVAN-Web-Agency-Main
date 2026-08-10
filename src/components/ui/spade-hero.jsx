@@ -119,7 +119,7 @@ export function SpadeHero({ compact = false }) {
       {/* Content */}
       <div className={r('relative z-[5] flex w-full flex-1 flex-col justify-center px-4 py-10', 'sm:px-10 sm:py-16')}>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-          <h1 className={r('mb-3 w-full whitespace-pre-wrap text-base font-normal leading-[1.2] tracking-tight text-black', 'sm:mb-4 sm:text-3xl lg:text-4xl')}>
+          <h1 className={r('mb-3 w-full whitespace-pre-wrap text-lg font-normal leading-[1.2] tracking-tight text-black', 'sm:mb-4 sm:text-3xl lg:text-4xl')}>
             {displayed}
             {!done && <span className="ml-[2px] inline-block h-[1em] w-[2px] animate-blink bg-black align-middle" />}
           </h1>
@@ -130,15 +130,15 @@ export function SpadeHero({ compact = false }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          <p className={r('mb-5 max-w-[13rem] text-[9px] leading-relaxed text-[#5A635A]', 'sm:mb-8 sm:max-w-md sm:text-base')}>
+          <p className={r('mb-5 max-w-[15rem] text-xs leading-relaxed text-[#5A635A]', 'sm:mb-8 sm:max-w-md sm:text-base')}>
             Ob Neubau, Relaunch oder Wartung — <br />
             schreiben Sie uns, wir melden uns in der Regel innerhalb eines Tages.
           </p>
         </motion.div>
 
         <div>
-          <p className={r('mb-1 text-xs font-medium tracking-tight', 'sm:text-lg')}>Woran haben Sie Interesse?</p>
-          <p className={r('mb-3 text-[10px] text-[#738273] opacity-85', 'sm:mb-5 sm:text-sm')}>Mehrfachauswahl möglich</p>
+          <p className={r('mb-1 text-sm font-medium tracking-tight', 'sm:text-lg')}>Woran haben Sie Interesse?</p>
+          <p className={r('mb-3 text-xs text-[#738273] opacity-85', 'sm:mb-5 sm:text-sm')}>Mehrfachauswahl möglich</p>
 
           <div className={r('flex flex-wrap gap-1.5', 'sm:gap-2.5')}>
             {SERVICE_OPTIONS.map((option) => {
@@ -149,7 +149,7 @@ export function SpadeHero({ compact = false }) {
                   type="button"
                   onClick={() => toggleService(option)}
                   whileTap={{ scale: 0.97 }}
-                  className={`${r('inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs transition-colors', 'sm:px-4 sm:py-2 sm:text-sm')} ${
+                  className={`${r('inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm transition-colors', 'sm:px-4 sm:py-2 sm:text-sm')} ${
                     active
                       ? 'transform bg-[#1C2E1E] text-white shadow-md shadow-emerald-950/5'
                       : 'border border-[#F1F3F1] bg-white text-[#1C2E1E] hover:bg-[#F1F3F1]/55'

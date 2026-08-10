@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Check, Loader2 } from 'lucide-react'
 import { EASE } from '../lib/motion-variants.js'
 import { submitToWeb3Forms } from '../lib/web3forms.js'
+import { useTranslate } from '../lib/language-preference.jsx'
 
 const INITIAL = { name: '', email: '', anliegen: '' }
 const REQUIRED = ['name', 'email', 'anliegen']
@@ -18,6 +19,7 @@ const labelClass = 'mb-1.5 block text-xs font-medium text-navy/70'
 // (siehe details-modal.jsx). Eigenes, kleines Formular, unabhaengig vom
 // grossen Projekt-Formular.
 export default function SupportForm() {
+  const t = useTranslate()
   const [form, setForm] = useState(INITIAL)
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
@@ -33,10 +35,10 @@ export default function SupportForm() {
     e.preventDefault()
     const nextErrors = {}
     REQUIRED.forEach((k) => {
-      if (!form[k].trim()) nextErrors[k] = 'Bitte ausfüllen.'
+      if (!form[k].trim()) nextErrors[k] = t({ de: 'Bitte ausfüllen.', en: 'Please fill this in.' })
     })
     if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      nextErrors.email = 'Bitte eine gültige E-Mail angeben.'
+      nextErrors.email = t({ de: 'Bitte eine gültige E-Mail angeben.', en: 'Please enter a valid email address.' })
     }
     if (Object.keys(nextErrors).length) {
       setErrors(nextErrors)
@@ -54,14 +56,16 @@ export default function SupportForm() {
       setSent(true)
     } catch (err) {
       console.error('Support-Formular fehlgeschlagen:', err)
-      setSubmitError('Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.')
+      setSubmitError(t({ de: 'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.', en: 'Something went wrong. Please try again.' }))
     }
     setSubmitting(false)
   }
 
   return (
     <div className="mt-5 rounded-2xl border border-navy/10 bg-white/60 p-4">
-      <p className="text-xs font-semibold uppercase tracking-widest text-silver">Support-Anfrage</p>
+      <p className="text-xs font-semibold uppercase tracking-widest text-silver">
+        {t({ de: 'Support-Anfrage', en: 'Support request' })}
+      </p>
 
       <AnimatePresence mode="wait">
         {sent ? (
@@ -75,7 +79,7 @@ export default function SupportForm() {
             <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
               <Check size={16} strokeWidth={2.5} />
             </span>
-            Danke! Wir melden uns in der Regel innerhalb eines Tages.
+            {t({ de: 'Danke! Wir melden uns in der Regel innerhalb eines Tages.', en: 'Thanks! We usually get back to you within a day.' })}
           </motion.div>
         ) : (
           <motion.form
@@ -91,19 +95,20 @@ export default function SupportForm() {
             {/* Honeypot: fuer echte Nutzer unsichtbar, Bots fuellen es oft aus. */}
             <p className="hidden" aria-hidden="true">
               <label>
-                Bitte nicht ausfüllen: <input name="bot-field" tabIndex="-1" autoComplete="off" />
+                {t({ de: 'Bitte nicht ausfüllen:', en: 'Please leave this empty:' })}{' '}
+                <input name="bot-field" tabIndex="-1" autoComplete="off" />
               </label>
             </p>
 
             <div>
               <label htmlFor="sf-name" className={labelClass}>
-                Name<span className="text-accent"> *</span>
+                {t({ de: 'Name', en: 'Name' })}<span className="text-accent"> *</span>
               </label>
               <input
                 id="sf-name"
                 type="text"
                 className={inputClass}
-                placeholder="Ihr Name"
+                placeholder={t({ de: 'Ihr Name', en: 'Your name' })}
                 value={form.name}
                 onChange={(e) => setValue('name', e.target.value)}
               />
@@ -116,13 +121,13 @@ export default function SupportForm() {
 
             <div>
               <label htmlFor="sf-email" className={labelClass}>
-                E-Mail<span className="text-accent"> *</span>
+                {t({ de: 'E-Mail', en: 'Email' })}<span className="text-accent"> *</span>
               </label>
               <input
                 id="sf-email"
                 type="email"
                 className={inputClass}
-                placeholder="Ihre E-Mail"
+                placeholder={t({ de: 'Ihre E-Mail', en: 'Your email' })}
                 value={form.email}
                 onChange={(e) => setValue('email', e.target.value)}
               />
@@ -135,13 +140,13 @@ export default function SupportForm() {
 
             <div>
               <label htmlFor="sf-anliegen" className={labelClass}>
-                Ihr Anliegen<span className="text-accent"> *</span>
+                {t({ de: 'Ihr Anliegen', en: 'Your request' })}<span className="text-accent"> *</span>
               </label>
               <textarea
                 id="sf-anliegen"
                 rows={3}
                 className={`${inputClass} resize-none`}
-                placeholder="Wobei können wir helfen?"
+                placeholder={t({ de: 'Wobei können wir helfen?', en: 'What can we help with?' })}
                 value={form.anliegen}
                 onChange={(e) => setValue('anliegen', e.target.value)}
               />
@@ -166,10 +171,10 @@ export default function SupportForm() {
               {submitting ? (
                 <>
                   <Loader2 size={16} className="animate-spin" />
-                  Wird gesendet …
+                  {t({ de: 'Wird gesendet …', en: 'Sending …' })}
                 </>
               ) : (
-                'Support kontaktieren'
+                t({ de: 'Support kontaktieren', en: 'Contact support' })
               )}
             </button>
           </motion.form>

@@ -31,3 +31,9 @@ export const revealScale = {
     transition: { duration: 0.7, ease: EASE },
   },
 }
+
+// Von rechts einfliegend beim Reinscrollen (z.B. Showcase-Karten).
+export const slideInRight = {
+  hidden: { opacity: 0, x: 64 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.7, ease: EASE } },
+}

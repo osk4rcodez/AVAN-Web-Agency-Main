@@ -53,7 +53,8 @@ export default function Footer() {
   const t = useTranslate()
 
   return (
-    <footer className="border-t border-navy/10 bg-white">
+    <footer className="relative overflow-hidden rounded-t-[2.5rem] border-t border-navy/10 bg-white bg-[radial-gradient(35%_160px_at_50%_0%,theme(colors.accent/10%),transparent)] sm:rounded-t-[3rem]">
+      <div className="absolute left-1/2 right-1/2 top-0 h-px w-1/3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/25 blur" />
       <div className="container-px py-14">
         <div className="grid gap-10 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1fr]">
           <div>

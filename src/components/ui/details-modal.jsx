@@ -3,6 +3,7 @@ import { X, Check, ChevronLeft, ChevronRight } from 'lucide-react'
 import { EASE } from '../../lib/motion-variants.js'
 import { LiquidMetalButton } from './liquid-metal-button.jsx'
 import SupportForm from '../SupportForm.jsx'
+import { useTranslate } from '../../lib/language-preference.jsx'
 
 // Wiederverwendbares "Mehr-Infos"-Modal mit Weiter/Zurück-Navigation
 // zwischen mehreren Eintraegen (Ablauf-Schritte, Leistungen, ...).
@@ -16,8 +17,9 @@ export function DetailsModal({
   onFinish,
   isFirst,
   isLast,
-  finishLabel = 'Projekt starten',
+  finishLabel,
 }) {
+  const t = useTranslate()
   return (
     <AnimatePresence>
       {item && (
@@ -37,7 +39,7 @@ export function DetailsModal({
           <motion.div
             role="dialog"
             aria-modal="true"
-            aria-label={`Details: ${item.title}`}
+            aria-label={`${t({ de: 'Details:', en: 'Details:' })} ${item.title}`}
             className="glass-panel relative z-10 max-h-[85vh] w-full max-w-xl overflow-y-auto rounded-2xl p-4 sm:rounded-3xl sm:p-8"
             initial={{ opacity: 0, y: 24, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -47,7 +49,7 @@ export function DetailsModal({
             <button
               type="button"
               onClick={onClose}
-              aria-label="Schließen"
+              aria-label={t({ de: 'Schließen', en: 'Close' })}
               className="absolute right-3 top-3 z-20 inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/70 text-navy transition-colors hover:bg-accent hover:text-white sm:right-4 sm:top-4 sm:h-9 sm:w-9"
             >
               <X size={16} className="sm:hidden" />
@@ -96,7 +98,7 @@ export function DetailsModal({
 
                 {item.outcome && (
                   <p className="mt-5 text-sm font-medium text-navy">
-                    Ergebnis: <span className="font-normal text-ink/70">{item.outcome}</span>
+                    {t({ de: 'Ergebnis:', en: 'Outcome:' })} <span className="font-normal text-ink/70">{item.outcome}</span>
                   </p>
                 )}
 
@@ -112,17 +114,17 @@ export function DetailsModal({
                 className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy transition-colors hover:text-accent disabled:pointer-events-none disabled:opacity-40"
               >
                 <ChevronLeft size={16} />
-                Zurück
+                {t({ de: 'Zurück', en: 'Back' })}
               </button>
               {isLast ? (
-                <LiquidMetalButton label={finishLabel} onClick={onFinish} width={170} />
+                <LiquidMetalButton label={finishLabel ?? t({ de: 'Projekt starten', en: 'Start project' })} onClick={onFinish} width={170} />
               ) : (
                 <button
                   type="button"
                   onClick={onNext}
                   className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy transition-colors hover:text-accent"
                 >
-                  Weiter
+                  {t({ de: 'Weiter', en: 'Continue' })}
                   <ChevronRight size={16} />
                 </button>
               )}

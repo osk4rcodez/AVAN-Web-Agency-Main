@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Cookie, Settings2, Check } from 'lucide-react'
+import { useTranslate } from '../lib/language-preference.jsx'
 
 const STORAGE_KEY = 'avan-cookie-consent'
 const CONSENT_VERSION = '1.0'
@@ -8,26 +9,38 @@ const CONSENT_VERSION = '1.0'
 const CATEGORIES = [
   {
     id: 'necessary',
-    label: 'Technisch notwendig',
-    description: 'Grundlegende Funktionen wie Seitennavigation, Sicherheit und Formularversand. Können nicht deaktiviert werden.',
+    label: { de: 'Technisch notwendig', en: 'Strictly necessary' },
+    description: {
+      de: 'Grundlegende Funktionen wie Seitennavigation, Sicherheit und Formularversand. Können nicht deaktiviert werden.',
+      en: 'Basic functions such as page navigation, security, and form submission. Cannot be disabled.',
+    },
     required: true,
   },
   {
     id: 'functional',
-    label: 'Funktional',
-    description: 'Merken sich Einstellungen (z. B. Sprache, Schriftgröße) für ein komfortableres Nutzungserlebnis.',
+    label: { de: 'Funktional', en: 'Functional' },
+    description: {
+      de: 'Merken sich Einstellungen (z. B. Sprache, Schriftgröße) für ein komfortableres Nutzungserlebnis.',
+      en: 'Remember settings (e.g. language, font size) for a more comfortable experience.',
+    },
     required: false,
   },
   {
     id: 'analytics',
-    label: 'Analyse',
-    description: 'Anonyme Statistiken zur Nutzung der Website, um Inhalte zu verbessern (z. B. Besucherzahlen).',
+    label: { de: 'Analyse', en: 'Analytics' },
+    description: {
+      de: 'Anonyme Statistiken zur Nutzung der Website, um Inhalte zu verbessern (z. B. Besucherzahlen).',
+      en: 'Anonymous usage statistics to improve content (e.g. visitor counts).',
+    },
     required: false,
   },
   {
     id: 'marketing',
-    label: 'Marketing',
-    description: 'Werbung und Reichweitenmessung, z. B. über Pixel von Drittanbietern.',
+    label: { de: 'Marketing', en: 'Marketing' },
+    description: {
+      de: 'Werbung und Reichweitenmessung, z. B. über Pixel von Drittanbietern.',
+      en: 'Advertising and reach measurement, e.g. via third-party pixels.',
+    },
     required: false,
   },
 ]
@@ -67,6 +80,7 @@ function applyTrackingScripts(selection) {
 }
 
 export default function CookieConsent() {
+  const t = useTranslate()
   const [consent, setConsent] = useState(() => loadConsent())
   const [showBanner, setShowBanner] = useState(false)
   const [showPrefs, setShowPrefs] = useState(false)
@@ -129,18 +143,20 @@ export default function CookieConsent() {
           className="fixed inset-x-0 bottom-0 z-[60] px-4 pb-4 sm:px-6 sm:pb-6"
           role="dialog"
           aria-modal="false"
-          aria-label="Cookie-Einstellungen"
+          aria-label={t({ de: 'Cookie-Einstellungen', en: 'Cookie settings' })}
         >
           <div className="mx-auto max-w-3xl rounded-2xl border border-navy/10 bg-white p-5 shadow-cardHover sm:p-6">
             <div className="flex items-start gap-3">
               <Cookie size={22} className="mt-0.5 shrink-0 text-accent" aria-hidden="true" />
               <div>
-                <p className="font-display text-lg font-bold text-navy">Datenschutz & Cookies</p>
+                <p className="font-display text-lg font-bold text-navy">
+                  {t({ de: 'Datenschutz & Cookies', en: 'Privacy & cookies' })}
+                </p>
                 <p className="mt-1 text-sm leading-relaxed text-ink/70">
-                  Wir verwenden Cookies, um die Website technisch bereitzustellen und — sofern Sie
-                  einwilligen — um sie zu verbessern. Notwendige Cookies sind stets aktiv. Eine
-                  Einwilligung für Analyse- und Marketing-Cookies ist freiwillig und kann jederzeit
-                  widerrufen werden.
+                  {t({
+                    de: 'Wir verwenden Cookies, um die Website technisch bereitzustellen und — sofern Sie einwilligen — um sie zu verbessern. Notwendige Cookies sind stets aktiv. Eine Einwilligung für Analyse- und Marketing-Cookies ist freiwillig und kann jederzeit widerrufen werden.',
+                    en: 'We use cookies to technically provide the website and — with your consent — to improve it. Necessary cookies are always active. Consent for analytics and marketing cookies is voluntary and can be withdrawn at any time.',
+                  })}
                 </p>
               </div>
             </div>
@@ -157,7 +173,7 @@ export default function CookieConsent() {
                       onClick={() => toggle(c.id)}
                       disabled={c.required}
                       aria-pressed={selection[c.id]}
-                      aria-label={`${c.label} ${selection[c.id] ? 'aktiv' : 'inaktiv'}`}
+                      aria-label={`${t(c.label)} ${t(selection[c.id] ? { de: 'aktiv', en: 'active' } : { de: 'inaktiv', en: 'inactive' })}`}
                       className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition-colors ${
                         selection[c.id]
                           ? 'border-accent bg-accent text-white'
@@ -169,10 +185,14 @@ export default function CookieConsent() {
                     <input type="checkbox" className="sr-only" checked={selection[c.id]} readOnly tabIndex={-1} />
                     <span>
                       <span className="block text-sm font-semibold text-navy">
-                        {c.label}
-                        {c.required && <span className="ml-1 text-xs font-normal text-ink/50">(immer aktiv)</span>}
+                        {t(c.label)}
+                        {c.required && (
+                          <span className="ml-1 text-xs font-normal text-ink/50">
+                            {t({ de: '(immer aktiv)', en: '(always active)' })}
+                          </span>
+                        )}
                       </span>
-                      <span className="block text-xs text-ink/60">{c.description}</span>
+                      <span className="block text-xs text-ink/60">{t(c.description)}</span>
                     </span>
                   </label>
                 ))}
@@ -187,21 +207,21 @@ export default function CookieConsent() {
                 }}
                 className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-navy transition-colors hover:bg-mist"
               >
-                <Settings2 size={16} /> Einstellungen
+                <Settings2 size={16} /> {t({ de: 'Einstellungen', en: 'Settings' })}
               </button>
               <button
                 type="button"
                 onClick={denyAll}
                 className="inline-flex items-center justify-center rounded-full border border-navy/15 px-5 py-2.5 text-sm font-semibold text-navy transition-colors hover:bg-mist"
               >
-                Ablehnen
+                {t({ de: 'Ablehnen', en: 'Decline' })}
               </button>
               <button
                 type="button"
                 onClick={showPrefs ? saveSelection : acceptAll}
                 className="inline-flex items-center justify-center rounded-full bg-navy px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent"
               >
-                {showPrefs ? 'Auswahl speichern' : 'Alle akzeptieren'}
+                {showPrefs ? t({ de: 'Auswahl speichern', en: 'Save selection' }) : t({ de: 'Alle akzeptieren', en: 'Accept all' })}
               </button>
             </div>
           </div>
