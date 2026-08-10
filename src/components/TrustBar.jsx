@@ -108,7 +108,7 @@ function LogoItem({ name, Logo }) {
 export default function TrustBar() {
   const t = useTranslate()
   const items = [...tech, ...tech]
-  const label = t({ de: 'Technologien, mit denen wir arbeiten', en: 'Technologies we work with' })
+  const label = t({ de: 'Technologien, mit denen wir arbeiten', en: 'Technologies we work with', pl: 'Technologie, z którymi pracujemy' })
   return (
     <section className="border-y border-navy/5 bg-mist/60 py-8">
       <div className="container-px">

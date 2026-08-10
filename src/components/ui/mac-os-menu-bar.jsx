@@ -11,41 +11,41 @@ const DEFAULT_MENUS = [
   {
     label: 'File',
     items: [
-      { label: { de: 'Projekt starten', en: 'Start project' }, action: 'open-project-modal' },
-      { label: { de: 'Termin vereinbaren', en: 'Schedule appointment' }, action: 'open-appointment-modal' },
+      { label: { de: 'Projekt starten', en: 'Start project', pl: 'Rozpocznij projekt' }, action: 'open-project-modal' },
+      { label: { de: 'Termin vereinbaren', en: 'Schedule appointment', pl: 'Umów termin' }, action: 'open-appointment-modal' },
       { type: 'separator' },
-      { label: { de: 'Seite drucken', en: 'Print page' }, action: 'print', shortcut: '⌘P' },
+      { label: { de: 'Seite drucken', en: 'Print page', pl: 'Drukuj stronę' }, action: 'print', shortcut: '⌘P' },
     ],
   },
   {
     label: 'View',
     items: [
-      { label: { de: 'Zu Leistungen', en: 'To services' }, action: 'scroll-leistungen' },
-      { label: { de: 'Zu Showcase', en: 'To showcase' }, action: 'scroll-showcase' },
+      { label: { de: 'Zu Leistungen', en: 'To services', pl: 'Do usług' }, action: 'scroll-leistungen' },
+      { label: { de: 'Zu Showcase', en: 'To showcase', pl: 'Do realizacji' }, action: 'scroll-showcase' },
       { type: 'separator' },
-      { label: { de: 'Vollbild', en: 'Full screen' }, action: 'fullscreen', shortcut: '⌃⌘F' },
+      { label: { de: 'Vollbild', en: 'Full screen', pl: 'Pełny ekran' }, action: 'fullscreen', shortcut: '⌃⌘F' },
     ],
   },
   {
     label: 'Window',
-    items: [{ label: { de: 'Nach oben scrollen', en: 'Scroll to top' }, action: 'scroll-top', shortcut: '⌘M' }],
+    items: [{ label: { de: 'Nach oben scrollen', en: 'Scroll to top', pl: 'Przewiń do góry' }, action: 'scroll-top', shortcut: '⌘M' }],
   },
   {
     label: 'Help',
-    items: [{ label: { de: 'App-Hilfe', en: 'App help' }, action: 'app-help' }],
+    items: [{ label: { de: 'App-Hilfe', en: 'App help', pl: 'Pomoc aplikacji' }, action: 'app-help' }],
   },
 ]
 
 function buildAvanMenuItems(reduceMotion) {
   return [
-    { label: { de: 'Über AVAN', en: 'About AVAN' }, action: 'scroll-about' },
+    { label: { de: 'Über AVAN', en: 'About AVAN', pl: 'O AVAN' }, action: 'scroll-about' },
     { type: 'separator' },
-    { label: { de: 'Kontakt aufnehmen', en: 'Get in touch' }, action: 'open-project-modal' },
+    { label: { de: 'Kontakt aufnehmen', en: 'Get in touch', pl: 'Skontaktuj się' }, action: 'open-project-modal' },
     { type: 'separator' },
     {
       label: reduceMotion
-        ? { de: 'Animationen einschalten', en: 'Turn animations on' }
-        : { de: 'Animationen ausschalten', en: 'Turn animations off' },
+        ? { de: 'Animationen einschalten', en: 'Turn animations on', pl: 'Włącz animacje' }
+        : { de: 'Animationen ausschalten', en: 'Turn animations off', pl: 'Wyłącz animacje' },
       action: 'toggle-motion',
     },
   ]

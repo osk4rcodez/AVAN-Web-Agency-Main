@@ -43,9 +43,9 @@ export default function Stats() {
   return (
     <section className="border-y border-navy/5 py-16">
       <div ref={ref} className="container-px grid gap-10 sm:grid-cols-3">
-        <Stat value={100} suffix="%" label={t({ de: 'Persönliche Betreuung', en: 'Personal support' })} inView={inView} skipAnimation={isMobile} />
-        <Stat value={24} suffix="/7" label={t({ de: 'Erreichbarkeit bei Problemen', en: 'Availability for issues' })} inView={inView} skipAnimation={isMobile} />
-        <Stat value={2} label={t({ de: 'Gründer, direkter Kontakt', en: 'Founders, direct contact' })} inView={inView} skipAnimation={isMobile} />
+        <Stat value={100} suffix="%" label={t({ de: 'Persönliche Betreuung', en: 'Personal support', pl: 'Osobista opieka' })} inView={inView} skipAnimation={isMobile} />
+        <Stat value={24} suffix="/7" label={t({ de: 'Erreichbarkeit bei Problemen', en: 'Availability for issues', pl: 'Dostępność w razie problemów' })} inView={inView} skipAnimation={isMobile} />
+        <Stat value={2} label={t({ de: 'Gründer, direkter Kontakt', en: 'Founders, direct contact', pl: 'Założycieli, bezpośredni kontakt' })} inView={inView} skipAnimation={isMobile} />
       </div>
     </section>
   )

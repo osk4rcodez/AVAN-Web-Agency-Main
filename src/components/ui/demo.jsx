@@ -29,17 +29,18 @@ export function SplineSceneBasic() {
         <div className="flex-1 p-8 relative z-10 flex flex-col justify-center items-center md:items-start">
           <p className="eyebrow mb-4 text-lilac/90">AVAN Web Agency</p>
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-b from-white via-lilac to-accent -mt-2 pb-1">
-            {t({ de: 'Ihr digitaler Auftritt', en: 'Your digital presence' })}
+            {t({ de: 'Ihr digitaler Auftritt', en: 'Your digital presence', pl: 'Twoja obecność cyfrowa' })}
           </h1>
           <p className="mt-5 max-w-lg text-lg text-white/90 leading-relaxed text-center md:text-left">
             {t({
               de: 'Wir bauen moderne, schnelle Websites für lokale Unternehmen — von der Bäckerei bis zum Ferienhotel. Reduziert, durchdacht, mit echtem Handwerk statt Baukasten.',
               en: 'We build modern, fast websites for local businesses — from the bakery to the holiday hotel. Reduced, thoughtful, with real craftsmanship instead of a website builder.',
+              pl: 'Budujemy nowoczesne, szybkie strony dla lokalnych firm — od piekarni po hotel wakacyjny. Minimalistyczne, przemyślane, z prawdziwym rzemiosłem zamiast kreatora stron.',
             })}
           </p>
           <div className="mt-7 w-full flex justify-center md:justify-start">
             <a href="#kontakt" className="inline-flex rounded-full" data-open-project-modal>
-              <LiquidMetalButton label={t({ de: 'Projekt starten', en: 'Start project' })} width={240} />
+              <LiquidMetalButton label={t({ de: 'Projekt starten', en: 'Start project', pl: 'Rozpocznij projekt' })} width={240} />
             </a>
           </div>
         </div>
@@ -73,7 +74,7 @@ export function SplineSceneBasic() {
                 // echten Szene als statisches Bild.
                 <img
                   src="/hero-robot-poster.jpg"
-                  alt={t({ de: 'AVAN Roboter', en: 'AVAN robot' })}
+                  alt={t({ de: 'AVAN Roboter', en: 'AVAN robot', pl: 'Robot AVAN' })}
                   className="h-full w-full object-cover"
                 />
               ) : isInView ? (

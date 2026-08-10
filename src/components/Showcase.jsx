@@ -13,29 +13,32 @@ import { useTranslate } from '../lib/language-preference.jsx'
 const projects = [
   {
     id: 'design',
-    name: { de: 'Professionelle Seiten mit Animationen', en: 'Professional pages with animations' },
-    type: { de: 'Design', en: 'Design' },
+    name: { de: 'Professionelle Seiten mit Animationen', en: 'Professional pages with animations', pl: 'Profesjonalne strony z animacjami' },
+    type: { de: 'Design', en: 'Design', pl: 'Design' },
     desc: {
       de: 'Moderne, interaktive Websites mit durchdachten Animationen und Effekten — für Unternehmen, die auffallen wollen.',
       en: 'Modern, interactive websites with thoughtful animations and effects — for businesses that want to stand out.',
+      pl: 'Nowoczesne, interaktywne strony z przemyślanymi animacjami i efektami — dla firm, które chcą się wyróżniać.',
     },
   },
   {
     id: 'conversion',
-    name: { de: 'Klassische, verkaufsstarke Seiten', en: 'Classic, high-converting pages' },
-    type: { de: 'Conversion', en: 'Conversion' },
+    name: { de: 'Klassische, verkaufsstarke Seiten', en: 'Classic, high-converting pages', pl: 'Klasyczne strony sprzedażowe' },
+    type: { de: 'Conversion', en: 'Conversion', pl: 'Konwersja' },
     desc: {
       de: 'Reduziertes, klares Design, das auf Conversion ausgelegt ist — schnell, übersichtlich, ohne Ablenkung vom Wesentlichen.',
       en: 'Reduced, clear design built for conversion — fast, clear, no distraction from what matters.',
+      pl: 'Minimalistyczny, przejrzysty design nastawiony na konwersję — szybki, czytelny, bez rozpraszania od sedna.',
     },
   },
   {
     id: 'booking',
-    name: { de: 'Seiten mit Buchungssystem', en: 'Pages with a booking system' },
-    type: { de: 'Funktion', en: 'Function' },
+    name: { de: 'Seiten mit Buchungssystem', en: 'Pages with a booking system', pl: 'Strony z systemem rezerwacji' },
+    type: { de: 'Funktion', en: 'Function', pl: 'Funkcja' },
     desc: {
       de: 'Interaktive Seiten mit Buchungssystem — für Hotels und Betriebe, bei denen Kunden direkt online reservieren oder bestellen.',
       en: 'Interactive pages with a booking system — for hotels and businesses where customers book or order directly online.',
+      pl: 'Interaktywne strony z systemem rezerwacji — dla hoteli i firm, w których klienci rezerwują lub zamawiają bezpośrednio online.',
     },
   },
 ]
@@ -84,14 +87,15 @@ export default function Showcase() {
     <section id="showcase" className="section">
       <div className="container-px">
         <div className="max-w-2xl">
-          <p className="eyebrow mb-4">{t({ de: 'Showcase', en: 'Showcase' })}</p>
+          <p className="eyebrow mb-4">{t({ de: 'Showcase', en: 'Showcase', pl: 'Realizacje' })}</p>
           <h2 className="text-3xl font-extrabold sm:text-4xl">
-            {t({ de: 'Ausgewählte Projekte.', en: 'Selected projects.' })}
+            {t({ de: 'Ausgewählte Projekte.', en: 'Selected projects.', pl: 'Wybrane projekty.' })}
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-ink/70">
             {t({
               de: 'Beispiel-Hero-Sektionen, die drei Stile zeigen, die wir umsetzen können. Echte Kundenprojekte folgen, sobald die ersten Mandate live sind.',
               en: 'Example hero sections showing three styles we can build. Real client projects will follow as soon as the first mandates go live.',
+              pl: 'Przykładowe sekcje hero pokazujące trzy style, które możemy zrealizować. Prawdziwe projekty klientów pojawią się, gdy tylko pierwsze zlecenia zostaną uruchomione.',
             })}
           </p>
         </div>
@@ -108,13 +112,13 @@ export default function Showcase() {
             <div className="group flex flex-col justify-center rounded-2xl border border-dashed border-navy/15 bg-white/50 p-6">
               <p className="font-display text-4xl font-extrabold text-navy/30">#4</p>
               <p className="mt-3 text-lg leading-relaxed text-ink/45">
-                {t({ de: 'Platzhalter für ein weiteres echtes Projekt.', en: 'Placeholder for another real project.' })}
+                {t({ de: 'Platzhalter für ein weiteres echtes Projekt.', en: 'Placeholder for another real project.', pl: 'Miejsce na kolejny prawdziwy projekt.' })}
               </p>
               <a
                 href="#kontakt"
                 className="group/link mt-5 inline-flex w-fit items-center gap-1.5 text-base font-semibold text-accent transition-colors hover:text-navy"
               >
-                {t({ de: 'Eigenes Projekt starten', en: 'Start your own project' })}
+                {t({ de: 'Eigenes Projekt starten', en: 'Start your own project', pl: 'Rozpocznij własny projekt' })}
                 <ArrowUpRight
                   size={18}
                   className="transition-transform group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
@@ -147,13 +151,13 @@ export default function Showcase() {
             >
               <p className="font-display text-4xl font-extrabold text-navy/30">#4</p>
               <p className="mt-3 text-lg leading-relaxed text-ink/45">
-                {t({ de: 'Platzhalter für ein weiteres echtes Projekt.', en: 'Placeholder for another real project.' })}
+                {t({ de: 'Platzhalter für ein weiteres echtes Projekt.', en: 'Placeholder for another real project.', pl: 'Miejsce na kolejny prawdziwy projekt.' })}
               </p>
               <a
                 href="#kontakt"
                 className="group/link mt-5 inline-flex w-fit items-center gap-1.5 text-base font-semibold text-accent transition-colors hover:text-navy"
               >
-                {t({ de: 'Eigenes Projekt starten', en: 'Start your own project' })}
+                {t({ de: 'Eigenes Projekt starten', en: 'Start your own project', pl: 'Rozpocznij własny projekt' })}
                 <ArrowUpRight
                   size={18}
                   className="transition-transform group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"

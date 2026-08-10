@@ -1,12 +1,18 @@
 import { motion } from 'framer-motion'
 import { CalendarDays, MapPin, Star } from 'lucide-react'
+import { useTranslate } from '../../lib/language-preference.jsx'
 
-const NAV_LINKS = ['Zimmer', 'Restaurant', 'Wellness']
+const NAV_LINKS = [
+  { de: 'Zimmer', en: 'Rooms', pl: 'Pokoje' },
+  { de: 'Restaurant', en: 'Restaurant', pl: 'Restauracja' },
+  { de: 'Wellness', en: 'Wellness', pl: 'Wellness' },
+]
 
 // Live-Vorschau fuer die Showcase-Kategorie "Seiten mit Buchungssystem" —
 // realistische Hotel-Hero mit Bildhintergrund, Nav und ueberlappendem
 // Buchungswidget. Nur bei "Animationen an" aktiv (siehe Showcase.jsx).
 export function BookingSystemPage() {
+  const t = useTranslate()
   return (
     <div className="relative flex h-full w-full flex-col overflow-hidden bg-white font-sans text-navy">
       <div className="pointer-events-none absolute -right-10 -top-16 -z-10 h-40 w-40 rounded-full bg-accent/10 blur-3xl sm:h-56 sm:w-56" />
@@ -18,8 +24,8 @@ export function BookingSystemPage() {
         </div>
         <nav className="hidden items-center gap-4 text-[10px] text-navy/70 sm:flex sm:text-xs">
           {NAV_LINKS.map((link) => (
-            <span key={link} className="transition-opacity hover:opacity-70">
-              {link}
+            <span key={link.de} className="transition-opacity hover:opacity-70">
+              {t(link)}
             </span>
           ))}
         </nav>
@@ -33,7 +39,7 @@ export function BookingSystemPage() {
           className="mb-1.5 inline-flex w-fit items-center gap-1 rounded-full border border-navy/10 bg-white px-2 py-0.5 text-[8px] font-medium text-navy/60 shadow-sm sm:text-[10px]"
         >
           <Star size={9} className="fill-amber-400 text-amber-400" />
-          4,8 · Direkt am See
+          {t({ de: '4,8 · Direkt am See', en: '4.8 · Right on the lake', pl: '4,8 · Nad samym jeziorem' })}
         </motion.div>
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
@@ -41,7 +47,7 @@ export function BookingSystemPage() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="max-w-[13rem] text-lg font-bold leading-[1.15] text-navy sm:max-w-sm sm:text-3xl"
         >
-          Ihr Rückzugsort am Wasser.
+          {t({ de: 'Ihr Rückzugsort am Wasser.', en: 'Your retreat by the water.', pl: 'Twoja oaza spokoju nad wodą.' })}
         </motion.h1>
       </div>
 
@@ -53,22 +59,22 @@ export function BookingSystemPage() {
         className="relative z-10 mx-3 mb-3 rounded-xl border border-navy/10 bg-white p-2.5 text-navy shadow-cardHover sm:mx-6 sm:mb-5 sm:p-4"
       >
         <p className="mb-1.5 text-[8px] font-semibold uppercase tracking-wide text-ink/50 sm:text-xs">
-          Verfügbarkeit prüfen
+          {t({ de: 'Verfügbarkeit prüfen', en: 'Check availability', pl: 'Sprawdź dostępność' })}
         </p>
         <div className="flex items-center gap-1.5 sm:gap-2">
           <div className="flex flex-1 items-center gap-1 rounded-lg border border-navy/10 bg-mist px-2 py-1.5 sm:px-3 sm:py-2">
             <CalendarDays size={12} className="shrink-0 text-accent" />
-            <span className="text-[8px] text-ink/70 sm:text-xs">Anreise</span>
+            <span className="text-[8px] text-ink/70 sm:text-xs">{t({ de: 'Anreise', en: 'Check-in', pl: 'Przyjazd' })}</span>
           </div>
           <div className="flex flex-1 items-center gap-1 rounded-lg border border-navy/10 bg-mist px-2 py-1.5 sm:px-3 sm:py-2">
             <CalendarDays size={12} className="shrink-0 text-accent" />
-            <span className="text-[8px] text-ink/70 sm:text-xs">Abreise</span>
+            <span className="text-[8px] text-ink/70 sm:text-xs">{t({ de: 'Abreise', en: 'Check-out', pl: 'Wyjazd' })}</span>
           </div>
           <button
             type="button"
             className="rounded-lg bg-navy px-3 py-1.5 text-[8px] font-semibold text-white transition-transform hover:scale-[1.03] sm:px-5 sm:py-2 sm:text-xs"
           >
-            Suchen
+            {t({ de: 'Suchen', en: 'Search', pl: 'Szukaj' })}
           </button>
         </div>
       </motion.div>

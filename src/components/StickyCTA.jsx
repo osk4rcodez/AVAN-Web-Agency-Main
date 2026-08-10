@@ -37,7 +37,7 @@ export default function StickyCTA() {
           className="fixed inset-x-0 bottom-4 z-40 flex justify-center px-4 md:hidden"
         >
           <a href="#kontakt" className="inline-flex" data-open-project-modal>
-            <LiquidMetalButton label={t({ de: 'Erstgespräch', en: 'Free consultation' })} width={200} />
+            <LiquidMetalButton label={t({ de: 'Erstgespräch', en: 'Free consultation', pl: 'Bezpłatna konsultacja' })} width={200} />
           </a>
         </motion.div>
       )}

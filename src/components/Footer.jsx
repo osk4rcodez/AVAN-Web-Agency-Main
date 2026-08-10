@@ -10,41 +10,41 @@ const LINKEDIN_URL =
 const columns = [
   {
     id: 'leistungen',
-    title: { de: 'Leistungen', en: 'Services' },
+    title: { de: 'Leistungen', en: 'Services', pl: 'Usługi' },
     links: [
-      { id: 'website', label: { de: 'Website-Entwicklung', en: 'Website development' }, href: '#leistungen' },
-      { id: 'hosting', label: { de: 'Hosting & Bereitstellung', en: 'Hosting & deployment' }, href: '#leistungen' },
-      { id: 'wartung', label: { de: 'Wartung & Pflege', en: 'Maintenance & care' }, href: '#leistungen' },
-      { id: 'support', label: { de: 'Support & Beratung', en: 'Support & consulting' }, href: '#leistungen', onClick: 'support' },
+      { id: 'website', label: { de: 'Website-Entwicklung', en: 'Website development', pl: 'Tworzenie stron' }, href: '#leistungen' },
+      { id: 'hosting', label: { de: 'Hosting & Bereitstellung', en: 'Hosting & deployment', pl: 'Hosting i wdrożenie' }, href: '#leistungen' },
+      { id: 'wartung', label: { de: 'Wartung & Pflege', en: 'Maintenance & care', pl: 'Konserwacja' }, href: '#leistungen' },
+      { id: 'support', label: { de: 'Support & Beratung', en: 'Support & consulting', pl: 'Wsparcie i doradztwo' }, href: '#leistungen', onClick: 'support' },
     ],
   },
   {
     id: 'unternehmen',
-    title: { de: 'Unternehmen', en: 'Company' },
+    title: { de: 'Unternehmen', en: 'Company', pl: 'Firma' },
     links: [
-      { id: 'ueber-uns', label: { de: 'Über uns', en: 'About us' }, href: '#ueber-uns' },
-      { id: 'ablauf', label: { de: 'Ablauf', en: 'Process' }, href: '#ablauf' },
-      { id: 'showcase', label: { de: 'Showcase', en: 'Showcase' }, href: '#showcase' },
-      { id: 'kontakt', label: { de: 'Kontakt', en: 'Contact' }, href: '#kontakt' },
+      { id: 'ueber-uns', label: { de: 'Über uns', en: 'About us', pl: 'O nas' }, href: '#ueber-uns' },
+      { id: 'ablauf', label: { de: 'Ablauf', en: 'Process', pl: 'Proces' }, href: '#ablauf' },
+      { id: 'showcase', label: { de: 'Showcase', en: 'Showcase', pl: 'Realizacje' }, href: '#showcase' },
+      { id: 'kontakt', label: { de: 'Kontakt', en: 'Contact', pl: 'Kontakt' }, href: '#kontakt' },
     ],
   },
   {
     id: 'kontakt',
-    title: { de: 'Kontakt', en: 'Contact' },
+    title: { de: 'Kontakt', en: 'Contact', pl: 'Kontakt' },
     links: [
-      { id: 'email', label: { de: 'avanwebagency@gmail.com', en: 'avanwebagency@gmail.com' }, href: 'mailto:avanwebagency@gmail.com' },
-      { id: 'login', label: { de: 'Login / Kundenbereich', en: 'Login / Client area' }, href: '#kontakt', soon: true },
+      { id: 'email', label: { de: 'avanwebagency@gmail.com', en: 'avanwebagency@gmail.com', pl: 'avanwebagency@gmail.com' }, href: 'mailto:avanwebagency@gmail.com' },
+      { id: 'login', label: { de: 'Login / Kundenbereich', en: 'Login / Client area', pl: 'Logowanie / Panel klienta' }, href: '#kontakt', soon: true },
     ],
   },
   {
     id: 'rechtliches',
-    title: { de: 'Rechtliches', en: 'Legal' },
+    title: { de: 'Rechtliches', en: 'Legal', pl: 'Informacje prawne' },
     links: [
-      { id: 'impressum', label: { de: 'Impressum', en: 'Imprint' }, href: '#impressum' },
-      { id: 'datenschutz', label: { de: 'Datenschutz', en: 'Privacy policy' }, href: '#datenschutz' },
-      { id: 'agb', label: { de: 'AGB', en: 'Terms' }, href: '#agb' },
-      { id: 'barrierefreiheit', label: { de: 'Barrierefreiheit', en: 'Accessibility' }, href: '#barrierefreiheit' },
-      { id: 'cookies', label: { de: 'Cookie-Einstellungen', en: 'Cookie settings' }, href: '#', onClick: 'cookies' },
+      { id: 'impressum', label: { de: 'Impressum', en: 'Imprint', pl: 'Impressum' }, href: '#impressum' },
+      { id: 'datenschutz', label: { de: 'Datenschutz', en: 'Privacy policy', pl: 'Polityka prywatności' }, href: '#datenschutz' },
+      { id: 'agb', label: { de: 'AGB', en: 'Terms', pl: 'Regulamin' }, href: '#agb' },
+      { id: 'barrierefreiheit', label: { de: 'Barrierefreiheit', en: 'Accessibility', pl: 'Dostępność' }, href: '#barrierefreiheit' },
+      { id: 'cookies', label: { de: 'Cookie-Einstellungen', en: 'Cookie settings', pl: 'Ustawienia cookies' }, href: '#', onClick: 'cookies' },
     ],
   },
 ]
@@ -63,6 +63,7 @@ export default function Footer() {
               {t({
                 de: 'Ihre Website. Unsere Verantwortung. Von der Idee bis zum Server — alles aus einer Hand.',
                 en: 'Your website. Our responsibility. From idea to server — all from a single source.',
+                pl: 'Twoja strona. Nasza odpowiedzialność. Od pomysłu po serwer — wszystko z jednej ręki.',
               })}
             </p>
             <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-3 py-1.5">
@@ -71,7 +72,7 @@ export default function Footer() {
                 <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
               </span>
               <span className="text-xs font-semibold text-green-700">
-                {t({ de: 'Alle betreuten Websites online', en: 'All managed websites online' })}
+                {t({ de: 'Alle betreuten Websites online', en: 'All managed websites online', pl: 'Wszystkie obsługiwane strony online' })}
               </span>
             </div>
           </div>
@@ -88,7 +89,7 @@ export default function Footer() {
                       <span className="inline-flex items-center gap-2 text-sm text-ink/50">
                         {t(l.label)}
                         <span className="rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wider text-accent">
-                          {t({ de: 'Bald', en: 'Soon' })}
+                          {t({ de: 'Bald', en: 'Soon', pl: 'Wkrótce' })}
                         </span>
                       </span>
                     ) : (
@@ -123,7 +124,7 @@ export default function Footer() {
         <div className="mt-12 flex flex-col items-center gap-4 border-t border-navy/10 pt-6 text-center text-xs text-silver sm:flex-row sm:justify-between sm:text-left">
           <span>
             © 2026 AVAN Web Agency &nbsp;·&nbsp; Augsburg &nbsp;·&nbsp;{' '}
-            {t({ de: 'Alle Rechte vorbehalten.', en: 'All rights reserved.' })}
+            {t({ de: 'Alle Rechte vorbehalten.', en: 'All rights reserved.', pl: 'Wszelkie prawa zastrzeżone.' })}
           </span>
           <div className="flex items-center gap-4">
             <a

@@ -1,8 +1,10 @@
 import { RadioGroup, RadioGroupItem } from './ui/radio-group.jsx'
 import { useMotionPreference } from '../lib/motion-preference.jsx'
+import { useTranslate } from '../lib/language-preference.jsx'
 
 export default function MotionToggle({ large = false }) {
   const { reduceMotion, toggleMotion } = useMotionPreference()
+  const t = useTranslate()
   const state = reduceMotion ? 'off' : 'on'
 
   return (
@@ -22,7 +24,7 @@ export default function MotionToggle({ large = false }) {
             large ? 'px-4 sm:px-6' : 'px-4'
           }`}
         >
-          Aus
+          {t({ de: 'Aus', en: 'Off', pl: 'Wył' })}
           <RadioGroupItem id="motion-off" value="off" className="sr-only" />
         </label>
         <label
@@ -30,7 +32,7 @@ export default function MotionToggle({ large = false }) {
             large ? 'px-4 sm:px-6' : 'px-4'
           }`}
         >
-          An
+          {t({ de: 'An', en: 'On', pl: 'Wł' })}
           <RadioGroupItem id="motion-on" value="on" className="sr-only" />
         </label>
       </RadioGroup>

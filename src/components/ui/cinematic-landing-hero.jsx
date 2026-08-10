@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LiquidMetalButton } from "./liquid-metal-button.jsx";
 import { useMotionPreference } from "../../lib/motion-preference.jsx";
+import { useTranslate } from "../../lib/language-preference.jsx";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -195,6 +196,7 @@ export function CinematicHero({
   const [showReplay, setShowReplay] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(0);
   const { reduceMotion } = useMotionPreference();
+  const t = useTranslate();
 
   const startCountdown = (duration) => {
     clearInterval(countdownRef.current);
@@ -377,10 +379,10 @@ export function CinematicHero({
         </p>
         <div className="flex flex-col sm:flex-row gap-8 items-center justify-center">
           <a href="#kontakt" className="inline-block">
-            <LiquidMetalButton label="Erstgespräch" width={210} />
+            <LiquidMetalButton label={t({ de: 'Erstgespräch', en: 'Free consultation', pl: 'Bezpłatna konsultacja' })} width={210} />
           </a>
           <a href="#leistungen" className="inline-block">
-            <LiquidMetalButton label="Leistungen" viewMode="icon" width={210} />
+            <LiquidMetalButton label={t({ de: 'Leistungen', en: 'Services', pl: 'Usługi' })} viewMode="icon" width={210} />
           </a>
         </div>
       </div>
@@ -487,8 +489,8 @@ export function CinematicHero({
                     <span className="text-base lg:text-lg drop-shadow-lg" aria-hidden="true">💬</span>
                   </div>
                   <div>
-                    <p className="text-white text-xs lg:text-sm font-bold tracking-tight">Direkter Kontakt</p>
-                    <p className="text-purple-200/50 text-[10px] lg:text-xs font-medium">Zu den Gründern</p>
+                    <p className="text-white text-xs lg:text-sm font-bold tracking-tight">{t({ de: 'Direkter Kontakt', en: 'Direct contact', pl: 'Bezpośredni kontakt' })}</p>
+                    <p className="text-purple-200/50 text-[10px] lg:text-xs font-medium">{t({ de: 'Zu den Gründern', en: 'To the founders', pl: 'Do założycieli' })}</p>
                   </div>
                 </div>
               </div>
@@ -509,7 +511,11 @@ export function CinematicHero({
       <div className="absolute bottom-6 left-0 right-0 z-40 flex flex-col items-center justify-center gap-3 px-4 pointer-events-none">
         {secondsLeft > 0 && !showReplay && (
           <p className="text-[#6B6385] text-sm md:text-base font-medium bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
-            Schließt sich automatisch in {secondsLeft} {secondsLeft === 1 ? "Sekunde" : "Sekunden"}
+            {t({
+              de: `Schließt sich automatisch in ${secondsLeft} ${secondsLeft === 1 ? "Sekunde" : "Sekunden"}`,
+              en: `Closes automatically in ${secondsLeft} ${secondsLeft === 1 ? "second" : "seconds"}`,
+              pl: `Zamknie się automatycznie za ${secondsLeft} ${secondsLeft === 1 ? "sekundę" : secondsLeft >= 2 && secondsLeft <= 4 ? "sekundy" : "sekund"}`,
+            })}
           </p>
         )}
         {showReplay && (
@@ -524,7 +530,7 @@ export function CinematicHero({
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h5M20 20v-5h-5M4 9a8 8 0 0114-3M20 15a8 8 0 01-14 3" />
             </svg>
-            Siehe die Animation nochmal
+            {t({ de: 'Siehe die Animation nochmal', en: 'Watch the animation again', pl: 'Zobacz animację ponownie' })}
           </button>
         )}
       </div>

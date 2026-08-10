@@ -24,23 +24,23 @@ import { useTranslate, useLanguage } from '../lib/language-preference.jsx'
 // Jede Option hat einen stabilen (deutschen) `value` fuers Formular/E-Mail-
 // Backend, unabhaengig von der UI-Sprache — nur das sichtbare `label` folgt t().
 const BEDARF_OPTIONEN = [
-  { value: 'Neue Website', label: { de: 'Neue Website', en: 'New website' } },
-  { value: 'Überarbeitung / Relaunch', label: { de: 'Überarbeitung / Relaunch', en: 'Redesign / relaunch' } },
-  { value: 'Laufende Wartung', label: { de: 'Laufende Wartung', en: 'Ongoing maintenance' } },
-  { value: 'Sonstiges', label: { de: 'Sonstiges', en: 'Other' } },
+  { value: 'Neue Website', label: { de: 'Neue Website', en: 'New website', pl: 'Nowa strona' } },
+  { value: 'Überarbeitung / Relaunch', label: { de: 'Überarbeitung / Relaunch', en: 'Redesign / relaunch', pl: 'Przebudowa / relaunch' } },
+  { value: 'Laufende Wartung', label: { de: 'Laufende Wartung', en: 'Ongoing maintenance', pl: 'Bieżąca konserwacja' } },
+  { value: 'Sonstiges', label: { de: 'Sonstiges', en: 'Other', pl: 'Inne' } },
 ]
 
 const ZEITRAHMEN_OPTIONEN = [
-  { value: 'So schnell wie möglich', label: { de: 'So schnell wie möglich', en: 'As soon as possible' } },
-  { value: 'Innerhalb von 1 Monat', label: { de: 'Innerhalb von 1 Monat', en: 'Within 1 month' } },
-  { value: 'Kein fester Zeitrahmen', label: { de: 'Kein fester Zeitrahmen', en: 'No fixed timeframe' } },
+  { value: 'So schnell wie möglich', label: { de: 'So schnell wie möglich', en: 'As soon as possible', pl: 'Jak najszybciej' } },
+  { value: 'Innerhalb von 1 Monat', label: { de: 'Innerhalb von 1 Monat', en: 'Within 1 month', pl: 'W ciągu 1 miesiąca' } },
+  { value: 'Kein fester Zeitrahmen', label: { de: 'Kein fester Zeitrahmen', en: 'No fixed timeframe', pl: 'Bez ustalonego terminu' } },
 ]
 
 const BUDGET_OPTIONEN = [
-  { value: 'Unter 200 €', label: { de: 'Unter 200 €', en: 'Under €200' } },
-  { value: '200–500 €', label: { de: '200–500 €', en: '€200–500' } },
-  { value: '500 €+', label: { de: '500 €+', en: '€500+' } },
-  { value: 'Noch unklar', label: { de: 'Noch unklar', en: 'Not sure yet' } },
+  { value: 'Unter 200 €', label: { de: 'Unter 200 €', en: 'Under €200', pl: 'Poniżej 200 €' } },
+  { value: '200–500 €', label: { de: '200–500 €', en: '€200–500', pl: '200–500 €' } },
+  { value: '500 €+', label: { de: '500 €+', en: '€500+', pl: '500 €+' } },
+  { value: 'Noch unklar', label: { de: 'Noch unklar', en: 'Not sure yet', pl: 'Jeszcze nie wiem' } },
 ]
 
 const INITIAL_FORM = {
@@ -80,17 +80,21 @@ function Field({ label, htmlFor, required, error, children }) {
   )
 }
 
-// Datum hübsch (z. B. "Dienstag, 22. Juli" / "Tuesday, July 22").
+// Datum hübsch (z. B. "Dienstag, 22. Juli" / "Tuesday, July 22" / "wtorek, 22.07").
+// Polnisch nutzt hier ein numerisches Datum statt Monatsnamen, um den im
+// Fließtext noetigen Genitiv (z.B. "lipca" statt "Lipiec") zu vermeiden.
 function formatDayLong(date, lang) {
   if (!date) return ''
   if (lang === 'en') return `${WEEKDAYS_FULL.en[date.getDay()]}, ${MONTHS.en[date.getMonth()]} ${date.getDate()}`
+  if (lang === 'pl') return `${WEEKDAYS_FULL.pl[date.getDay()]}, ${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}`
   return `${WEEKDAYS_FULL.de[date.getDay()]}, ${date.getDate()}. ${MONTHS.de[date.getMonth()]}`
 }
 
-// Datum kurz (z. B. "22. Juli" / "July 22").
+// Datum kurz (z. B. "22. Juli" / "July 22" / "22.07").
 function formatDayShort(date, lang) {
   if (!date) return ''
   if (lang === 'en') return `${MONTHS.en[date.getMonth()]} ${date.getDate()}`
+  if (lang === 'pl') return `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}`
   return `${date.getDate()}. ${MONTHS.de[date.getMonth()]}`
 }
 
@@ -205,7 +209,7 @@ export default function ProjektModal() {
 
   const validateField = (key) => {
     if (REQUIRED.includes(key) && !form[key].trim()) {
-      setErrors((prev) => ({ ...prev, [key]: t({ de: 'Bitte ausfüllen.', en: 'Please fill this in.' }) }))
+      setErrors((prev) => ({ ...prev, [key]: t({ de: 'Bitte ausfüllen.', en: 'Please fill this in.', pl: 'Proszę wypełnić.' }) }))
     }
   }
 
@@ -218,10 +222,10 @@ export default function ProjektModal() {
     e.preventDefault()
     const nextErrors = {}
     REQUIRED.forEach((k) => {
-      if (!form[k].trim()) nextErrors[k] = t({ de: 'Bitte ausfüllen.', en: 'Please fill this in.' })
+      if (!form[k].trim()) nextErrors[k] = t({ de: 'Bitte ausfüllen.', en: 'Please fill this in.', pl: 'Proszę wypełnić.' })
     })
     if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      nextErrors.email = t({ de: 'Bitte eine gültige E-Mail angeben.', en: 'Please enter a valid email address.' })
+      nextErrors.email = t({ de: 'Bitte eine gültige E-Mail angeben.', en: 'Please enter a valid email address.', pl: 'Proszę podać prawidłowy adres e-mail.' })
     }
     if (Object.keys(nextErrors).length) {
       setErrors(nextErrors)
@@ -247,21 +251,21 @@ export default function ProjektModal() {
       setStep('success')
     } catch (err) {
       console.error('Formular-Übermittlung fehlgeschlagen:', err)
-      setSubmitError(t({ de: 'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.', en: 'Something went wrong. Please try again.' }))
+      setSubmitError(t({ de: 'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.', en: 'Something went wrong. Please try again.', pl: 'Coś poszło nie tak. Spróbuj ponownie.' }))
     }
     setSubmitting(false)
   }
 
   // Live-Ansage für Screenreader je nach Schritt.
   const liveMessage = useMemo(() => {
-    if (step === 'calendar') return t({ de: 'Schritt 1 von 2: Termin wählen', en: 'Step 1 of 2: choose an appointment' })
-    if (step === 'form' && cameFromCalendar) return t({ de: 'Schritt 2 von 2: Ihre Kontaktdaten', en: 'Step 2 of 2: your contact details' })
+    if (step === 'calendar') return t({ de: 'Schritt 1 von 2: Termin wählen', en: 'Step 1 of 2: choose an appointment', pl: 'Krok 1 z 2: wybierz termin' })
+    if (step === 'form' && cameFromCalendar) return t({ de: 'Schritt 2 von 2: Ihre Kontaktdaten', en: 'Step 2 of 2: your contact details', pl: 'Krok 2 z 2: Twoje dane kontaktowe' })
     return ''
   }, [step, cameFromCalendar, t])
 
   const ariaLabel = mode === 'appointment'
-    ? t({ de: 'Termin vereinbaren', en: 'Schedule appointment' })
-    : t({ de: 'Projekt starten', en: 'Start project' })
+    ? t({ de: 'Termin vereinbaren', en: 'Schedule appointment', pl: 'Umów termin' })
+    : t({ de: 'Projekt starten', en: 'Start project', pl: 'Rozpocznij projekt' })
 
   return (
     <AnimatePresence>
@@ -303,7 +307,7 @@ export default function ProjektModal() {
               <button
                 type="button"
                 onClick={() => setStep('calendar')}
-                aria-label={t({ de: 'Zurück zur Terminauswahl', en: 'Back to appointment selection' })}
+                aria-label={t({ de: 'Zurück zur Terminauswahl', en: 'Back to appointment selection', pl: 'Powrót do wyboru terminu' })}
                 className="absolute left-5 top-5 inline-flex h-9 w-9 items-center justify-center rounded-full border border-navy/10 bg-white/60 text-navy backdrop-blur-sm transition-colors hover:bg-white hover:text-accent"
               >
                 <ArrowLeft size={18} />
@@ -314,7 +318,7 @@ export default function ProjektModal() {
             <button
               type="button"
               onClick={handleClose}
-              aria-label={t({ de: 'Schließen', en: 'Close' })}
+              aria-label={t({ de: 'Schließen', en: 'Close', pl: 'Zamknij' })}
               className="absolute right-5 top-5 inline-flex h-9 w-9 items-center justify-center rounded-full border border-navy/10 bg-white/60 text-navy backdrop-blur-sm transition-colors hover:bg-white hover:text-accent"
             >
               <X size={18} />
@@ -346,12 +350,12 @@ export default function ProjektModal() {
                   exit={{ opacity: 0, x: -12 }}
                   transition={{ duration: 0.3, ease: EASE }}
                 >
-                  <p className="eyebrow mb-3">{t({ de: 'Termin vereinbaren', en: 'Schedule appointment' })}</p>
+                  <p className="eyebrow mb-3">{t({ de: 'Termin vereinbaren', en: 'Schedule appointment', pl: 'Umów termin' })}</p>
                   <h2 className="font-display text-2xl font-extrabold leading-tight text-navy sm:text-3xl">
-                    {t({ de: 'Wählen Sie einen passenden Termin.', en: 'Choose a time that works for you.' })}
+                    {t({ de: 'Wählen Sie einen passenden Termin.', en: 'Choose a time that works for you.', pl: 'Wybierz dogodny termin.' })}
                   </h2>
                   <p className="mt-3 text-sm leading-relaxed text-ink/60">
-                    {t({ de: '15 Minuten, unverbindlich — per Telefon oder Video.', en: '15 minutes, no obligation — by phone or video.' })}
+                    {t({ de: '15 Minuten, unverbindlich — per Telefon oder Video.', en: '15 minutes, no obligation — by phone or video.', pl: '15 minut, bez zobowiązań — telefonicznie lub wideo.' })}
                   </p>
 
                   <div className="mt-8">
@@ -372,7 +376,7 @@ export default function ProjektModal() {
                     onClick={() => setStep('form')}
                     className="btn-neon mt-8 w-full disabled:cursor-not-allowed disabled:opacity-50 disabled:animate-none"
                   >
-                    {t({ de: 'Weiter', en: 'Continue' })}
+                    {t({ de: 'Weiter', en: 'Continue', pl: 'Dalej' })}
                   </button>
                 </motion.div>
               )}
@@ -389,31 +393,33 @@ export default function ProjektModal() {
                   {/* Header */}
                   <p className="eyebrow mb-3">
                     {cameFromCalendar
-                      ? t({ de: 'Ihre Kontaktdaten', en: 'Your contact details' })
-                      : t({ de: 'Projekt starten', en: 'Start project' })}
+                      ? t({ de: 'Ihre Kontaktdaten', en: 'Your contact details', pl: 'Twoje dane kontaktowe' })
+                      : t({ de: 'Projekt starten', en: 'Start project', pl: 'Rozpocznij projekt' })}
                   </p>
                   <h2 className="font-display text-2xl font-extrabold leading-tight text-navy sm:text-3xl">
-                    {t({ de: 'Erzählen Sie uns von Ihrem Vorhaben.', en: 'Tell us about your project.' })}
+                    {t({ de: 'Erzählen Sie uns von Ihrem Vorhaben.', en: 'Tell us about your project.', pl: 'Opowiedz nam o swoim projekcie.' })}
                   </h2>
                   <p className="mt-3 text-sm leading-relaxed text-ink/60">
-                    {t({ de: 'Wir melden uns in der Regel innerhalb eines Tages zurück.', en: "We usually get back to you within a day." })}
+                    {t({ de: 'Wir melden uns in der Regel innerhalb eines Tages zurück.', en: "We usually get back to you within a day.", pl: 'Zwykle odpowiadamy w ciągu jednego dnia.' })}
                   </p>
 
                   {/* Termin-Chip (nur im Termin-Flow) */}
                   {cameFromCalendar && selectedDay && selectedTime && (
                     <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-xl border border-accent/25 bg-accent/10 px-4 py-3 text-sm text-navy backdrop-blur-sm">
                       <span>
-                        <span className="font-semibold">{t({ de: 'Ihr Termin:', en: 'Your appointment:' })}</span>{' '}
+                        <span className="font-semibold">{t({ de: 'Ihr Termin:', en: 'Your appointment:', pl: 'Twój termin:' })}</span>{' '}
                         {language === 'en'
                           ? `${formatDayLong(selectedDay, language)} at ${selectedTime}`
-                          : `${formatDayLong(selectedDay, language)} um ${selectedTime} Uhr`}
+                          : language === 'pl'
+                            ? `${formatDayLong(selectedDay, language)}, ${selectedTime}`
+                            : `${formatDayLong(selectedDay, language)} um ${selectedTime} Uhr`}
                       </span>
                       <button
                         type="button"
                         onClick={() => setStep('calendar')}
                         className="font-semibold text-accent underline underline-offset-2 transition-colors hover:text-navy"
                       >
-                        {t({ de: 'Ändern', en: 'Change' })}
+                        {t({ de: 'Ändern', en: 'Change', pl: 'Zmień' })}
                       </button>
                     </div>
                   )}
@@ -427,7 +433,7 @@ export default function ProjektModal() {
                     {/* Honeypot: fuer echte Nutzer unsichtbar, Bots fuellen es oft aus. */}
                     <p className="hidden" aria-hidden="true">
                       <label>
-                        {t({ de: 'Bitte nicht ausfüllen:', en: 'Please leave this empty:' })}{' '}
+                        {t({ de: 'Bitte nicht ausfüllen:', en: 'Please leave this empty:', pl: 'Proszę pozostawić puste:' })}{' '}
                         <input name="bot-field" tabIndex="-1" autoComplete="off" />
                       </label>
                     </p>
@@ -436,44 +442,44 @@ export default function ProjektModal() {
                       <input type="hidden" name="termin" value={terminValue} readOnly />
                     )}
 
-                    <Field label={t({ de: 'Name', en: 'Name' })} htmlFor="pm-name" required error={errors.name}>
+                    <Field label={t({ de: 'Name', en: 'Name', pl: 'Imię i nazwisko' })} htmlFor="pm-name" required error={errors.name}>
                       <input
                         id="pm-name"
                         ref={firstFieldRef}
                         type="text"
                         className={inputClass}
-                        placeholder={t({ de: 'Ihr Name', en: 'Your name' })}
+                        placeholder={t({ de: 'Ihr Name', en: 'Your name', pl: 'Twoje imię i nazwisko' })}
                         value={form.name}
                         onChange={(e) => setValue('name', e.target.value)}
                         onBlur={() => validateField('name')}
                       />
                     </Field>
 
-                    <Field label={t({ de: 'E-Mail', en: 'Email' })} htmlFor="pm-email" required error={errors.email}>
+                    <Field label={t({ de: 'E-Mail', en: 'Email', pl: 'E-mail' })} htmlFor="pm-email" required error={errors.email}>
                       <input
                         id="pm-email"
                         type="email"
                         className={inputClass}
-                        placeholder={t({ de: 'Ihre E-Mail', en: 'Your email' })}
+                        placeholder={t({ de: 'Ihre E-Mail', en: 'Your email', pl: 'Twój e-mail' })}
                         value={form.email}
                         onChange={(e) => setValue('email', e.target.value)}
                         onBlur={() => validateField('email')}
                       />
                     </Field>
 
-                    <Field label={t({ de: 'Telefon', en: 'Phone' })} htmlFor="pm-telefon">
+                    <Field label={t({ de: 'Telefon', en: 'Phone', pl: 'Telefon' })} htmlFor="pm-telefon">
                       <input
                         id="pm-telefon"
                         type="tel"
                         className={inputClass}
-                        placeholder={t({ de: 'Telefonnummer (optional)', en: 'Phone number (optional)' })}
+                        placeholder={t({ de: 'Telefonnummer (optional)', en: 'Phone number (optional)', pl: 'Numer telefonu (opcjonalnie)' })}
                         value={form.telefon}
                         onChange={(e) => setValue('telefon', e.target.value)}
                       />
                     </Field>
 
                     <Field
-                      label={t({ de: 'Unternehmen / Branche', en: 'Company / industry' })}
+                      label={t({ de: 'Unternehmen / Branche', en: 'Company / industry', pl: 'Firma / branża' })}
                       htmlFor="pm-unternehmen"
                       required
                       error={errors.unternehmen}
@@ -482,7 +488,7 @@ export default function ProjektModal() {
                         id="pm-unternehmen"
                         type="text"
                         className={inputClass}
-                        placeholder={t({ de: 'z. B. Bäckerei Müller', en: 'e.g. Smith Bakery' })}
+                        placeholder={t({ de: 'z. B. Bäckerei Müller', en: 'e.g. Smith Bakery', pl: 'np. Piekarnia Kowalski' })}
                         value={form.unternehmen}
                         onChange={(e) => setValue('unternehmen', e.target.value)}
                         onBlur={() => validateField('unternehmen')}
@@ -492,11 +498,11 @@ export default function ProjektModal() {
                     {/* Bedarf – Single-Select Pills */}
                     <div>
                       <span className={labelClass}>
-                        {t({ de: 'Was brauchen Sie?', en: 'What do you need?' })}<span className="text-accent"> *</span>
+                        {t({ de: 'Was brauchen Sie?', en: 'What do you need?', pl: 'Czego potrzebujesz?' })}<span className="text-accent"> *</span>
                       </span>
                       <div
                         role="radiogroup"
-                        aria-label={t({ de: 'Was brauchen Sie?', en: 'What do you need?' })}
+                        aria-label={t({ de: 'Was brauchen Sie?', en: 'What do you need?', pl: 'Czego potrzebujesz?' })}
                         className="flex flex-wrap gap-2"
                       >
                         {BEDARF_OPTIONEN.map((opt) => {
@@ -527,14 +533,14 @@ export default function ProjektModal() {
                     </div>
 
                     <div className="grid gap-5 sm:grid-cols-2">
-                      <Field label={t({ de: 'Zeitrahmen', en: 'Timeframe' })} htmlFor="pm-zeitrahmen">
+                      <Field label={t({ de: 'Zeitrahmen', en: 'Timeframe', pl: 'Ramy czasowe' })} htmlFor="pm-zeitrahmen">
                         <select
                           id="pm-zeitrahmen"
                           className={inputClass}
                           value={form.zeitrahmen}
                           onChange={(e) => setValue('zeitrahmen', e.target.value)}
                         >
-                          <option value="">{t({ de: 'Bitte wählen', en: 'Please choose' })}</option>
+                          <option value="">{t({ de: 'Bitte wählen', en: 'Please choose', pl: 'Proszę wybrać' })}</option>
                           {ZEITRAHMEN_OPTIONEN.map((o) => (
                             <option key={o.value} value={o.value}>
                               {t(o.label)}
@@ -543,14 +549,14 @@ export default function ProjektModal() {
                         </select>
                       </Field>
 
-                      <Field label={t({ de: 'Budget-Rahmen', en: 'Budget range' })} htmlFor="pm-budget">
+                      <Field label={t({ de: 'Budget-Rahmen', en: 'Budget range', pl: 'Zakres budżetu' })} htmlFor="pm-budget">
                         <select
                           id="pm-budget"
                           className={inputClass}
                           value={form.budget}
                           onChange={(e) => setValue('budget', e.target.value)}
                         >
-                          <option value="">{t({ de: 'Bitte wählen', en: 'Please choose' })}</option>
+                          <option value="">{t({ de: 'Bitte wählen', en: 'Please choose', pl: 'Proszę wybrać' })}</option>
                           {BUDGET_OPTIONEN.map((o) => (
                             <option key={o.value} value={o.value}>
                               {t(o.label)}
@@ -561,7 +567,7 @@ export default function ProjektModal() {
                     </div>
 
                     <Field
-                      label={t({ de: 'Nachricht', en: 'Message' })}
+                      label={t({ de: 'Nachricht', en: 'Message', pl: 'Wiadomość' })}
                       htmlFor="pm-nachricht"
                       required
                       error={errors.nachricht}
@@ -570,7 +576,7 @@ export default function ProjektModal() {
                         id="pm-nachricht"
                         rows={4}
                         className={`${inputClass} resize-none`}
-                        placeholder={t({ de: 'Kurz beschrieben: was schwebt Ihnen vor?', en: 'Briefly describe what you have in mind.' })}
+                        placeholder={t({ de: 'Kurz beschrieben: was schwebt Ihnen vor?', en: 'Briefly describe what you have in mind.', pl: 'Krótko opisz, co masz na myśli.' })}
                         value={form.nachricht}
                         onChange={(e) => setValue('nachricht', e.target.value)}
                         onBlur={() => validateField('nachricht')}
@@ -589,21 +595,21 @@ export default function ProjektModal() {
                           className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-navy/30 text-accent accent-accent focus:ring-2 focus:ring-accent/40"
                         />
                         <span className="text-sm leading-relaxed text-ink/70">
-                          {t({ de: 'Ich habe die', en: 'I have read the' })}{' '}
+                          {t({ de: 'Ich habe die', en: 'I have read the', pl: 'Przeczytałem/łam' })}{' '}
                           <a
                             href="#agb"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="font-semibold text-accent underline underline-offset-2 hover:text-navy"
                           >
-                            {t({ de: 'Allgemeinen Geschäftsbedingungen', en: 'Terms and Conditions' })}
+                            {t({ de: 'Allgemeinen Geschäftsbedingungen', en: 'Terms and Conditions', pl: 'Regulamin' })}
                           </a>{' '}
-                          {t({ de: 'gelesen und akzeptiere sie.', en: 'and agree to them.' })}
+                          {t({ de: 'gelesen und akzeptiere sie.', en: 'and agree to them.', pl: 'i akceptuję go.' })}
                         </span>
                       </label>
                       {!agbAccepted && (
                         <p className="mt-2 pl-7 text-xs text-red-500/90" role="alert">
-                          {t({ de: 'Bitte bestätigen Sie die AGB, um Ihre Anfrage abzusenden.', en: 'Please confirm the terms to send your request.' })}
+                          {t({ de: 'Bitte bestätigen Sie die AGB, um Ihre Anfrage abzusenden.', en: 'Please confirm the terms to send your request.', pl: 'Proszę zaakceptować regulamin, aby wysłać zgłoszenie.' })}
                         </p>
                       )}
                     </div>
@@ -622,10 +628,10 @@ export default function ProjektModal() {
                       {submitting ? (
                         <>
                           <Loader2 size={18} className="animate-spin" />
-                          {t({ de: 'Wird gesendet …', en: 'Sending …' })}
+                          {t({ de: 'Wird gesendet …', en: 'Sending …', pl: 'Wysyłanie …' })}
                         </>
                       ) : (
-                        t({ de: 'Anfrage senden', en: 'Send request' })
+                        t({ de: 'Anfrage senden', en: 'Send request', pl: 'Wyślij zgłoszenie' })
                       )}
                     </button>
                   </form>
@@ -651,21 +657,23 @@ export default function ProjektModal() {
                     <Check size={32} strokeWidth={2.5} />
                   </motion.span>
                   <h3 className="mt-6 font-display text-2xl font-extrabold text-navy">
-                    {t({ de: 'Danke!', en: 'Thank you!' })}
+                    {t({ de: 'Danke!', en: 'Thank you!', pl: 'Dziękujemy!' })}
                   </h3>
                   <p className="mt-2 max-w-sm text-sm leading-relaxed text-ink/65">
                     {cameFromCalendar && selectedDay && selectedTime
                       ? (language === 'en'
                           ? `Your appointment on ${formatDayShort(selectedDay, language)} at ${selectedTime} is booked — we'll reach out shortly beforehand to confirm.`
-                          : `Ihr Termin am ${formatDayShort(selectedDay, language)} um ${selectedTime} Uhr ist vorgemerkt — wir melden uns kurz vorher zur Bestätigung.`)
-                      : t({ de: 'Wir melden uns bald bei Ihnen.', en: "We'll be in touch soon." })}
+                          : language === 'pl'
+                            ? `Twój termin ${formatDayShort(selectedDay, language)} o ${selectedTime} jest zarezerwowany — skontaktujemy się wkrótce przed spotkaniem, aby potwierdzić.`
+                            : `Ihr Termin am ${formatDayShort(selectedDay, language)} um ${selectedTime} Uhr ist vorgemerkt — wir melden uns kurz vorher zur Bestätigung.`)
+                      : t({ de: 'Wir melden uns bald bei Ihnen.', en: "We'll be in touch soon.", pl: 'Wkrótce się z Tobą skontaktujemy.' })}
                   </p>
                   <button
                     type="button"
                     onClick={handleClose}
                     className="mt-8 rounded-full border border-navy/10 bg-white/60 px-6 py-2.5 text-sm font-semibold text-navy backdrop-blur-sm transition-colors hover:bg-white hover:text-accent"
                   >
-                    {t({ de: 'Schließen', en: 'Close' })}
+                    {t({ de: 'Schließen', en: 'Close', pl: 'Zamknij' })}
                   </button>
                 </motion.div>
               )}

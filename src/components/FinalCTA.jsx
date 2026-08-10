@@ -17,20 +17,21 @@ export default function FinalCTA() {
           />
           <div className="relative">
             <h2 className="text-3xl font-extrabold text-white sm:text-4xl lg:text-5xl">
-              {t({ de: 'Bereit für Ihre neue Website?', en: 'Ready for your new website?' })}
+              {t({ de: 'Bereit für Ihre neue Website?', en: 'Ready for your new website?', pl: 'Gotowi na nową stronę?' })}
             </h2>
             <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-silver">
               {t({
                 de: 'Lassen Sie uns in einem kurzen, unverbindlichen Gespräch besprechen, wie wir Ihnen helfen können.',
                 en: 'Let’s discuss in a short, no-obligation call how we can help you.',
+                pl: 'Porozmawiajmy w krótkiej, niezobowiązującej rozmowie o tym, jak możemy Ci pomóc.',
               })}
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <a href="#kontakt" className="inline-flex" data-open-project-modal>
-                <LiquidMetalButton label={t({ de: 'Projekt starten', en: 'Start project' })} width={190} />
+                <LiquidMetalButton label={t({ de: 'Projekt starten', en: 'Start project', pl: 'Rozpocznij projekt' })} width={190} />
               </a>
               <a href="#kontakt" className="inline-flex" data-open-appointment-modal>
-                <LiquidMetalButton label={t({ de: 'Termin vereinbaren', en: 'Schedule a call' })} width={210} />
+                <LiquidMetalButton label={t({ de: 'Termin vereinbaren', en: 'Schedule a call', pl: 'Umów rozmowę' })} width={210} />
               </a>
             </div>
           </div>

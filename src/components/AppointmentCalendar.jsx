@@ -20,14 +20,17 @@ import { useTranslate, useLanguage } from '../lib/language-preference.jsx'
 const WEEKDAYS = {
   de: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
   en: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+  pl: ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Nd'],
 }
 const WEEKDAYS_FULL = {
   de: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
   en: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+  pl: ['niedziela', 'poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek', 'sobota'],
 }
 const MONTHS = {
   de: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
   en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+  pl: ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'],
 }
 
 const TIME_SLOTS = ['09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00']
@@ -113,7 +116,7 @@ export default function AppointmentCalendar({
               setViewMonth((m) => new Date(m.getFullYear(), m.getMonth() - 1, 1))
             }
             disabled={!canGoPrev}
-            aria-label={t({ de: 'Vorheriger Monat', en: 'Previous month' })}
+            aria-label={t({ de: 'Vorheriger Monat', en: 'Previous month', pl: 'Poprzedni miesiąc' })}
             className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-navy/10 bg-white/60 text-navy transition-colors hover:bg-white hover:text-accent disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white/60 disabled:hover:text-navy"
           >
             <ChevronLeft size={16} />
@@ -126,7 +129,7 @@ export default function AppointmentCalendar({
             onClick={() =>
               setViewMonth((m) => new Date(m.getFullYear(), m.getMonth() + 1, 1))
             }
-            aria-label={t({ de: 'Nächster Monat', en: 'Next month' })}
+            aria-label={t({ de: 'Nächster Monat', en: 'Next month', pl: 'Następny miesiąc' })}
             className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-navy/10 bg-white/60 text-navy transition-colors hover:bg-white hover:text-accent"
           >
             <ChevronRight size={16} />
@@ -157,7 +160,13 @@ export default function AppointmentCalendar({
                 type="button"
                 disabled={unavailable}
                 aria-pressed={selected}
-                aria-label={language === 'en' ? `${months[date.getMonth()]} ${date.getDate()}` : `${date.getDate()}. ${months[date.getMonth()]}`}
+                aria-label={
+                  language === 'en'
+                    ? `${months[date.getMonth()]} ${date.getDate()}`
+                    : language === 'pl'
+                      ? `${date.getDate()}.${date.getMonth() + 1}`
+                      : `${date.getDate()}. ${months[date.getMonth()]}`
+                }
                 onClick={() => onSelectDay(date)}
                 animate={selected ? { scale: [1, 1.12, 1] } : { scale: 1 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
@@ -187,11 +196,11 @@ export default function AppointmentCalendar({
             className="mt-5"
           >
             <span className="mb-2 block text-xs font-medium text-navy/70">
-              {t({ de: 'Uhrzeit wählen', en: 'Choose a time' })}
+              {t({ de: 'Uhrzeit wählen', en: 'Choose a time', pl: 'Wybierz godzinę' })}
             </span>
             <div
               role="radiogroup"
-              aria-label={t({ de: 'Uhrzeit wählen', en: 'Choose a time' })}
+              aria-label={t({ de: 'Uhrzeit wählen', en: 'Choose a time', pl: 'Wybierz godzinę' })}
               className="grid grid-cols-3 gap-2 sm:grid-cols-4"
             >
               {TIME_SLOTS.map((slot) => {

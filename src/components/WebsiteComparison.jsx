@@ -29,15 +29,16 @@ export default function WebsiteComparison() {
           className="mx-auto max-w-3xl text-center"
         >
           <motion.p variants={fadeUp} className="eyebrow mb-4">
-            {t({ de: 'Vorher / Nachher', en: 'Before / after' })}
+            {t({ de: 'Vorher / Nachher', en: 'Before / after', pl: 'Przed / po' })}
           </motion.p>
           <motion.h2 variants={fadeUp} className="text-3xl font-extrabold sm:text-4xl">
-            {t({ de: 'So viel Unterschied macht eine echte Website.', en: 'This is the difference a real website makes.' })}
+            {t({ de: 'So viel Unterschied macht eine echte Website.', en: 'This is the difference a real website makes.', pl: 'Taką różnicę robi prawdziwa strona internetowa.' })}
           </motion.h2>
           <motion.p variants={fadeUp} className="mt-4 text-lg leading-relaxed text-ink/70">
             {t({
               de: 'Ziehen Sie den Regler und sehen Sie, was aus einem veralteten Auftritt werden kann — klar, schnell und auf jedem Gerät überzeugend.',
               en: 'Drag the slider and see what an outdated presence can become — clear, fast, and convincing on every device.',
+              pl: 'Przeciągnij suwak i zobacz, co może powstać z przestarzałej strony — przejrzystej, szybkiej i przekonującej na każdym urządzeniu.',
             })}
           </motion.p>
         </motion.div>
@@ -50,25 +51,25 @@ export default function WebsiteComparison() {
           className="mx-auto mt-12 max-w-4xl"
         >
           <div className="mb-3 flex items-center justify-between px-1">
-            <span className="text-xs font-semibold uppercase tracking-wider text-navy sm:text-sm">{t({ de: 'Nachher', en: 'After' })}</span>
-            <span className="text-xs font-semibold uppercase tracking-wider text-ink/50 sm:text-sm">{t({ de: 'Vorher', en: 'Before' })}</span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-navy sm:text-sm">{t({ de: 'Nachher', en: 'After', pl: 'Po' })}</span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-ink/50 sm:text-sm">{t({ de: 'Vorher', en: 'Before', pl: 'Przed' })}</span>
           </div>
           {reduceMotion ? (
             <>
               <ImageComparison
                 beforeImage="/before-website.svg"
                 afterImage="/after-website.svg"
-                altBefore={t({ de: 'Veralteter Website-Auftritt mit grauem, generischem Layout', en: 'Outdated website with a grey, generic layout' })}
-                altAfter={t({ de: 'Moderner AVAN-Website-Auftritt mit klarem, markenstarkem Design', en: 'Modern AVAN website with a clear, on-brand design' })}
+                altBefore={t({ de: 'Veralteter Website-Auftritt mit grauem, generischem Layout', en: 'Outdated website with a grey, generic layout', pl: 'Przestarzała strona z szarym, ogólnym układem' })}
+                altAfter={t({ de: 'Moderner AVAN-Website-Auftritt mit klarem, markenstarkem Design', en: 'Modern AVAN website with a clear, on-brand design', pl: 'Nowoczesna strona AVAN z przejrzystym, spójnym designem' })}
               />
               <p className="mt-3 text-center text-xs text-ink/50 sm:text-sm">
-                {t({ de: 'Tipp: Animationen oben einschalten, um die interaktive Live-Vorschau zu sehen.', en: 'Tip: turn on animations above to see the interactive live preview.' })}
+                {t({ de: 'Tipp: Animationen oben einschalten, um die interaktive Live-Vorschau zu sehen.', en: 'Tip: turn on animations above to see the interactive live preview.', pl: 'Wskazówka: włącz animacje powyżej, aby zobaczyć interaktywny podgląd na żywo.' })}
               </p>
             </>
           ) : showBrowserChrome ? (
             <BrowserFrame draggable={!isMobile}>
               <ImageComparison
-                altBefore={t({ de: 'Veralteter Website-Auftritt mit grellen Farben und Comic Sans', en: 'Outdated website with garish colors and Comic Sans' })}
+                altBefore={t({ de: 'Veralteter Website-Auftritt mit grellen Farben und Comic Sans', en: 'Outdated website with garish colors and Comic Sans', pl: 'Przestarzała strona z krzykliwymi kolorami i czcionką Comic Sans' })}
                 beforeContent={<BadWebsite />}
                 afterContent={<SpadeHero />}
                 bare
@@ -76,7 +77,7 @@ export default function WebsiteComparison() {
             </BrowserFrame>
           ) : (
             <ImageComparison
-              altBefore={t({ de: 'Veralteter Website-Auftritt mit grellen Farben und Comic Sans', en: 'Outdated website with garish colors and Comic Sans' })}
+              altBefore={t({ de: 'Veralteter Website-Auftritt mit grellen Farben und Comic Sans', en: 'Outdated website with garish colors and Comic Sans', pl: 'Przestarzała strona z krzykliwymi kolorami i czcionką Comic Sans' })}
               beforeContent={<BadWebsite />}
               afterContent={<SpadeHero />}
             />

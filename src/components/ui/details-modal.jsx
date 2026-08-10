@@ -39,7 +39,7 @@ export function DetailsModal({
           <motion.div
             role="dialog"
             aria-modal="true"
-            aria-label={`${t({ de: 'Details:', en: 'Details:' })} ${item.title}`}
+            aria-label={`${t({ de: 'Details:', en: 'Details:', pl: 'Szczegóły:' })} ${item.title}`}
             className="glass-panel relative z-10 max-h-[85vh] w-full max-w-xl overflow-y-auto rounded-2xl p-4 sm:rounded-3xl sm:p-8"
             initial={{ opacity: 0, y: 24, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -49,7 +49,7 @@ export function DetailsModal({
             <button
               type="button"
               onClick={onClose}
-              aria-label={t({ de: 'Schließen', en: 'Close' })}
+              aria-label={t({ de: 'Schließen', en: 'Close', pl: 'Zamknij' })}
               className="absolute right-3 top-3 z-20 inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/70 text-navy transition-colors hover:bg-accent hover:text-white sm:right-4 sm:top-4 sm:h-9 sm:w-9"
             >
               <X size={16} className="sm:hidden" />
@@ -98,7 +98,7 @@ export function DetailsModal({
 
                 {item.outcome && (
                   <p className="mt-5 text-sm font-medium text-navy">
-                    {t({ de: 'Ergebnis:', en: 'Outcome:' })} <span className="font-normal text-ink/70">{item.outcome}</span>
+                    {t({ de: 'Ergebnis:', en: 'Outcome:', pl: 'Efekt:' })} <span className="font-normal text-ink/70">{item.outcome}</span>
                   </p>
                 )}
 
@@ -114,17 +114,17 @@ export function DetailsModal({
                 className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy transition-colors hover:text-accent disabled:pointer-events-none disabled:opacity-40"
               >
                 <ChevronLeft size={16} />
-                {t({ de: 'Zurück', en: 'Back' })}
+                {t({ de: 'Zurück', en: 'Back', pl: 'Wstecz' })}
               </button>
               {isLast ? (
-                <LiquidMetalButton label={finishLabel ?? t({ de: 'Projekt starten', en: 'Start project' })} onClick={onFinish} width={170} />
+                <LiquidMetalButton label={finishLabel ?? t({ de: 'Projekt starten', en: 'Start project', pl: 'Rozpocznij projekt' })} onClick={onFinish} width={170} />
               ) : (
                 <button
                   type="button"
                   onClick={onNext}
                   className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy transition-colors hover:text-accent"
                 >
-                  {t({ de: 'Weiter', en: 'Continue' })}
+                  {t({ de: 'Weiter', en: 'Continue', pl: 'Dalej' })}
                   <ChevronRight size={16} />
                 </button>
               )}

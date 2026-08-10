@@ -10,12 +10,12 @@ import LanguageToggle from './LanguageToggle.jsx'
 import { useTranslate } from '../lib/language-preference.jsx'
 
 const links = [
-  { label: { de: 'Leistungen', en: 'Services' }, href: '#leistungen', icon: LayoutGrid },
-  { label: { de: 'Showcase', en: 'Showcase' }, href: '#showcase', icon: GalleryHorizontalEnd },
-  { label: { de: 'Ablauf', en: 'Process' }, href: '#ablauf', icon: Workflow },
-  { label: { de: 'FAQ', en: 'FAQ' }, href: '#faq', icon: ListChecks },
-  { label: { de: 'Über uns', en: 'About us' }, href: '#ueber-uns', icon: Users },
-  { label: { de: 'Kontakt', en: 'Contact' }, href: '#kontakt', icon: Mail },
+  { label: { de: 'Leistungen', en: 'Services', pl: 'Usługi' }, href: '#leistungen', icon: LayoutGrid },
+  { label: { de: 'Showcase', en: 'Showcase', pl: 'Realizacje' }, href: '#showcase', icon: GalleryHorizontalEnd },
+  { label: { de: 'Ablauf', en: 'Process', pl: 'Proces' }, href: '#ablauf', icon: Workflow },
+  { label: { de: 'FAQ', en: 'FAQ', pl: 'FAQ' }, href: '#faq', icon: ListChecks },
+  { label: { de: 'Über uns', en: 'About us', pl: 'O nas' }, href: '#ueber-uns', icon: Users },
+  { label: { de: 'Kontakt', en: 'Contact', pl: 'Kontakt' }, href: '#kontakt', icon: Mail },
 ]
 
 export default function Navbar({ pushedDown = false }) {
@@ -77,16 +77,16 @@ export default function Navbar({ pushedDown = false }) {
         <div className="hidden items-center gap-4 md:flex xl:gap-5">
           <span
             className="hidden shrink-0 cursor-default whitespace-nowrap rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wider text-accent 2xl:inline-flex"
-            title={t({ de: 'Login / Kundenbereich — bald verfügbar', en: 'Login / Client area — coming soon' })}
+            title={t({ de: 'Login / Kundenbereich — bald verfügbar', en: 'Login / Client area — coming soon', pl: 'Logowanie / Panel klienta — wkrótce' })}
           >
-            {t({ de: 'Login bald', en: 'Login soon' })}
+            {t({ de: 'Login bald', en: 'Login soon', pl: 'Wkrótce' })}
           </span>
           <LanguageToggle />
           <div className="shrink-0">
             <MotionToggle />
           </div>
           <a href="#kontakt" className="inline-flex shrink-0" data-open-project-modal>
-            <LiquidMetalButton label={t({ de: 'Projekt starten', en: 'Start Project' })} width={170} />
+            <LiquidMetalButton label={t({ de: 'Projekt starten', en: 'Start Project', pl: 'Rozpocznij projekt' })} width={170} />
           </a>
         </div>
 
@@ -94,7 +94,7 @@ export default function Navbar({ pushedDown = false }) {
           type="button"
           onClick={() => setOpen((v) => !v)}
           className="inline-flex h-10 w-10 items-center justify-center rounded-full text-navy transition-colors hover:bg-accent/10 md:hidden"
-          aria-label={open ? t({ de: 'Menü schließen', en: 'Close menu' }) : t({ de: 'Menü öffnen', en: 'Open menu' })}
+          aria-label={open ? t({ de: 'Menü schließen', en: 'Close menu', pl: 'Zamknij menu' }) : t({ de: 'Menü öffnen', en: 'Open menu', pl: 'Otwórz menu' })}
           aria-expanded={open}
         >
           {open ? <X size={22} /> : <Menu size={22} />}
@@ -138,14 +138,14 @@ export default function Navbar({ pushedDown = false }) {
               onClick={() => setOpen(false)}
               className="btn-neon mt-2 text-base"
             >
-              {t({ de: 'Projekt starten', en: 'Start Project' })} <ArrowUpRight size={18} />
+              {t({ de: 'Projekt starten', en: 'Start Project', pl: 'Rozpocznij projekt' })} <ArrowUpRight size={18} />
             </a>
             <MotionToggle />
             <LanguageToggle />
             <span className="inline-flex items-center gap-2 text-sm font-medium text-silver">
-              {t({ de: 'Login / Kundenbereich', en: 'Login / Client area' })}
+              {t({ de: 'Login / Kundenbereich', en: 'Login / Client area', pl: 'Logowanie / Panel klienta' })}
               <span className="rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wider text-accent">
-                {t({ de: 'Bald', en: 'Soon' })}
+                {t({ de: 'Bald', en: 'Soon', pl: 'Wkrótce' })}
               </span>
             </span>
           </motion.div>

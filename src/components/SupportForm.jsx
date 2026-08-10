@@ -35,10 +35,10 @@ export default function SupportForm() {
     e.preventDefault()
     const nextErrors = {}
     REQUIRED.forEach((k) => {
-      if (!form[k].trim()) nextErrors[k] = t({ de: 'Bitte ausfüllen.', en: 'Please fill this in.' })
+      if (!form[k].trim()) nextErrors[k] = t({ de: 'Bitte ausfüllen.', en: 'Please fill this in.', pl: 'Proszę wypełnić.' })
     })
     if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      nextErrors.email = t({ de: 'Bitte eine gültige E-Mail angeben.', en: 'Please enter a valid email address.' })
+      nextErrors.email = t({ de: 'Bitte eine gültige E-Mail angeben.', en: 'Please enter a valid email address.', pl: 'Proszę podać prawidłowy adres e-mail.' })
     }
     if (Object.keys(nextErrors).length) {
       setErrors(nextErrors)
@@ -56,7 +56,7 @@ export default function SupportForm() {
       setSent(true)
     } catch (err) {
       console.error('Support-Formular fehlgeschlagen:', err)
-      setSubmitError(t({ de: 'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.', en: 'Something went wrong. Please try again.' }))
+      setSubmitError(t({ de: 'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.', en: 'Something went wrong. Please try again.', pl: 'Coś poszło nie tak. Spróbuj ponownie.' }))
     }
     setSubmitting(false)
   }
@@ -64,7 +64,7 @@ export default function SupportForm() {
   return (
     <div className="mt-5 rounded-2xl border border-navy/10 bg-white/60 p-4">
       <p className="text-xs font-semibold uppercase tracking-widest text-silver">
-        {t({ de: 'Support-Anfrage', en: 'Support request' })}
+        {t({ de: 'Support-Anfrage', en: 'Support request', pl: 'Zgłoszenie wsparcia' })}
       </p>
 
       <AnimatePresence mode="wait">
@@ -79,7 +79,7 @@ export default function SupportForm() {
             <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
               <Check size={16} strokeWidth={2.5} />
             </span>
-            {t({ de: 'Danke! Wir melden uns in der Regel innerhalb eines Tages.', en: 'Thanks! We usually get back to you within a day.' })}
+            {t({ de: 'Danke! Wir melden uns in der Regel innerhalb eines Tages.', en: 'Thanks! We usually get back to you within a day.', pl: 'Dzięki! Zwykle odpowiadamy w ciągu jednego dnia.' })}
           </motion.div>
         ) : (
           <motion.form
@@ -95,20 +95,20 @@ export default function SupportForm() {
             {/* Honeypot: fuer echte Nutzer unsichtbar, Bots fuellen es oft aus. */}
             <p className="hidden" aria-hidden="true">
               <label>
-                {t({ de: 'Bitte nicht ausfüllen:', en: 'Please leave this empty:' })}{' '}
+                {t({ de: 'Bitte nicht ausfüllen:', en: 'Please leave this empty:', pl: 'Proszę pozostawić puste:' })}{' '}
                 <input name="bot-field" tabIndex="-1" autoComplete="off" />
               </label>
             </p>
 
             <div>
               <label htmlFor="sf-name" className={labelClass}>
-                {t({ de: 'Name', en: 'Name' })}<span className="text-accent"> *</span>
+                {t({ de: 'Name', en: 'Name', pl: 'Imię i nazwisko' })}<span className="text-accent"> *</span>
               </label>
               <input
                 id="sf-name"
                 type="text"
                 className={inputClass}
-                placeholder={t({ de: 'Ihr Name', en: 'Your name' })}
+                placeholder={t({ de: 'Ihr Name', en: 'Your name', pl: 'Twoje imię i nazwisko' })}
                 value={form.name}
                 onChange={(e) => setValue('name', e.target.value)}
               />
@@ -121,13 +121,13 @@ export default function SupportForm() {
 
             <div>
               <label htmlFor="sf-email" className={labelClass}>
-                {t({ de: 'E-Mail', en: 'Email' })}<span className="text-accent"> *</span>
+                {t({ de: 'E-Mail', en: 'Email', pl: 'E-mail' })}<span className="text-accent"> *</span>
               </label>
               <input
                 id="sf-email"
                 type="email"
                 className={inputClass}
-                placeholder={t({ de: 'Ihre E-Mail', en: 'Your email' })}
+                placeholder={t({ de: 'Ihre E-Mail', en: 'Your email', pl: 'Twój e-mail' })}
                 value={form.email}
                 onChange={(e) => setValue('email', e.target.value)}
               />
@@ -140,13 +140,13 @@ export default function SupportForm() {
 
             <div>
               <label htmlFor="sf-anliegen" className={labelClass}>
-                {t({ de: 'Ihr Anliegen', en: 'Your request' })}<span className="text-accent"> *</span>
+                {t({ de: 'Ihr Anliegen', en: 'Your request', pl: 'Twoja wiadomość' })}<span className="text-accent"> *</span>
               </label>
               <textarea
                 id="sf-anliegen"
                 rows={3}
                 className={`${inputClass} resize-none`}
-                placeholder={t({ de: 'Wobei können wir helfen?', en: 'What can we help with?' })}
+                placeholder={t({ de: 'Wobei können wir helfen?', en: 'What can we help with?', pl: 'W czym możemy pomóc?' })}
                 value={form.anliegen}
                 onChange={(e) => setValue('anliegen', e.target.value)}
               />
@@ -171,10 +171,10 @@ export default function SupportForm() {
               {submitting ? (
                 <>
                   <Loader2 size={16} className="animate-spin" />
-                  {t({ de: 'Wird gesendet …', en: 'Sending …' })}
+                  {t({ de: 'Wird gesendet …', en: 'Sending …', pl: 'Wysyłanie …' })}
                 </>
               ) : (
-                t({ de: 'Support kontaktieren', en: 'Contact support' })
+                t({ de: 'Support kontaktieren', en: 'Contact support', pl: 'Skontaktuj się z pomocą' })
               )}
             </button>
           </motion.form>

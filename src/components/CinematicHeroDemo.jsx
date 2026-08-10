@@ -17,23 +17,25 @@ export default function CinematicHeroDemo() {
       <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-transparent to-white" aria-hidden="true" />
       <div className="pointer-events-none absolute inset-x-0 top-32 bottom-0 bg-white" aria-hidden="true" />
       <CinematicHero
-        tagline1={t({ de: 'Ihre Website.', en: 'Your website.' })}
-        tagline2={t({ de: 'Unsere Verantwortung.', en: 'Our responsibility.' })}
-        cardHeading={t({ de: 'Von der Idee bis zum Server.', en: 'From idea to server.' })}
+        tagline1={t({ de: 'Ihre Website.', en: 'Your website.', pl: 'Twoja strona.' })}
+        tagline2={t({ de: 'Unsere Verantwortung.', en: 'Our responsibility.', pl: 'Nasza odpowiedzialność.' })}
+        cardHeading={t({ de: 'Von der Idee bis zum Server.', en: 'From idea to server.', pl: 'Od pomysłu po serwer.' })}
         cardDescription={
           <>
             <span className="text-white font-semibold">AVAN</span>{' '}
             {t({
               de: 'entwickelt, betreibt und betreut professionelle Websites für Unternehmen — Hosting, Pflege und Support aus einer Hand.',
               en: 'develops, runs and maintains professional websites for businesses — hosting, care and support from a single source.',
+              pl: 'tworzy, utrzymuje i wspiera profesjonalne strony internetowe dla firm — hosting, konserwacja i wsparcie z jednej ręki.',
             })}
           </>
         }
-        metricLabel={t({ de: 'Betreut', en: 'Managed' })}
-        ctaHeading={t({ de: 'Bereit für Ihre neue Website?', en: 'Ready for your new website?' })}
+        metricLabel={t({ de: 'Betreut', en: 'Managed', pl: 'Pod opieką' })}
+        ctaHeading={t({ de: 'Bereit für Ihre neue Website?', en: 'Ready for your new website?', pl: 'Gotowi na nową stronę?' })}
         ctaDescription={t({
           de: 'Lassen Sie uns in einem kurzen, unverbindlichen Gespräch besprechen, wie wir Ihnen helfen können.',
           en: 'Let’s discuss in a short, no-obligation call how we can help you.',
+          pl: 'Porozmawiajmy w krótkiej, niezobowiązującej rozmowie o tym, jak możemy Ci pomóc.',
         })}
       />
     </div>
